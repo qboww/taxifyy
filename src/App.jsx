@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   MIN_SALARY, 
   ESV_COEFFICIENT, 
@@ -8,10 +8,40 @@ import {
 } from "./constants";
 import "./App.css";
 
+const useLocalStorageWithExpiry = (key, initialValue, expiryDays = 30) => {
+  const [value, setValue] = useState(() => {
+    const item = localStorage.getItem(key);
+    if (!item) return initialValue;
+    
+    try {
+      const parsed = JSON.parse(item);
+      if (parsed.expiry && new Date().getTime() > parsed.expiry) {
+        localStorage.removeItem(key);
+        return initialValue;
+      }
+      return parsed.value !== undefined ? parsed.value : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    const now = new Date();
+    const expiryDate = now.getTime() + expiryDays * 24 * 60 * 60 * 1000;
+    const item = {
+      value: value,
+      expiry: expiryDate
+    };
+    localStorage.setItem(key, JSON.stringify(item));
+  }, [key, value, expiryDays]);
+
+  return [value, setValue];
+};
+
 export default function App() {
-  const [income, setIncome] = useState("");
-  const [mode, setMode] = useState(REPORT_PERIODS.MONTH);
-  const [quarterlyIncome, setQuarterlyIncome] = useState("");
+ const [income, setIncome] = useLocalStorageWithExpiry("taxCalc_income", "");
+  const [mode, setMode] = useLocalStorageWithExpiry("taxCalc_mode", REPORT_PERIODS.MONTH);
+  const [quarterlyIncome, setQuarterlyIncome] = useLocalStorageWithExpiry("taxCalc_quarterlyIncome", "");
 
   const gross = parseFloat(income);
   const quarterGross = parseFloat(quarterlyIncome);
@@ -85,7 +115,7 @@ export default function App() {
           <span>{isValid ? warTax.toFixed(2) : "-"} грн</span>
         </p>
         <p>
-          ЄСВ&nbsp;(22 % від&nbsp;{MIN_SALARY}):{" "}
+          ЄСВ&nbsp;(22 % від&nbsp;{MIN_SALARY} грн):{" "}
           <span>{esv.toFixed(2)} грн</span>
         </p>
         <p>
