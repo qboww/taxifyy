@@ -88,11 +88,11 @@ export default function App() {
           ЄСВ&nbsp;(22 % від&nbsp;{MIN_SALARY}):{" "}
           <span>{esv.toFixed(2)} грн</span>
         </p>
-        <hr />
         <p>
           Загальні&nbsp;податки:{" "}
           <span>{isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
         </p>
+        <hr />
         <p className="net">
           Чистий&nbsp;дохід:{" "}
           <span>{isValid ? netIncome.toFixed(2) : "-"} грн</span>

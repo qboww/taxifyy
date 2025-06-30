@@ -18,26 +18,15 @@
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 16px;
   background: var(--bg-dark);
   font-family: 'Poppins', sans-serif;
 }
 
-@media (prefers-color-scheme: light) {
-  body {
-    background: var(--bg-light);
-    color: #213547;
-  }
-}
-
 .app {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 420px;
   padding: 40px 24px;
   border-radius: 16px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
@@ -63,6 +52,7 @@ body {
 }
 
 .income-input {
+  width: 80%;
   padding: 12px 16px;
   font-size: 15px;
   border-radius: 8px;
@@ -92,7 +82,7 @@ body {
 
 .results {
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
   background: rgba(255, 255, 255, 0.05);
   padding: 16px 20px;
@@ -117,41 +107,6 @@ hr {
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   margin: 16px 0;
-}
-
-@media screen and (max-width: 390px) {
-  .app {
-    padding: 32px 16px;
-  }
-
-  .title {
-    font-size: 24px;
-  }
-
-  .income-input {
-    font-size: 15px;
-    padding: 10px 14px;
-  }
-
-  .results {
-    font-size: 14px;
-    padding: 14px 16px;
-  }
-
-  .results .net {
-    font-size: 15px;
-  }
-
-  .results p {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .mode-switcher {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
 }
 
 .toggle-container {
