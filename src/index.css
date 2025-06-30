@@ -1,19 +1,26 @@
-/* базові стилі Vite → фірмові кольори та градієнти */
 :root {
   --vite-purple: #646cff;
   --vite-purple-dark: #535bf2;
   --bg-dark: #242424;
   --bg-light: #ffffff;
+
+  font-family: 'Poppins', sans-serif;
+  color-scheme: light dark;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: var(--bg-dark);
+  color: rgba(255, 255, 255, 0.87);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
   background: var(--bg-dark);
-  color: rgba(255, 255, 255, 0.87);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 @media (prefers-color-scheme: light) {
@@ -24,68 +31,116 @@ body {
 }
 
 .app {
-  width: min(90vw, 420px);
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
-  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 40px 24px;
   background: radial-gradient(circle at top, var(--vite-purple-dark) -20%, transparent 60%);
   border-radius: 16px;
-  box-shadow: 0 6px 24px rgba(0,0,0,.25);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .title {
-  font-size: 2rem;
-  line-height: 1.3;
+  font-size: 32px;
   background: linear-gradient(135deg, var(--vite-purple), var(--vite-purple-dark));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1.8rem;
+  margin-bottom: 32px;
+  font-weight: 600;
 }
 
 .income-input {
   width: 100%;
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
+  padding: 12px 16px;
+  font-size: 16px;
   border-radius: 8px;
   border: 1px solid var(--vite-purple);
   outline: none;
-  margin-bottom: 1rem;
-  transition: box-shadow .25s;
+  margin-bottom: 20px;
+  transition: box-shadow 0.25s;
+  box-sizing: border-box;
 }
+
 .income-input:focus {
-  box-shadow: 0 0 0 4px rgba(100,108,255,0.45);
+  box-shadow: 0 0 0 4px rgba(100, 108, 255, 0.45);
 }
 
 .mode-switcher {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+  gap: 24px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  flex-wrap: wrap;
 }
+
 .mode-switcher input {
   accent-color: var(--vite-purple);
 }
 
 .results {
   text-align: left;
-  font-size: 0.95rem;
+  font-size: 15px;
   line-height: 1.6;
-  background: rgba(255,255,255,0.05);
-  padding: 1rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 16px 20px;
   border-radius: 12px;
+  box-sizing: border-box;
 }
+
 .results p {
   display: flex;
   justify-content: space-between;
-  margin: 0.3rem 0;
+  margin: 6px 0;
+  flex-wrap: wrap;
+  gap: 4px;
 }
+
 .results .net {
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 16px;
 }
+
 hr {
   border: none;
-  border-top: 1px solid rgba(255,255,255,0.2);
-  margin: 0.8rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 16px 0;
+}
+
+/* Адаптивність */
+@media screen and (max-width: 480px) {
+  .app {
+    padding: 32px 16px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .income-input {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+
+  .results {
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+
+  .results .net {
+    font-size: 15px;
+  }
+
+  .results p {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mode-switcher {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
 }
