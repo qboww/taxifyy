@@ -50,7 +50,7 @@ body {
   font-size: 28px;
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: white;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.945);
   font-weight: 600;
   margin-top: 0px;
 }
@@ -60,7 +60,6 @@ body {
   font-size: 14px;
   margin-top: -0.5rem;
   margin-bottom: 1.5rem;
-  font-weight: normal;
 }
 
 .income-input {
@@ -122,7 +121,7 @@ hr {
 }
 
 /* Адаптивність */
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 390px) {
   .app {
     padding: 32px 16px;
   }

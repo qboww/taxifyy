@@ -40,7 +40,7 @@ export default function App() {
   return (
     <main className="app">
       <h1 className="title">Калькулятор податків</h1>
-      <h2 className="subtitle">ФОП III групи (спрощена система оподаткування)</h2>
+      <h2 className="subtitle">ФОП III групи (спрощена система)</h2>
 
       {mode === REPORT_PERIODS.MONTH ? (
         <input
