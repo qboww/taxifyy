@@ -1,78 +1,88 @@
 import { useState } from "react";
+import { 
+  MIN_SALARY, 
+  ESV_COEFFICIENT, 
+  SINGLE_TAX_RATE, 
+  WAR_TAX_RATE,
+  REPORT_PERIODS
+} from "./constants";
 import "./App.css";
-
-const MIN_SALARY = 8000; // мінімальна ЗП (грн)
-const ESVCoefficient = 0.22; // ставка ЄСВ
-const SINGLE_TAX = 0.05; // 5 % єдиний податок
-const WAR_TAX = 0.015; // 1,5 % військовий збір
 
 export default function App() {
   const [income, setIncome] = useState("");
-  const [mode, setMode] = useState("month");
+  const [mode, setMode] = useState(REPORT_PERIODS.MONTH);
+  const [quarterlyIncome, setQuarterlyIncome] = useState("");
 
-  /* парсимо введення */
   const gross = parseFloat(income);
-  const isValid = !isNaN(gross) && gross >= 0;
+  const quarterGross = parseFloat(quarterlyIncome);
+  const isValid = mode === REPORT_PERIODS.MONTH 
+    ? !isNaN(gross) && gross >= 0 
+    : !isNaN(quarterGross) && quarterGross >= 0;
 
-  /* щомісячні показники */
-  const singleTaxMo = isValid ? gross * SINGLE_TAX : 0;
-  const warTaxMo = isValid ? gross * WAR_TAX : 0;
-  const esvMo = MIN_SALARY * ESVCoefficient;
+  const singleTaxMo = mode === REPORT_PERIODS.MONTH && isValid ? gross * SINGLE_TAX_RATE : 0;
+  const warTaxMo = mode === REPORT_PERIODS.MONTH && isValid ? gross * WAR_TAX_RATE : 0;
+  const esvMo = MIN_SALARY * ESV_COEFFICIENT;
 
-  /* множник для обраного режиму */
-  const multiplier = mode === "quarter" ? 3 : 1;
+  const singleTaxQr = mode === REPORT_PERIODS.QUARTER && isValid ? quarterGross * SINGLE_TAX_RATE : 0;
+  const warTaxQr = mode === REPORT_PERIODS.QUARTER && isValid ? quarterGross * WAR_TAX_RATE : 0;
 
-  /* квартал = 3 місяці, тому ЄСВ × 3 теж */
-  const singleTax = singleTaxMo * multiplier;
-  const warTax = warTaxMo * multiplier;
+  const multiplier = mode === REPORT_PERIODS.QUARTER ? 3 : 1;
+
+  const singleTax = mode === REPORT_PERIODS.QUARTER ? singleTaxQr : singleTaxMo * multiplier;
+  const warTax = mode === REPORT_PERIODS.QUARTER ? warTaxQr : warTaxMo * multiplier;
   const esv = esvMo * multiplier;
 
   const totalTaxes = singleTax + warTax + esv;
-  const netIncome = isValid ? gross * multiplier - totalTaxes : 0;
+  const netIncome = isValid 
+    ? (mode === REPORT_PERIODS.QUARTER ? quarterGross : gross * multiplier) - totalTaxes 
+    : 0;
 
   return (
     <main className="app">
-      <h1 className="title">
-        Калькулятор&nbsp;податків&nbsp;ФОП&nbsp;III&nbsp;групи
-      </h1>
+      <h1 className="title">Калькулятор податків</h1>
+      <h2 className="subtitle">ФОП III групи (спрощена система оподаткування)</h2>
 
-      <input
-        className="income-input"
-        type="number"
-        placeholder="Дохід за місяць, грн"
-        value={income}
-        onChange={(e) => setIncome(e.target.value)}
-      />
+      {mode === REPORT_PERIODS.MONTH ? (
+        <input
+          className="income-input"
+          type="number"
+          placeholder="Дохід за місяць, грн"
+          value={income}
+          onChange={(e) => setIncome(e.target.value)}
+        />
+      ) : (
+        <input
+          className="income-input"
+          type="number"
+          placeholder="Дохід за квартал, грн"
+          value={quarterlyIncome}
+          onChange={(e) => setQuarterlyIncome(e.target.value)}
+        />
+      )}
 
-      <div className="mode-switcher">
-        <label>
-          <input
-            type="radio"
-            value="month"
-            checked={mode === "month"}
-            onChange={() => setMode("month")}
-          />
+      <div className="toggle-container">
+        <button
+          className={`toggle-option ${mode === REPORT_PERIODS.MONTH ? "active" : ""}`}
+          onClick={() => setMode(REPORT_PERIODS.MONTH)}
+        >
           Місяць
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="quarter"
-            checked={mode === "quarter"}
-            onChange={() => setMode("quarter")}
-          />
+        </button>
+        <button
+          className={`toggle-option ${mode === REPORT_PERIODS.QUARTER ? "active" : ""}`}
+          onClick={() => setMode(REPORT_PERIODS.QUARTER)}
+        >
           Квартал
-        </label>
+        </button>
       </div>
 
       <section className="results">
         <p>
           Єдиний&nbsp;податок&nbsp;(5 %):{" "}
-          <span>{isValid ? singleTax.toFixed(2) : "—"} грн</span>
+          <span>{isValid ? singleTax.toFixed(2) : "-"} грн</span>
         </p>
         <p>
           Військовий&nbsp;збір&nbsp;(1.5 %):{" "}
-          <span>{isValid ? warTax.toFixed(2) : "—"} грн</span>
+          <span>{isValid ? warTax.toFixed(2) : "-"} грн</span>
         </p>
         <p>
           ЄСВ&nbsp;(22 % від&nbsp;{MIN_SALARY}):{" "}
@@ -81,11 +91,11 @@ export default function App() {
         <hr />
         <p>
           Загальні&nbsp;податки:{" "}
-          <span>{isValid ? totalTaxes.toFixed(2) : "—"} грн</span>
+          <span>{isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
         </p>
         <p className="net">
           Чистий&nbsp;дохід:{" "}
-          <span>{isValid ? netIncome.toFixed(2) : "—"} грн</span>
+          <span>{isValid ? netIncome.toFixed(2) : "-"} грн</span>
         </p>
       </section>
     </main>
