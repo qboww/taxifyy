@@ -2,7 +2,7 @@
 
 Сучасний калькулятор для розрахунку податків підприємців (ФОП 3 групи за спрощеною системою оподаткування).
 
-[![Live Demo](https://img.shields.io/badge/demo-live-green?style=for-the-badge)](https://qboww.github.io/taxes-calculator/)
+[![Live Demo](https://img.shields.io/badge/demo-live-green?style=for-the-badge)](https://taxes-calculator-eight.vercel.app/)
 ![License](https://img.shields.io/github/license/qboww/taxes-calculator?style=for-the-badge)
 
 ## ✨ Можливості

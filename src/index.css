@@ -18,15 +18,12 @@
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 16px;
   background: var(--bg-dark);
   font-family: 'Poppins', sans-serif;
-  overflow: hidden;
 }
 
 @media (prefers-color-scheme: light) {
@@ -37,7 +34,9 @@ body {
 }
 
 .app {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   max-width: 600px;
   padding: 40px 24px;
   border-radius: 16px;
@@ -47,12 +46,13 @@ body {
 }
 
 .title {
-  font-size: 28px;
+  font-size: 26px;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: rgba(255, 255, 255, 0.945);
   font-weight: 600;
   margin-top: 0px;
+  margin-bottom: 12px;
 }
 
 .subtitle {
@@ -63,7 +63,6 @@ body {
 }
 
 .income-input {
-  width: 100%;
   padding: 12px 16px;
   font-size: 15px;
   border-radius: 8px;
@@ -120,7 +119,6 @@ hr {
   margin: 16px 0;
 }
 
-/* Адаптивність */
 @media screen and (max-width: 390px) {
   .app {
     padding: 32px 16px;
@@ -189,25 +187,4 @@ hr {
 .toggle-option:not(.active):hover {
   background: rgba(100, 108, 255, 0.3);
   color: white;
-}
-
-/* Стилі для світлої теми */
-@media (prefers-color-scheme: light) {
-  .toggle-container {
-    background: rgba(100, 108, 255, 0.1);
-    border-color: rgba(100, 108, 255, 0.2);
-  }
-  
-  .toggle-option {
-    color: #213547;
-  }
-  
-  .toggle-option.active {
-    color: white;
-  }
-  
-  .toggle-option:not(.active):hover {
-    color: #213547;
-    background: rgba(100, 108, 255, 0.15);
-  }
 }
