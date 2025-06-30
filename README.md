@@ -1,12 +1,46 @@
-# React + Vite
+# 💰 Калькулятор податків для ФОП 3 групи
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Сучасний калькулятор для розрахунку податків підприємців (ФОП 3 групи за спрощеною системою оподаткування).
 
-Currently, two official plugins are available:
+[![Live Demo](https://img.shields.io/badge/demo-live-green?style=for-the-badge)](https://qboww.github.io/taxes-calculator/)
+![License](https://img.shields.io/github/license/qboww/taxes-calculator?style=for-the-badge)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Можливості
 
-## Expanding the ESLint configuration
+- Розрахунок податків за місяць або квартал
+- Враховує всі податки ФОП 3 групи на 2025 рік:
+- Сучасний адаптивний дизайн
+- Підтримка світлої/темної теми
+- Оптимізовано для мобільних пристроїв
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🧮 Як працює калькулятор
+
+Калькулятор розраховує:
+1. **Єдиний податок**: 5% від вашого доходу
+2. **Військовий збір**: 1.5% від доходу
+3. **ЄСВ**: 22% від мінімальної зарплати (₴8,000 з 01.04.2024)
+4. **Чистий дохід**: Дохід після сплати всіх податків
+
+## 🚀 Як користуватися
+
+1. Оберіть період розрахунку (місяць/квартал)
+2. Введіть ваш валовий дохід
+3. Отримайте детальний розрахунок податків
+
+## 🛠️ Розробка
+
+### Використані технології
+
+- React.js
+- CSS Modules
+- Vercel (для деплою)
+
+### Встановлення
+
+Виконайте ці команди у терміналі:
+
+```
+git clone https://github.com/qboww/taxes-calculator.git
+cd taxes-calculator
+npm install
+npm run dev
