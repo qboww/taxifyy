@@ -16,6 +16,12 @@
   }
 }
 
+@media screen and (max-width: 600px) {
+  .app {
+    padding: 0px;
+  }
+}
+
 .toggle-container {
   display: flex;
   gap: 6px;

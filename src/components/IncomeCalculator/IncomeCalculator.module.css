@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+hr{
+  margin: 0px !important;
+}
+
 .title {
   font-size: 26px;
   font-weight: 600;
