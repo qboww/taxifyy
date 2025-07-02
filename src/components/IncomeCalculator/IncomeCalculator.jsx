@@ -35,7 +35,7 @@ export default function IncomeCalculator({ onTransfer }) {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Калькулятор доходу</h2>
+      <h1 className={styles.title}>Калькулятор доходу</h1>
       <p className={styles.subtitle}>
         {today.toLocaleDateString("uk-UA", { month: "long" })}:
         <strong>
