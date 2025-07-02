@@ -1,4 +1,4 @@
-// TaxCalculator.jsx
+import styles from "./TaxCalculator.module.css";
 import { REPORT_PERIODS, MIN_SALARY, SINGLE_TAX_RATE, WAR_TAX_RATE, ESV_COEFFICIENT } from "../../utils/constants";
 
 export default function TaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
@@ -20,47 +20,46 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
   const netIncome = isValid ? (mode === REPORT_PERIODS.QUARTER ? quarterGross : gross * multiplier) - totalTaxes : 0;
 
   return (
-    <div>
-      <h2 className="title">Калькулятор податків</h2>
-      <p className="subtitle">ФОП III групи (спрощена система)</p>
-      {mode === REPORT_PERIODS.MONTH ? (
-        <input
-          className="income-input"
-          type="number"
-          placeholder="Дохід за місяць, грн"
-          value={income}
-          onChange={(e) => setIncome(e.target.value)}
-        />
-      ) : (
-        <input
-          className="income-input"
-          type="number"
-          placeholder="Дохід за квартал, грн"
-          value={quarterlyIncome}
-          onChange={(e) => setQuarterlyIncome(e.target.value)}
-        />
-      )}
+    <div className={styles.container}>
+      <div className={styles.headerContainer}>
+        <h2 className={styles.title}>Калькулятор податків</h2>
+        <p className={styles.subtitle}>ФОП III групи (спрощена система)</p>
+      </div>
+
+      <input
+        className={styles.input}
+        type="number"
+        placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць, грн" : "Дохід за квартал, грн"}
+        value={mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome}
+        onChange={(e) => (mode === REPORT_PERIODS.MONTH ? setIncome(e.target.value) : setQuarterlyIncome(e.target.value))}
+      />
+
       <div className="toggle-container">
-        <button
-          className={`toggle-option ${mode === REPORT_PERIODS.MONTH ? "active" : ""}`}
-          onClick={() => setMode(REPORT_PERIODS.MONTH)}
-        >
+        <button className={`toggle-option ${mode === REPORT_PERIODS.MONTH ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.MONTH)}>
           Місяць
         </button>
-        <button
-          className={`toggle-option ${mode === REPORT_PERIODS.QUARTER ? "active" : ""}`}
-          onClick={() => setMode(REPORT_PERIODS.QUARTER)}
-        >
+        <button className={`toggle-option ${mode === REPORT_PERIODS.QUARTER ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.QUARTER)}>
           Квартал
         </button>
       </div>
-      <section className="results">
-        <p>Єдиний податок (5 %): <span>{isValid ? singleTax.toFixed(2) : "-"} грн</span></p>
-        <p>Військовий збір (1.5 %): <span>{isValid ? warTax.toFixed(2) : "-"} грн</span></p>
-        <p>ЄСВ (22 % від {MIN_SALARY} грн): <span>{esv.toFixed(2)} грн</span></p>
-        <p>Загальні податки: <span>{isValid ? totalTaxes.toFixed(2) : "-"} грн</span></p>
-        <hr />
-        <p className="net">Чистий дохід: <span>{isValid ? netIncome.toFixed(2) : "-"} грн</span></p>
+
+      <section className={styles.results}>
+        <p>
+          Єдиний податок (5 %): <span>{isValid ? singleTax.toFixed(2) : "-"} грн</span>
+        </p>
+        <p>
+          Військовий збір (1.5 %): <span>{isValid ? warTax.toFixed(2) : "-"} грн</span>
+        </p>
+        <p>
+          ЄСВ (22 % від {MIN_SALARY} грн): <span>{esv.toFixed(2)} грн</span>
+        </p>
+        <p>
+          Загальні податки: <span>{isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
+        </p>
+        <hr className={styles.hr} />
+        <p className={styles.net}>
+          Чистий дохід: <span>{isValid ? netIncome.toFixed(2) : "-"} грн</span>
+        </p>
       </section>
     </div>
   );

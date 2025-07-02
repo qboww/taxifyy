@@ -1,3 +1,34 @@
+:root {
+  --vite-purple: #646cff;
+  --vite-purple-dark: #535bf2;
+  --vite-purple-light: rgba(100, 108, 255, 0.15);
+  --bg-dark: #242424;
+  --bg-light: #ffffff;
+  --text-dark: rgba(255, 255, 255, 0.87);
+  --text-light: #213547;
+  --border-dark: rgba(255, 255, 255, 0.2);
+  --border-light: rgba(0, 0, 0, 0.1);
+
+  font-family: 'Poppins', sans-serif;
+  color-scheme: light dark;
+  font-weight: 500;
+  line-height: 1.5;
+  background-color: var(--bg-dark);
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body {
+  padding: 16px;
+  background: var(--bg-dark);
+  font-family: 'Poppins', sans-serif;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .app {
   margin: 0 auto;
   width: 100%;
@@ -9,90 +40,16 @@
   box-sizing: border-box;
 }
 
-.title {
-  font-size: 26px;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.945);
-  font-weight: 600;
-  margin-top: 0px;
-  margin-bottom: 12px;
-}
-
-.subtitle {
-  color: #666;
-  font-size: 14px;
-  margin-top: -0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.income-input {
-  width: 80%;
-  padding: 12px 16px;
-  font-size: 15px;
-  border-radius: 8px;
-  border: 1px solid var(--vite-purple);
-  background: rgba(255, 255, 255, 0.05);
-  outline: none;
-  transition: box-shadow 0.25s;
-  box-sizing: border-box;
-}
-
-.income-input:focus {
-  box-shadow: 0 0 0 4px rgba(100, 108, 255, 0.45);
-}
-
-.mode-switcher {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 24px;
-  font-weight: 500;
-  flex-wrap: wrap;
-}
-
-.mode-switcher input {
-  accent-color: var(--vite-purple);
-}
-
-.results {
-  text-align: left;
-  font-size: 14px;
-  line-height: 1.6;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 16px 20px;
-  border-radius: 12px;
-  box-sizing: border-box;
-}
-
-.results p {
-  display: flex;
-  justify-content: space-between;
-  margin: 6px 0;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.results .net {
-  font-weight: 700;
-  font-size: 16px; 
-}
-
-hr {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 16px 0;
-}
-
 .toggle-container {
   display: flex;
   gap: 6px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   padding: 6px;
-  margin: 16px auto;
+  margin: 0px auto;
   width: fit-content;
   border: 1px solid rgba(100, 108, 255, 0.3);
+  margin-bottom: 16px;
 }
 
 .toggle-option {
@@ -118,6 +75,7 @@ hr {
   background: rgba(100, 108, 255, 0.3);
   color: white;
 }
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

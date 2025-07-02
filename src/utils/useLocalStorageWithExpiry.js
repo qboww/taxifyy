@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 export const useLocalStorageWithExpiry = (key, initialValue, expiryDays = 30) => {
   const [value, setValue] = useState(() => {
+    if (typeof window === "undefined") return initialValue;
     const item = localStorage.getItem(key);
     if (!item) return initialValue;
     try {
@@ -18,6 +19,7 @@ export const useLocalStorageWithExpiry = (key, initialValue, expiryDays = 30) =>
   });
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const now = new Date();
     const expiryDate = now.getTime() + expiryDays * 24 * 60 * 60 * 1000;
     const item = {

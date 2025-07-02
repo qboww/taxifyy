@@ -34,6 +34,17 @@ export function formatDaysWord(count) {
   return 'днів';
 }
 
+export function formatHoursWord(count) {
+  const lastDigit = count % 10;
+  const lastTwoDigits = count % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'годин';
+  if (lastDigit === 1) return 'година';
+  if (lastDigit >= 2 && lastDigit <= 4) return 'години';
+  return 'годин';
+}
+
+
 export const fetchUsdRate = async (signal) => {
   const url =
     "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&json";
