@@ -19,7 +19,7 @@ export default function App() {
   };
 
   return (
-    <main className="app">
+    <div className="app">
       <div className="toggle-container">
         <button className={`toggle-option ${tab === "income" ? "active" : ""}`} onClick={() => setTab("income")}>Дохід</button>
         <button className={`toggle-option ${tab === "taxes" ? "active" : ""}`} onClick={() => setTab("taxes")}>Податки</button>
@@ -36,6 +36,6 @@ export default function App() {
           setQuarterlyIncome={setQuarterlyIncome}
         />
       )}
-    </main>
+    </div>
   );
 }

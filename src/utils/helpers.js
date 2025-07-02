@@ -46,13 +46,15 @@ export function formatHoursWord(count) {
 
 
 export const fetchUsdRate = async (signal) => {
-  const url =
-    "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&json";
+  const url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&json";
   try {
     const res = await fetch(url, { signal });
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0 && data[0].rate) {
-      return Number(data[0].rate);
+      return {
+        rate: Number(data[0].rate),
+        exchangedate: data[0].exchangedate, // формат '02.07.2025'
+      };
     }
   } catch {
     // ignore fetch errors

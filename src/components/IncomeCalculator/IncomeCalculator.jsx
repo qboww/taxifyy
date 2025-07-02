@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkDaysWord } from "../../utils/helpers";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
+import StaticCalendar from "../../components/StaticCalendar/StaticCalendar";
+import { LuCalendarFold } from "react-icons/lu";
+import { IoClose } from "react-icons/io5";
 import styles from "./IncomeCalculator.module.css";
 
 export default function IncomeCalculator({ onTransfer }) {
@@ -14,16 +17,19 @@ export default function IncomeCalculator({ onTransfer }) {
   const [hoursWorked, setHoursWorked] = useLocalStorageWithExpiry("incomeCalc_hoursWorked", workingHours);
   const [hourlyRateUsd, setHourlyRateUsd] = useLocalStorageWithExpiry("incomeCalc_hourlyRateUsd", 0);
   const [customRate, setCustomRate] = useLocalStorageWithExpiry("incomeCalc_customRate", 0);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const [usdRate, setUsdRate] = useState(null);
+  const [usdDate, setUsdDate] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchUsdRate(controller.signal).then((rate) => {
-      if (rate) {
-        setUsdRate(rate);
+    fetchUsdRate(controller.signal).then((res) => {
+      if (res?.rate) {
+        setUsdRate(res.rate);
+        setUsdDate(res.exchangedate);
         if (!customRate) {
-          setCustomRate(rate);
+          setCustomRate(res.rate);
         }
       }
     });
@@ -36,62 +42,53 @@ export default function IncomeCalculator({ onTransfer }) {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Калькулятор доходу</h1>
-      <p className={styles.subtitle}>
-        {"сьогодні: "}
-        <strong>
+      <div className={styles.subCalendar}>
+        <p className={styles.subtitle}>
+          {"сьогодні: "}
           {today.toLocaleDateString("uk-UA", {
             day: "numeric",
             month: "long",
             year: "numeric",
           })}
-        </strong>
-        <br />
-        {today.toLocaleDateString("uk-UA", { month: "long" })}:
-        <strong>
-          {" "}
-          {monthDays} {formatDaysWord(monthDays)}
-        </strong>{" "}
-        -
-        <strong>
-          {" "}
+          <br />
+          {today.toLocaleDateString("uk-UA", { month: "long" })}: {monthDays} {formatDaysWord(monthDays)}
+          {" - "}
           {weekdays} {formatWorkDaysWord(weekdays)}
-        </strong>{" "}
-        -
-        <strong>
-          {" "}
+          {" - "}
           {workingHours} {formatHoursWord(workingHours)}
-        </strong>
-      </p>
+        </p>
+        <button onClick={() => setIsCalendarOpen((prev) => !prev)} className={`${styles.calendarBtn} ${styles.button}`} style={{ marginTop: "8px" }}>
+          {isCalendarOpen ? <IoClose size={18} /> : <LuCalendarFold size={18} />}
+        </button>
+      </div>
+
+      {isCalendarOpen && <StaticCalendar year={year} month={month} />}
+
+      <div className={styles.hourRate}>
+        <label className={styles.label}>
+          Відпрацьовані години:
+          <input
+            type="number"
+            placeholder="Відпрацьований час"
+            className={styles.input}
+            value={hoursWorked}
+            onChange={(e) => setHoursWorked(Number(e.target.value))}
+          />
+        </label>
+        <label className={styles.label}>
+          Рейт (USD/год):
+          <input
+            type="number"
+            placeholder="Власний рейт"
+            className={styles.input}
+            value={hourlyRateUsd || ""}
+            onChange={(e) => setHourlyRateUsd(Number(e.target.value))}
+          />
+        </label>
+      </div>
 
       <label className={styles.label}>
-        Відпрацьовані години:
-        <input
-          type="number"
-          placeholder="Відпрацьований час"
-          className={styles.input}
-          value={hoursWorked}
-          onChange={(e) => setHoursWorked(Number(e.target.value))}
-        />
-      </label>
-
-      <label className={styles.label}>
-        Рейт (USD/год):
-        <input
-          type="number"
-          placeholder="Власний рейт"
-          className={styles.input}
-          value={hourlyRateUsd || ""}
-          onChange={(e) => setHourlyRateUsd(Number(e.target.value))}
-        />
-      </label>
-
-      <label className={styles.label}>
-        Курс USD НБУ на{" "}
-        {today.toLocaleString("uk-UA", {
-          day: "2-digit",
-          month: "2-digit",
-        })}
-        : {usdRate ? `${usdRate} грн` : "(завантаження...)"}
+        Курс USD НБУ на {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
         <input
           type="number"
           className={styles.input}

@@ -22,9 +22,26 @@ hr {
 .subtitle {
   font-size: 14px;
   color: #888;
+  margin: 0px;
   line-height: 1.4;
-  text-align: center;
-  margin: 0 0 12px;
+}
+
+.subCalendar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.calendarBtn {
+  margin: 0px !important;
+  padding: 8px 12px !important;
+}
+
+.hourRate{
+  display: flex;
+  gap: 16px;
 }
 
 .label {
@@ -36,6 +53,7 @@ hr {
 }
 
 .input {
+  width: 100%;
   padding: 12px 16px;
   font-size: 15px;
   border-radius: 8px;
@@ -72,15 +90,15 @@ hr {
 
 .button {
   align-self: center;
-  padding: 10px 18px;
+  padding: 12px 18px;
   border: none;
   border-radius: 8px;
   background: var(--vite);
   color: #fff;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   transition: opacity 0.25s;
-  transition: 0.3s
+  transition: 0.3s;
 }
 
 .button:hover {

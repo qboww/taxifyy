@@ -14,6 +14,17 @@
   margin-bottom: 16px;
 }
 
+.inputToggle{
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.toggleContainer{
+  margin: 0px !important;
+}
+
 .title {
   font-size: 26px;
   font-weight: 600;
@@ -24,13 +35,22 @@
 }
 
 .subtitle {
-  color: #666;
+  color: #888;
   font-size: 14px;
   margin: 0px;
 }
 
+.label {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 4px;
+  font-size: 14px;
+  width: 100%;
+}
+
 .input {
-  width: 80%;
+  width: 100%;
   padding: 12px 16px;
   font-size: 15px;
   border-radius: 8px;
@@ -39,7 +59,6 @@
   outline: none;
   transition: box-shadow 0.25s;
   box-sizing: border-box;
-  margin: 0px auto;
 }
 
 .input:focus {

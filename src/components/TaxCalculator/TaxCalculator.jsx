@@ -26,21 +26,29 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
         <p className={styles.subtitle}>ФОП III групи (спрощена система)</p>
       </div>
 
-      <input
-        className={styles.input}
-        type="number"
-        placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць, грн" : "Дохід за квартал, грн"}
-        value={mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome}
-        onChange={(e) => (mode === REPORT_PERIODS.MONTH ? setIncome(e.target.value) : setQuarterlyIncome(e.target.value))}
-      />
+      <div className={styles.inputToggle}>
+        <label className={styles.label}>
+          {"Отримано коштів (UAH):"}
+          <input
+            className={styles.input}
+            type="number"
+            placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць, грн" : "Дохід за квартал, грн"}
+            value={mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome}
+            onChange={(e) => (mode === REPORT_PERIODS.MONTH ? setIncome(e.target.value) : setQuarterlyIncome(e.target.value))}
+          />
+        </label>
 
-      <div className="toggle-container">
-        <button className={`toggle-option ${mode === REPORT_PERIODS.MONTH ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.MONTH)}>
-          Місяць
-        </button>
-        <button className={`toggle-option ${mode === REPORT_PERIODS.QUARTER ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.QUARTER)}>
-          Квартал
-        </button>
+        <label className={styles.label}>
+          {"Формат сплати:"}
+          <div className={`${styles.toggleContainer} toggle-container`}>
+            <button className={`toggle-option ${mode === REPORT_PERIODS.MONTH ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.MONTH)}>
+              Місяць
+            </button>
+            <button className={`toggle-option ${mode === REPORT_PERIODS.QUARTER ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.QUARTER)}>
+              Квартал
+            </button>
+          </div>
+        </label>
       </div>
 
       <section className={styles.results}>
