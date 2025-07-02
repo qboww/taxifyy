@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useLocalStorageWithExpiry } from "./utils/useLocalStorageWithExpiry";
-import { REPORT_PERIODS } from "./utils/constants";
-import IncomeCalculator from "./components/IncomeCalculator/IncomeCalculator";
-import TaxCalculator from "./components/TaxCalculator/TaxCalculator";
+import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
+import { REPORT_PERIODS } from "../../utils/constants";
+import IncomeCalculator from "../IncomeCalculator/IncomeCalculator";
+import TaxCalculator from "../TaxCalculator/TaxCalculator";
 import "./App.css";
 
 export default function App() {
