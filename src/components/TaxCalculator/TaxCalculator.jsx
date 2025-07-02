@@ -28,18 +28,18 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
 
       <div className={styles.inputToggle}>
         <label className={styles.label}>
-          {"Отримано коштів (UAH):"}
+          {"Дохід (UAH):"}
           <input
             className={styles.input}
             type="number"
-            placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць, грн" : "Дохід за квартал, грн"}
+            placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць" : "Дохід за квартал"}
             value={mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome}
             onChange={(e) => (mode === REPORT_PERIODS.MONTH ? setIncome(e.target.value) : setQuarterlyIncome(e.target.value))}
           />
         </label>
 
         <label className={styles.label}>
-          {"Формат сплати:"}
+          {"Форма сплати:"}
           <div className={`${styles.toggleContainer} toggle-container`}>
             <button className={`toggle-option ${mode === REPORT_PERIODS.MONTH ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.MONTH)}>
               Місяць
