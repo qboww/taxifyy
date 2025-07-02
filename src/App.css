@@ -1,43 +1,19 @@
-:root {
-  --vite-purple: #646cff;
-  --vite-purple-dark: #535bf2;
-  --vite-purple-light: rgba(100, 108, 255, 0.15);
-  --bg-dark: #242424;
-  --bg-light: #ffffff;
-  --text-dark: rgba(255, 255, 255, 0.87);
-  --text-light: #213547;
-  --border-dark: rgba(255, 255, 255, 0.2);
-  --border-light: rgba(0, 0, 0, 0.1);
-
-  font-family: 'Poppins', sans-serif;
-  color-scheme: light dark;
-  font-weight: 500;
-  line-height: 1.5;
-  background-color: var(--bg-dark);
-  color: rgba(255, 255, 255, 0.87);
-}
-
-body {
-  padding: 16px;
-  background: var(--bg-dark);
-  font-family: 'Poppins', sans-serif;
-}
-
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
-}
-
 .app {
   margin: 0 auto;
   width: 100%;
   max-width: 420px;
-  padding: 40px 24px;
+  padding: 28px 24px;
   border-radius: 16px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   text-align: center;
   box-sizing: border-box;
+}
+
+@media screen and (max-width: 600px) {
+  .app {
+    padding: 12px;
+    box-shadow: none;
+  }
 }
 
 .toggle-container {
@@ -48,7 +24,7 @@ body {
   padding: 6px;
   margin: 0px auto;
   width: fit-content;
-  border: 1px solid rgba(100, 108, 255, 0.3);
+  border: 1px solid var(--vite-purple);
   margin-bottom: 16px;
 }
 
@@ -68,11 +44,11 @@ body {
 .toggle-option.active {
   background: var(--vite-purple);
   color: white;
-  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.3);
+  box-shadow: 0 1px 8px var(--vite-purple);
 }
 
 .toggle-option:not(.active):hover {
-  background: rgba(100, 108, 255, 0.3);
+  background: var(--vite-purple);
   color: white;
 }
 

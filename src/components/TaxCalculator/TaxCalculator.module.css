@@ -43,7 +43,7 @@
 }
 
 .input:focus {
-  box-shadow: 0 0 0 4px rgba(100, 108, 255, 0.45);
+  box-shadow: 0 0 0 4px var(--vite-purple);
 }
 
 .results {
