@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-hr{
+hr {
   margin: 0px !important;
 }
 
@@ -80,6 +80,13 @@ hr{
   font-size: 15px;
   cursor: pointer;
   transition: opacity 0.25s;
+  transition: 0.3s
+}
+
+.button:hover {
+  background: var(--vite);
+  color: white;
+  box-shadow: 0 1px 8px var(--vite);
 }
 
 .button:disabled {

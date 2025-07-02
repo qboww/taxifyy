@@ -44,15 +44,17 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
       </div>
 
       <section className={styles.results}>
-        <p>
-          Єдиний податок (5 %): <span>{isValid ? singleTax.toFixed(2) : "-"} грн</span>
-        </p>
-        <p>
-          Військовий збір (1.5 %): <span>{isValid ? warTax.toFixed(2) : "-"} грн</span>
-        </p>
-        <p>
-          ЄСВ (22 % від {MIN_SALARY} грн): <span>{esv.toFixed(2)} грн</span>
-        </p>
+        <div className={styles.pretotals}>
+          <p>
+            Єдиний податок (5 %): <span>{isValid ? singleTax.toFixed(2) : "-"} грн</span>
+          </p>
+          <p>
+            Військовий збір (1.5 %): <span>{isValid ? warTax.toFixed(2) : "-"} грн</span>
+          </p>
+          <p>
+            ЄСВ (22 % від {MIN_SALARY} грн): <span>{esv.toFixed(2)} грн</span>
+          </p>
+        </div>
         <p>
           Загальні податки: <span>{isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
         </p>

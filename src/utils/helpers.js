@@ -18,10 +18,10 @@ export function formatWorkDaysWord(count) {
   const lastDigit = count % 10;
   const lastTwoDigits = count % 100;
   
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'робочих днів';
-  if (lastDigit === 1) return 'робочий день';
-  if (lastDigit >= 2 && lastDigit <= 4) return 'робочі дні';
-  return 'робочих днів';
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'будніх днів';
+  if (lastDigit === 1) return 'будній день';
+  if (lastDigit >= 2 && lastDigit <= 4) return 'будніх дні';
+  return 'будніх днів';
 };
 
 export function formatDaysWord(count) {

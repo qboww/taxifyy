@@ -7,11 +7,11 @@
   text-align: center;
 }
 
-.headerContainer{
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
 .title {
@@ -75,4 +75,15 @@ hr {
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   margin: 16px 0;
+}
+
+.pretotals{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+
+  p{
+    margin: 0px;
+  }
 }

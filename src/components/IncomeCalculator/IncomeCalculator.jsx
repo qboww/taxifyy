@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getWeekdays, fetchUsdRate, formatDaysWord, formatWorkDaysWord } from "../../utils/helpers";
+import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkDaysWord } from "../../utils/helpers";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import styles from "./IncomeCalculator.module.css";
 
@@ -37,6 +37,15 @@ export default function IncomeCalculator({ onTransfer }) {
     <div className={styles.container}>
       <h1 className={styles.title}>Калькулятор доходу</h1>
       <p className={styles.subtitle}>
+        {"сьогодні: "}
+        <strong>
+          {today.toLocaleDateString("uk-UA", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+        </strong>
+        <br />
         {today.toLocaleDateString("uk-UA", { month: "long" })}:
         <strong>
           {" "}
@@ -47,38 +56,42 @@ export default function IncomeCalculator({ onTransfer }) {
           {" "}
           {weekdays} {formatWorkDaysWord(weekdays)}
         </strong>{" "}
-        -<strong> {workingHours} годин</strong>
-        <br />
-        {"сьогодні: "}
+        -
         <strong>
-          {today.toLocaleDateString("uk-UA", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          })}
+          {" "}
+          {workingHours} {formatHoursWord(workingHours)}
         </strong>
       </p>
 
       <label className={styles.label}>
         Відпрацьовані години:
-        <input type="number" 
-        placeholder="Відпрацьований час" 
-        className={styles.input} 
-        value={hoursWorked} 
-        onChange={(e) => setHoursWorked(Number(e.target.value))} />
+        <input
+          type="number"
+          placeholder="Відпрацьований час"
+          className={styles.input}
+          value={hoursWorked}
+          onChange={(e) => setHoursWorked(Number(e.target.value))}
+        />
       </label>
 
       <label className={styles.label}>
         Рейт (USD/год):
-        <input type="number" 
-        placeholder="Власний рейт" 
-        className={styles.input} 
-        value={hourlyRateUsd || ""} 
-        onChange={(e) => setHourlyRateUsd(Number(e.target.value))} />
+        <input
+          type="number"
+          placeholder="Власний рейт"
+          className={styles.input}
+          value={hourlyRateUsd || ""}
+          onChange={(e) => setHourlyRateUsd(Number(e.target.value))}
+        />
       </label>
 
       <label className={styles.label}>
-        Курс USD НБУ сьогодні: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
+        Курс USD НБУ на{" "}
+        {today.toLocaleString("uk-UA", {
+          day: "2-digit",
+          month: "2-digit",
+        })}
+        : {usdRate ? `${usdRate} грн` : "(завантаження...)"}
         <input
           type="number"
           className={styles.input}
