@@ -3,6 +3,7 @@ import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkD
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import StaticCalendar from "../../components/StaticCalendar/StaticCalendar";
 import { LuCalendarFold } from "react-icons/lu";
+import { VscQuestion } from "react-icons/vsc";
 import { IoClose } from "react-icons/io5";
 import styles from "./IncomeCalculator.module.css";
 
@@ -17,22 +18,34 @@ export default function IncomeCalculator({ onTransfer }) {
   const [hoursWorked, setHoursWorked] = useLocalStorageWithExpiry("incomeCalc_hoursWorked", workingHours);
   const [hourlyRateUsd, setHourlyRateUsd] = useLocalStorageWithExpiry("incomeCalc_hourlyRateUsd", 0);
   const [customRate, setCustomRate] = useLocalStorageWithExpiry("incomeCalc_customRate", 0);
+  const [cachedUsdRate, setCachedUsdRate] = useLocalStorageWithExpiry("incomeCalc_usdRate", null, 1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const [usdRate, setUsdRate] = useState(null);
   const [usdDate, setUsdDate] = useState(null);
 
   useEffect(() => {
+    if (cachedUsdRate) {
+      setUsdRate(cachedUsdRate.rate);
+      setUsdDate(cachedUsdRate.exchangedate);
+      if (!customRate) {
+        setCustomRate(cachedUsdRate.rate);
+      }
+      return;
+    }
+
     const controller = new AbortController();
     fetchUsdRate(controller.signal).then((res) => {
       if (res?.rate) {
         setUsdRate(res.rate);
         setUsdDate(res.exchangedate);
+        setCachedUsdRate(res);
         if (!customRate) {
           setCustomRate(res.rate);
         }
       }
     });
+
     return () => controller.abort();
   }, []);
 
@@ -58,7 +71,7 @@ export default function IncomeCalculator({ onTransfer }) {
           {workingHours} {formatHoursWord(workingHours)}
         </span>
         <button onClick={() => setIsCalendarOpen((prev) => !prev)} className={`${styles.calendarBtn} ${styles.button}`} style={{ marginTop: "8px" }}>
-          {isCalendarOpen ? <IoClose size={18} /> : <LuCalendarFold size={18} />}
+          {isCalendarOpen ? <IoClose size={20} /> : <LuCalendarFold size={20} />}
         </button>
       </div>
 
@@ -89,14 +102,19 @@ export default function IncomeCalculator({ onTransfer }) {
 
       <label className={styles.label}>
         Курс USD НБУ на {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
-        <input
-          type="number"
-          className={styles.input}
-          placeholder="Власний курс, якщо треба"
-          value={customRate || ""}
-          onChange={(e) => setCustomRate(Number(e.target.value))}
-          step="0.0001"
-        />
+        <div className={styles.inpQa}>
+          <input
+            type="number"
+            className={styles.input}
+            placeholder="Власний курс, якщо треба"
+            value={customRate || ""}
+            onChange={(e) => setCustomRate(Number(e.target.value))}
+            step="0.0001"
+          />
+          <button className={`${styles.qaBtn} ${styles.button}`} onClick={() => window.open("https://bank.gov.ua/ua/markets/exchangerates", "_blank")}>
+            <VscQuestion size={20} />
+          </button>
+        </div>
       </label>
 
       <hr />

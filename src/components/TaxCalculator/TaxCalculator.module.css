@@ -106,3 +106,8 @@ hr {
     margin: 0px;
   }
 }
+
+.qaBtn {
+  margin: 0px !important;
+  padding: 12px 16px !important;
+}
