@@ -30,7 +30,7 @@
   padding: 6px;
   margin: 0px auto;
   width: fit-content;
-  border: 1px solid var(--vite-purple);
+  border: 1px solid var(--vite);
   margin-bottom: 16px;
 }
 
@@ -48,13 +48,13 @@
 }
 
 .toggle-option.active {
-  background: var(--vite-purple);
+  background: var(--vite);
   color: white;
-  box-shadow: 0 1px 8px var(--vite-purple);
+  box-shadow: 0 1px 8px var(--vite);
 }
 
 .toggle-option:not(.active):hover {
-  background: var(--vite-purple);
+  background: var(--vite);
   color: white;
 }
 

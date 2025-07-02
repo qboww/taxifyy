@@ -39,7 +39,7 @@ hr{
   padding: 12px 16px;
   font-size: 15px;
   border-radius: 8px;
-  border: 1px solid var(--vite-purple);
+  border: 1px solid var(--vite);
   background: rgba(255, 255, 255, 0.05);
   outline: none;
   transition: box-shadow 0.25s;
@@ -47,7 +47,7 @@ hr{
 }
 
 .input:focus {
-  box-shadow: 0 0 0 4px var(--vite-purple);
+  box-shadow: 0 0 0 4px var(--vite);
 }
 
 .net {
@@ -75,7 +75,7 @@ hr{
   padding: 10px 18px;
   border: none;
   border-radius: 8px;
-  background: var(--vite-purple);
+  background: var(--vite);
   color: #fff;
   font-size: 15px;
   cursor: pointer;

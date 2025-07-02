@@ -1,6 +1,6 @@
 :root {
-  --vite-purple: #708A58;
-  --vite-purple-dark: #2D4F2B;
+  --vite: #708A58;
+  --vite-dark: #2D4F2B;
   --bg-dark: #242424;
   --text-dark: rgba(255, 255, 255, 0.87);
   --border-dark: rgba(255, 255, 255, 0.2);
