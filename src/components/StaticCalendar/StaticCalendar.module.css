@@ -1,15 +1,14 @@
 .calendarContainer {
-    background: rgba(255, 255, 255, 0.05);
-    opacity: 0;
     transform: translateY(-10px);
     animation: fadeSlideIn 0.3s ease-out forwards;
+    opacity: 0;
 }
 
 @keyframes fadeSlideIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .calendar {
@@ -19,10 +18,7 @@
     text-align: center;
     font-size: 14px;
     color: var(--text-dark);
-
-    table{
-        border-radius: 12px;
-    }
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .calendar th,
@@ -38,6 +34,26 @@
 }
 
 .weekend {
-
     background: rgba(255, 102, 102, 0.08);
+}
+
+.selected {
+    background-color: rgba(102, 255, 102, 0.2);
+    border: 1px solid #66ff66;
+    cursor: pointer;
+}
+
+.calendar td {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 14px;
+    color: #888;
+    text-align: right;
 }

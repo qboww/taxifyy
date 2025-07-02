@@ -43,20 +43,20 @@ export default function IncomeCalculator({ onTransfer }) {
     <div className={styles.container}>
       <h1 className={styles.title}>Калькулятор доходу</h1>
       <div className={styles.subCalendar}>
-        <p className={styles.subtitle}>
-          {"сьогодні: "}
+        <span className={styles.subtitle}>
+          <strong>сьогодні: </strong>
           {today.toLocaleDateString("uk-UA", {
             day: "numeric",
             month: "long",
             year: "numeric",
           })}
           <br />
-          {today.toLocaleDateString("uk-UA", { month: "long" })}: {monthDays} {formatDaysWord(monthDays)}
+          <strong>{today.toLocaleDateString("uk-UA", { month: "long" })}</strong>: {monthDays} {formatDaysWord(monthDays)}
           {" - "}
           {weekdays} {formatWorkDaysWord(weekdays)}
           {" - "}
           {workingHours} {formatHoursWord(workingHours)}
-        </p>
+        </span>
         <button onClick={() => setIsCalendarOpen((prev) => !prev)} className={`${styles.calendarBtn} ${styles.button}`} style={{ marginTop: "8px" }}>
           {isCalendarOpen ? <IoClose size={18} /> : <LuCalendarFold size={18} />}
         </button>
