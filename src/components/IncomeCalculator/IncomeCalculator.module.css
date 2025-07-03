@@ -37,6 +37,7 @@ hr {
 .calendarBtn {
   margin: 0px !important;
   padding: 12px 16px !important;
+  font-size: unset !important;
 }
 
 .hourRate{
@@ -114,6 +115,7 @@ hr {
 .qaBtn{
   display: flex;
   padding: 12px 16px;
+  font-size: unset;
 }
 
 .inpQa{

@@ -1,16 +1,39 @@
 import { useState } from "react";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import styles from "./StaticCalendar.module.css";
 
 export default function StaticCalendar({ year, month, today }) {
+  const [viewYear, setViewYear] = useState(year);
+  const [viewMonth, setViewMonth] = useState(month);
   const [selectedDays, setSelectedDays] = useState([]);
 
-  const toggleDay = (day) =>
-    setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-    );
+  const changeMonth = (delta) => {
+    setViewMonth((prevMonth) => {
+      let newMonth = prevMonth + delta;
+      let newYear = viewYear;
 
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const firstDay = new Date(year, month, 1).getDay(); // 0‑Sun … 6‑Sat
+      if (newMonth < 0) {
+        newMonth = 11;
+        newYear -= 1;
+      } else if (newMonth > 11) {
+        newMonth = 0;
+        newYear += 1;
+      }
+
+      setViewYear(newYear);
+      return newMonth;
+    });
+
+    setSelectedDays([]);
+  };
+
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const firstDay = new Date(viewYear, viewMonth, 1).getDay(); // 0‑Sun … 6‑Sat
+  const monthName = new Date(viewYear, viewMonth).toLocaleString("uk-UA", {
+    month: "long",
+  });
+  const quarter = `Q${Math.floor(viewMonth / 3) + 1}`;
+
   const weeks = [];
   let current = 1 - (firstDay === 0 ? 6 : firstDay - 1);
 
@@ -23,22 +46,16 @@ export default function StaticCalendar({ year, month, today }) {
         cells.push(<td key={d} />);
       } else {
         const dayNum = current;
-        const dow = new Date(year, month, dayNum).getDay();
+        const dow = new Date(viewYear, viewMonth, dayNum).getDay();
         const isWeekend = dow === 0 || dow === 6;
         const isSelected = selectedDays.includes(dayNum);
-        const isToday =
-          today &&
-          today.getFullYear() === year &&
-          today.getMonth() === month &&
-          today.getDate() === dayNum;
+        const isToday = today && today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === dayNum;
 
         cells.push(
           <td
             key={d}
-            className={`${isWeekend ? styles.weekend : ""} ${
-              isSelected ? styles.selected : ""
-            } ${isToday ? styles.today : ""}`}
-            onClick={() => toggleDay(dayNum)}
+            className={`${isWeekend ? styles.weekend : ""} ${isSelected ? styles.selected : ""} ${isToday ? styles.today : ""}`}
+            onClick={() => setSelectedDays((prev) => (prev.includes(dayNum) ? prev.filter((d) => d !== dayNum) : [...prev, dayNum]))}
           >
             {dayNum}
           </td>
@@ -57,16 +74,34 @@ export default function StaticCalendar({ year, month, today }) {
     <div className={styles.calendarContainer}>
       <table className={styles.calendar}>
         <thead>
-          <tr>{weekDays.map((d) => <th key={d}>{d}</th>)}</tr>
+          <tr>
+            {weekDays.map((d) => (
+              <th key={d}>{d}</th>
+            ))}
+          </tr>
         </thead>
         <tbody>{weeks}</tbody>
       </table>
 
       {selectedDays.length > 0 && (
         <div className={styles.summary}>
-          Вибрано днів: {selectedDays.length} - Годин: {selectedDays.length * 8}
+          Вибрано днів: {selectedDays.length} ‑ Годин: {selectedDays.length * 8}
         </div>
       )}
+
+      <div className={styles.controls}>
+        <button className={styles.button} onClick={() => changeMonth(-1)}>
+          <FaAngleLeft size={20} />
+        </button>
+        <span>
+          {monthName} {viewYear} ({quarter})
+        </span>
+        <button className={styles.button} onClick={() => changeMonth(1)}>
+          <FaAngleRight size={20} />
+        </button>
+      </div>
+
+      <hr/>
     </div>
   );
 }

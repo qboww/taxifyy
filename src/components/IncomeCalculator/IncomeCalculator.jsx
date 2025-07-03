@@ -62,7 +62,10 @@ export default function IncomeCalculator({ onTransfer }) {
             day: "numeric",
             month: "long",
             year: "numeric",
-          })}
+          })}{" "}
+          {"(Q"}
+          {Math.floor(today.getMonth() / 3) + 1}
+          {")"}
           <br />
           <strong>{today.toLocaleDateString("uk-UA", { month: "long" })}:</strong> {monthDays} {formatDaysWord(monthDays)}
           {" - "}

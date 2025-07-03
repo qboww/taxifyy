@@ -60,7 +60,34 @@
 }
 
 .today {
-  outline: 2px solid var(--vite);
-  border-radius: 4px;
-  font-weight: bold;
+    outline: 2px solid var(--vite);
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.button {
+    align-self: center;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: var(--vite);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.25s;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background: var(--vite);
+    color: white;
+    box-shadow: 0 1px 8px var(--vite);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    margin: 16px 0px;
 }
