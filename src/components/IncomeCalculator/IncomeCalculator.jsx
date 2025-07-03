@@ -3,7 +3,7 @@ import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkD
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import StaticCalendar from "../../components/StaticCalendar/StaticCalendar";
 import { LuCalendarFold } from "react-icons/lu";
-import { VscQuestion } from "react-icons/vsc";
+import { MdCurrencyExchange } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import styles from "./IncomeCalculator.module.css";
 
@@ -115,7 +115,7 @@ export default function IncomeCalculator({ onTransfer }) {
             step="0.0001"
           />
           <button className={`${styles.qaBtn} ${styles.button}`} onClick={() => window.open("https://bank.gov.ua/ua/markets/exchangerates", "_blank")}>
-            <VscQuestion size={20} />
+            <MdCurrencyExchange  size={20} />
           </button>
         </div>
       </label>
