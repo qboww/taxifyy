@@ -129,7 +129,7 @@ export default function IncomeCalculator({ onTransfer }) {
       </section>
 
       <button onClick={() => onTransfer(salaryUah)} className={styles.button} disabled={!salaryUah}>
-        Розрахувати податки
+        Податки за місяць
       </button>
     </div>
   );

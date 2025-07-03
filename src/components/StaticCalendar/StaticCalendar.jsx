@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { formatHoursWord } from "../../utils/helpers";
+
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import styles from "./StaticCalendar.module.css";
 
@@ -34,6 +36,11 @@ export default function StaticCalendar({ year, month, today }) {
   });
   const quarter = `Q${Math.floor(viewMonth / 3) + 1}`;
 
+  const workingDays = Array.from({ length: daysInMonth }, (_, i) => new Date(viewYear, viewMonth, i + 1)).filter(
+    (date) => date.getDay() !== 0 && date.getDay() !== 6
+  ).length;
+  const workingHours = workingDays * 8;
+
   const weeks = [];
   let current = 1 - (firstDay === 0 ? 6 : firstDay - 1);
 
@@ -49,13 +56,23 @@ export default function StaticCalendar({ year, month, today }) {
         const dow = new Date(viewYear, viewMonth, dayNum).getDay();
         const isWeekend = dow === 0 || dow === 6;
         const isSelected = selectedDays.includes(dayNum);
-        const isToday = today && today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === dayNum;
+        const isToday =
+          today &&
+          today.getFullYear() === viewYear &&
+          today.getMonth() === viewMonth &&
+          today.getDate() === dayNum;
 
         cells.push(
           <td
             key={d}
-            className={`${isWeekend ? styles.weekend : ""} ${isSelected ? styles.selected : ""} ${isToday ? styles.today : ""}`}
-            onClick={() => setSelectedDays((prev) => (prev.includes(dayNum) ? prev.filter((d) => d !== dayNum) : [...prev, dayNum]))}
+            className={`${isWeekend ? styles.weekend : ""} ${
+              isSelected ? styles.selected : ""
+            } ${isToday ? styles.today : ""}`}
+            onClick={() =>
+              setSelectedDays((prev) =>
+                prev.includes(dayNum) ? prev.filter((d) => d !== dayNum) : [...prev, dayNum]
+              )
+            }
           >
             {dayNum}
           </td>
@@ -94,14 +111,14 @@ export default function StaticCalendar({ year, month, today }) {
           <FaAngleLeft size={20} />
         </button>
         <span>
-          {monthName} {viewYear} ({quarter})
+          {monthName} {viewYear} ({quarter}) {workingHours} {formatHoursWord(workingHours)}
         </span>
         <button className={styles.button} onClick={() => changeMonth(1)}>
           <FaAngleRight size={20} />
         </button>
       </div>
 
-      <hr/>
+      <hr />
     </div>
   );
 }

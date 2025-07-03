@@ -90,4 +90,9 @@
     align-items: center;
     gap: 16px;
     margin: 16px 0px;
+
+    span {
+        font-size: 15px;
+        font-weight: 300;
+    }
 }
