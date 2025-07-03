@@ -64,7 +64,7 @@ export default function IncomeCalculator({ onTransfer }) {
             year: "numeric",
           })}
           <br />
-          <strong>{today.toLocaleDateString("uk-UA", { month: "long" })}</strong>: {monthDays} {formatDaysWord(monthDays)}
+          <strong>{today.toLocaleDateString("uk-UA", { month: "long" })}:</strong> {monthDays} {formatDaysWord(monthDays)}
           {" - "}
           {weekdays} {formatWorkDaysWord(weekdays)}
           {" - "}
