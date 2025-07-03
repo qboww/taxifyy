@@ -57,7 +57,7 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
             Єдиний податок (5 %): <span>{isValid ? singleTax.toFixed(2) : "-"} грн</span>
           </p>
           <p>
-            Військовий збір (1.5 %): <span>{isValid ? warTax.toFixed(2) : "-"} грн</span>
+            Військовий збір (1 %): <span>{isValid ? warTax.toFixed(2) : "-"} грн</span>
           </p>
           <p>
             ЄСВ (22 % від {MIN_SALARY} грн): <span>{esv.toFixed(2)} грн</span>
