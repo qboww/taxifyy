@@ -58,3 +58,9 @@
     color: #888;
     text-align: right;
 }
+
+.today {
+  outline: 2px solid var(--vite);
+  border-radius: 4px;
+  font-weight: bold;
+}

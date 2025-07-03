@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./StaticCalendar.module.css";
 
-export default function StaticCalendar({ year, month }) {
+export default function StaticCalendar({ year, month, today }) {
   const [selectedDays, setSelectedDays] = useState([]);
 
   const toggleDay = (day) =>
@@ -26,13 +26,18 @@ export default function StaticCalendar({ year, month }) {
         const dow = new Date(year, month, dayNum).getDay();
         const isWeekend = dow === 0 || dow === 6;
         const isSelected = selectedDays.includes(dayNum);
+        const isToday =
+          today &&
+          today.getFullYear() === year &&
+          today.getMonth() === month &&
+          today.getDate() === dayNum;
 
         cells.push(
           <td
             key={d}
             className={`${isWeekend ? styles.weekend : ""} ${
               isSelected ? styles.selected : ""
-            }`}
+            } ${isToday ? styles.today : ""}`}
             onClick={() => toggleDay(dayNum)}
           >
             {dayNum}

@@ -75,7 +75,7 @@ export default function IncomeCalculator({ onTransfer }) {
         </button>
       </div>
 
-      {isCalendarOpen && <StaticCalendar year={year} month={month} />}
+      {isCalendarOpen && <StaticCalendar year={year} month={month} today={today} />}
 
       <div className={styles.hourRate}>
         <label className={styles.label}>
