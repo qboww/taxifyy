@@ -47,11 +47,13 @@ export const fetchUsdRate = async (signal) => {
     if (Array.isArray(data) && data.length > 0 && data[0].rate) {
       return {
         rate: Number(data[0].rate),
-        exchangedate: data[0].exchangedate, // формат '02.07.2025'
+        exchangedate: data[0].exchangedate,
       };
     }
-  } catch {
-    // ignore fetch errors
+  } catch (err) {
+    if (err.name !== "AbortError") {
+      console.error("fetchUsdRate error", err);
+    }
   }
   return null;
 };

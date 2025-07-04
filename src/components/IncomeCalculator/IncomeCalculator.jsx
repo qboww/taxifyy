@@ -18,28 +18,17 @@ export default function IncomeCalculator({ onTransfer }) {
   const [hoursWorked, setHoursWorked] = useLocalStorageWithExpiry("incomeCalc_hoursWorked", workingHours);
   const [hourlyRateUsd, setHourlyRateUsd] = useLocalStorageWithExpiry("incomeCalc_hourlyRateUsd", 0);
   const [customRate, setCustomRate] = useLocalStorageWithExpiry("incomeCalc_customRate", 0);
-  const [cachedUsdRate, setCachedUsdRate] = useLocalStorageWithExpiry("incomeCalc_usdRate", null, 1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const [usdRate, setUsdRate] = useState(null);
   const [usdDate, setUsdDate] = useState(null);
 
   useEffect(() => {
-    if (cachedUsdRate) {
-      setUsdRate(cachedUsdRate.rate);
-      setUsdDate(cachedUsdRate.exchangedate);
-      if (!customRate) {
-        setCustomRate(cachedUsdRate.rate);
-      }
-      return;
-    }
-
     const controller = new AbortController();
     fetchUsdRate(controller.signal).then((res) => {
       if (res?.rate) {
         setUsdRate(res.rate);
         setUsdDate(res.exchangedate);
-        setCachedUsdRate(res);
         if (!customRate) {
           setCustomRate(res.rate);
         }
@@ -104,7 +93,7 @@ export default function IncomeCalculator({ onTransfer }) {
       </div>
 
       <label className={styles.label}>
-        Курс USD НБУ на {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
+        Курс USD НБУ {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
         <div className={styles.inpQa}>
           <input
             type="number"
@@ -115,7 +104,7 @@ export default function IncomeCalculator({ onTransfer }) {
             step="0.0001"
           />
           <button className={`${styles.qaBtn} ${styles.button}`} onClick={() => window.open("https://bank.gov.ua/ua/markets/exchangerates", "_blank")}>
-            <MdCurrencyExchange  size={20} />
+            <MdCurrencyExchange size={20} />
           </button>
         </div>
       </label>
