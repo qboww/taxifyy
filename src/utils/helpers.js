@@ -40,7 +40,14 @@ export function formatHoursWord(count) {
 }
 
 export const fetchUsdRate = async (signal) => {
-  const url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&json";
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  const formattedDate = `${yyyy}${mm}${dd}`;
+
+  const url = `https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&date=${formattedDate}&json`;
+
   try {
     const res = await fetch(url, { signal });
     const data = await res.json();
@@ -55,5 +62,6 @@ export const fetchUsdRate = async (signal) => {
       console.error("fetchUsdRate error", err);
     }
   }
+
   return null;
 };
