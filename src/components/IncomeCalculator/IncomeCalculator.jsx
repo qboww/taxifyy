@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef  } from "react";
 import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkDaysWord } from "../../utils/helpers";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
-import StaticCalendar from "../../components/StaticCalendar/StaticCalendar";
+import { StaticCalendar } from "../../components/StaticCalendar/StaticCalendar";
 import { LuCalendarFold } from "react-icons/lu";
-import { MdCurrencyExchange } from "react-icons/md";
+import { MdCurrencyExchange, MdContentPaste } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import styles from "./IncomeCalculator.module.css";
 
@@ -14,6 +14,7 @@ export default function IncomeCalculator({ onTransfer }) {
   const monthDays = new Date(year, month + 1, 0).getDate();
   const weekdays = getWeekdays(year, month);
   const workingHours = weekdays * 8;
+  const calendarRef = useRef();
 
   const [hoursWorked, setHoursWorked] = useLocalStorageWithExpiry("incomeCalc_hoursWorked", workingHours);
   const [hourlyRateUsd, setHourlyRateUsd] = useLocalStorageWithExpiry("incomeCalc_hourlyRateUsd", 0);
@@ -23,13 +24,17 @@ export default function IncomeCalculator({ onTransfer }) {
   const [usdRate, setUsdRate] = useState(null);
   const [usdDate, setUsdDate] = useState(null);
 
+  const handleSyncHours = (hours) => {
+    setHoursWorked(hours);
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     fetchUsdRate(controller.signal).then((res) => {
       if (res?.rate) {
         setUsdRate(res.rate);
         setUsdDate(res.exchangedate);
-        if (!customRate) {
+        if (!customRate || customRate === 0) {
           setCustomRate(res.rate);
         }
       }
@@ -67,7 +72,7 @@ export default function IncomeCalculator({ onTransfer }) {
         </button>
       </div>
 
-      {isCalendarOpen && <StaticCalendar year={year} month={month} today={today} />}
+      {isCalendarOpen && <StaticCalendar ref={calendarRef} year={year} month={month} today={today} onSyncHours={handleSyncHours} />}
 
       <div className={styles.hourRate}>
         <label className={styles.label}>
@@ -103,6 +108,13 @@ export default function IncomeCalculator({ onTransfer }) {
             onChange={(e) => setCustomRate(Number(e.target.value))}
             step="0.0001"
           />
+
+          {usdRate && customRate !== usdRate && (
+            <button type="button" className={`${styles.button}`} onClick={() => setCustomRate(usdRate)}>
+              <MdContentPaste size={20}/>
+            </button>
+          )}
+
           <button className={`${styles.qaBtn} ${styles.button}`} onClick={() => window.open("https://bank.gov.ua/ua/markets/exchangerates", "_blank")}>
             <MdCurrencyExchange size={20} />
           </button>

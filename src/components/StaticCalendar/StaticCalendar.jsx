@@ -1,13 +1,22 @@
 import { useState } from "react";
 import { formatHoursWord } from "../../utils/helpers";
+import { forwardRef, useImperativeHandle } from "react";
 
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import { FaAngleRight, FaAngleLeft  } from "react-icons/fa";
 import styles from "./StaticCalendar.module.css";
 
-export default function StaticCalendar({ year, month, today }) {
+export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, today, onSyncHours }, ref) {
   const [viewYear, setViewYear] = useState(year);
   const [viewMonth, setViewMonth] = useState(month);
   const [selectedDays, setSelectedDays] = useState([]);
+
+  useImperativeHandle(ref, () => ({
+    syncHoursToParent: () => {
+      if (onSyncHours) {
+        onSyncHours(selectedDays.length * 8);
+      }
+    },
+  }));
 
   const changeMonth = (delta) => {
     setViewMonth((prevMonth) => {
@@ -56,23 +65,13 @@ export default function StaticCalendar({ year, month, today }) {
         const dow = new Date(viewYear, viewMonth, dayNum).getDay();
         const isWeekend = dow === 0 || dow === 6;
         const isSelected = selectedDays.includes(dayNum);
-        const isToday =
-          today &&
-          today.getFullYear() === viewYear &&
-          today.getMonth() === viewMonth &&
-          today.getDate() === dayNum;
+        const isToday = today && today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === dayNum;
 
         cells.push(
           <td
             key={d}
-            className={`${isWeekend ? styles.weekend : ""} ${
-              isSelected ? styles.selected : ""
-            } ${isToday ? styles.today : ""}`}
-            onClick={() =>
-              setSelectedDays((prev) =>
-                prev.includes(dayNum) ? prev.filter((d) => d !== dayNum) : [...prev, dayNum]
-              )
-            }
+            className={`${isWeekend ? styles.weekend : ""} ${isSelected ? styles.selected : ""} ${isToday ? styles.today : ""}`}
+            onClick={() => setSelectedDays((prev) => (prev.includes(dayNum) ? prev.filter((d) => d !== dayNum) : [...prev, dayNum]))}
           >
             {dayNum}
           </td>
@@ -89,22 +88,23 @@ export default function StaticCalendar({ year, month, today }) {
 
   return (
     <div className={styles.calendarContainer}>
-      <table className={styles.calendar}>
-        <thead>
-          <tr>
-            {weekDays.map((d) => (
-              <th key={d}>{d}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{weeks}</tbody>
-      </table>
-
-      {selectedDays.length > 0 && (
-        <div className={styles.summary}>
-          Вибрано днів: {selectedDays.length} ‑ Годин: {selectedDays.length * 8}
-        </div>
-      )}
+      <div>
+        <table className={styles.calendar}>
+          <thead>
+            <tr>
+              {weekDays.map((d) => (
+                <th key={d}>{d}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{weeks}</tbody>
+        </table>
+        {selectedDays.length > 0 && (
+          <div className={styles.summary}>
+            Вибрано днів: {selectedDays.length} ‑ Годин: {selectedDays.length * 8}
+          </div>
+        )}
+      </div>
 
       <div className={styles.controls}>
         <button className={styles.button} onClick={() => changeMonth(-1)}>
@@ -118,7 +118,13 @@ export default function StaticCalendar({ year, month, today }) {
         </button>
       </div>
 
+      {selectedDays.length > 0 && (
+        <button className={`${styles.button} ${styles.buttonText}`} onClick={() => ref?.current?.syncHoursToParent()}>
+          Синхронузувати годинии
+        </button>
+      )}
+
       <hr />
     </div>
   );
-}
+});
