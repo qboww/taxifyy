@@ -64,7 +64,7 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
           </p>
         </div>
         <p>
-          Загальні податки: <span>{isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
+          Загальний дохід: <span>{isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
         </p>
         <hr className={styles.hr} />
         <p className={styles.net}>

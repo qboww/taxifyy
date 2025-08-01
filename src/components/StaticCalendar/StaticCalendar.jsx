@@ -120,7 +120,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
 
       {selectedDays.length > 0 && (
         <button className={`${styles.button} ${styles.buttonText}`} onClick={() => ref?.current?.syncHoursToParent()}>
-          Синхронузувати годинии
+          Перенести годинии
         </button>
       )}
 

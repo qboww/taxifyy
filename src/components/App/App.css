@@ -1,3 +1,10 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100vh;
+}
+
 .app {
   margin: 0 auto;
   width: 100%;
@@ -58,7 +65,6 @@
   color: white;
 }
 
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -68,4 +74,19 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+.github-link {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 999;
+  color: white;
+  opacity: 0.7;
+  transition: all 0.25s ease;
+}
+
+.github-link:hover {
+  opacity: 1;
+  color: var(--vite);
 }

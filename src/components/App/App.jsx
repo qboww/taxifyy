@@ -3,6 +3,8 @@ import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry
 import { REPORT_PERIODS } from "../../utils/constants";
 import IncomeCalculator from "../IncomeCalculator/IncomeCalculator";
 import TaxCalculator from "../TaxCalculator/TaxCalculator";
+import { FaGithub } from "react-icons/fa";
+
 import "./App.css";
 
 export default function App() {
@@ -21,8 +23,12 @@ export default function App() {
   return (
     <div className="app">
       <div className="toggle-container">
-        <button className={`toggle-option ${tab === "income" ? "active" : ""}`} onClick={() => setTab("income")}>Дохід</button>
-        <button className={`toggle-option ${tab === "taxes" ? "active" : ""}`} onClick={() => setTab("taxes")}>Податки</button>
+        <button className={`toggle-option ${tab === "income" ? "active" : ""}`} onClick={() => setTab("income")}>
+          Дохід
+        </button>
+        <button className={`toggle-option ${tab === "taxes" ? "active" : ""}`} onClick={() => setTab("taxes")}>
+          Податки
+        </button>
       </div>
       {tab === "income" ? (
         <IncomeCalculator onTransfer={handleTransfer} />
@@ -36,6 +42,15 @@ export default function App() {
           setQuarterlyIncome={setQuarterlyIncome}
         />
       )}
+      <a
+        href="https://github.com/qboww/taxifyy"
+        className="github-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Відкрити репозиторій на GitHub"
+      >
+        <FaGithub size={34} />
+      </a>
     </div>
   );
 }
