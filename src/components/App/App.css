@@ -71,8 +71,8 @@ input[type=number] {
 
 .github-link {
   position: fixed;
-  bottom: 16px;
-  left: 16px;
+  bottom: 24px;
+  left: 24px;
   z-index: 999;
   color: white;
   opacity: 0.7;
