@@ -1,0 +1,40 @@
+.toggleContainer {
+  display: flex;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 6px;
+  width: fit-content;
+  border: 1px solid var(--vite);
+  margin-bottom: 16px;
+}
+
+.toggleOption {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  outline: none;
+}
+
+.toggleOption:hover:not(.active) {
+  background: var(--vite);
+  color: white;
+}
+
+.active {
+  background: var(--vite);
+  color: white;
+  box-shadow: 0 1px 8px var(--vite);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
