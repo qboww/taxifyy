@@ -1,4 +1,5 @@
 import styles from "./TaxCalculator.module.css";
+import FormInput from "../UI/FormInput/FormInput";
 import { REPORT_PERIODS, MIN_SALARY, SINGLE_TAX_RATE, WAR_TAX_RATE, ESV_COEFFICIENT } from "../../utils/constants";
 
 export default function TaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
@@ -27,16 +28,13 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
       </div>
 
       <div className={styles.inputToggle}>
-        <label className={styles.label}>
-          {"Дохід (UAH):"}
-          <input
-            className={styles.input}
-            type="number"
-            placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць" : "Дохід за квартал"}
-            value={mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome}
-            onChange={(e) => (mode === REPORT_PERIODS.MONTH ? setIncome(e.target.value) : setQuarterlyIncome(e.target.value))}
-          />
-        </label>
+        <FormInput
+          label="Дохід (UAH):"
+          type="number"
+          placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць" : "Дохід за квартал"}
+          value={mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome}
+          onChange={(value) => (mode === REPORT_PERIODS.MONTH ? setIncome(value) : setQuarterlyIncome(e.target.value))}
+        />
 
         <label className={styles.label}>
           {"Форма сплати:"}

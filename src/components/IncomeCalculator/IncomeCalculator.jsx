@@ -1,10 +1,12 @@
-import { useEffect, useState, useRef  } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkDaysWord } from "../../utils/helpers";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { StaticCalendar } from "../../components/StaticCalendar/StaticCalendar";
 import { LuCalendarFold } from "react-icons/lu";
 import { MdCurrencyExchange, MdContentPaste } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
+import FormInput from "../UI/FormInput/FormInput";
+
 import styles from "./IncomeCalculator.module.css";
 
 export default function IncomeCalculator({ onTransfer }) {
@@ -34,7 +36,7 @@ export default function IncomeCalculator({ onTransfer }) {
       if (res?.rate) {
         setUsdRate(res.rate);
         setUsdDate(res.exchangedate);
-        if (!customRate || customRate === 0) {
+        if (!customRate) {
           setCustomRate(res.rate);
         }
       }
@@ -75,43 +77,31 @@ export default function IncomeCalculator({ onTransfer }) {
       {isCalendarOpen && <StaticCalendar ref={calendarRef} year={year} month={month} today={today} onSyncHours={handleSyncHours} />}
 
       <div className={styles.hourRate}>
-        <label className={styles.label}>
-          Відпрацьовані години:
-          <input
-            type="number"
-            placeholder="Відпрацьований час"
-            className={styles.input}
-            value={hoursWorked}
-            onChange={(e) => setHoursWorked(Number(e.target.value))}
-          />
-        </label>
-        <label className={styles.label}>
-          Рейт (USD/год):
-          <input
-            type="number"
-            placeholder="Власний рейт"
-            className={styles.input}
-            value={hourlyRateUsd || ""}
-            onChange={(e) => setHourlyRateUsd(Number(e.target.value))}
-          />
-        </label>
+        <FormInput
+          label="Відпрацьовані години:"
+          type="number"
+          placeholder="Відпрацьований час"
+          value={hoursWorked}
+          onChange={(value) => setHoursWorked(Number(value))}
+        />
+
+        <FormInput
+          label="Рейт (USD/год):"
+          type="number"
+          placeholder="Власний рейт"
+          value={hourlyRateUsd}
+          onChange={(value) => setHourlyRateUsd(Number(value))}
+        />
       </div>
 
       <label className={styles.label}>
         Курс USD НБУ {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
         <div className={styles.inpQa}>
-          <input
-            type="number"
-            className={styles.input}
-            placeholder="Власний курс, якщо треба"
-            value={customRate || ""}
-            onChange={(e) => setCustomRate(Number(e.target.value))}
-            step="0.0001"
-          />
+          <FormInput type="number" placeholder="Власний курс, якщо треба" value={customRate} onChange={(value) => setCustomRate(Number(value))} />
 
           {usdRate && customRate !== usdRate && (
             <button type="button" className={`${styles.button}`} onClick={() => setCustomRate(usdRate)}>
-              <MdContentPaste size={20}/>
+              <MdContentPaste size={20} />
             </button>
           )}
 
