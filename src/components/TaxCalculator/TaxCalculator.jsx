@@ -1,11 +1,13 @@
 import styles from "./TaxCalculator.module.css";
 import FormInput from "../UI/FormInput/FormInput";
+import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
 import { REPORT_PERIODS, MIN_SALARY, SINGLE_TAX_RATE, WAR_TAX_RATE, ESV_COEFFICIENT } from "../../utils/constants";
 
 export default function TaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
   const gross = parseFloat(income);
   const quarterGross = parseFloat(quarterlyIncome);
-  const isValid = mode === REPORT_PERIODS.MONTH ? !isNaN(gross) && gross >= 0 : !isNaN(quarterGross) && quarterGross >= 0;
+  const isValid =
+    mode === REPORT_PERIODS.MONTH ? !isNaN(gross) && gross >= 0 : !isNaN(quarterGross) && quarterGross >= 0;
 
   const singleTaxMo = mode === REPORT_PERIODS.MONTH && isValid ? gross * SINGLE_TAX_RATE : 0;
   const warTaxMo = mode === REPORT_PERIODS.MONTH && isValid ? gross * WAR_TAX_RATE : 0;
@@ -38,14 +40,15 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
 
         <label className={styles.label}>
           {"Форма сплати:"}
-          <div className={`${styles.toggleContainer} toggle-container`}>
-            <button className={`toggle-option ${mode === REPORT_PERIODS.MONTH ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.MONTH)}>
-              Місяць
-            </button>
-            <button className={`toggle-option ${mode === REPORT_PERIODS.QUARTER ? "active" : ""}`} onClick={() => setMode(REPORT_PERIODS.QUARTER)}>
-              Квартал
-            </button>
-          </div>
+          <ToggleSwitch
+            label="Форма сплати:"
+            options={[
+              { label: "Місяць", value: REPORT_PERIODS.MONTH },
+              { label: "Квартал", value: REPORT_PERIODS.QUARTER },
+            ]}
+            value={mode}
+            onChange={setMode}
+          />
         </label>
       </div>
 

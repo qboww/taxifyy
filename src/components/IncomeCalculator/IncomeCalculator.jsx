@@ -6,6 +6,7 @@ import { LuCalendarFold } from "react-icons/lu";
 import { MdCurrencyExchange, MdContentPaste } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import FormInput from "../UI/FormInput/FormInput";
+import Button from "../UI/Button/Button";
 
 import styles from "./IncomeCalculator.module.css";
 
@@ -63,18 +64,25 @@ export default function IncomeCalculator({ onTransfer }) {
           {Math.floor(today.getMonth() / 3) + 1}
           {")"}
           <br />
-          <strong>{today.toLocaleDateString("uk-UA", { month: "long" })}:</strong> {monthDays} {formatDaysWord(monthDays)}
+          <strong>{today.toLocaleDateString("uk-UA", { month: "long" })}:</strong> {monthDays}{" "}
+          {formatDaysWord(monthDays)}
           {" - "}
           {weekdays} {formatWorkDaysWord(weekdays)}
           {" - "}
           {workingHours} {formatHoursWord(workingHours)}
         </span>
-        <button onClick={() => setIsCalendarOpen((prev) => !prev)} className={`${styles.calendarBtn} ${styles.button}`} style={{ marginTop: "8px" }}>
-          {isCalendarOpen ? <IoClose size={20} /> : <LuCalendarFold size={20} />}
-        </button>
+
+        <Button
+          onClick={() => setIsCalendarOpen((prev) => !prev)}
+          variant="icon"
+          icon={isCalendarOpen ? IoClose : LuCalendarFold}
+          className={styles.calendarBtn}
+        />
       </div>
 
-      {isCalendarOpen && <StaticCalendar ref={calendarRef} year={year} month={month} today={today} onSyncHours={handleSyncHours} />}
+      {isCalendarOpen && (
+        <StaticCalendar ref={calendarRef} year={year} month={month} today={today} onSyncHours={handleSyncHours} />
+      )}
 
       <div className={styles.hourRate}>
         <FormInput
@@ -96,18 +104,28 @@ export default function IncomeCalculator({ onTransfer }) {
 
       <label className={styles.label}>
         Курс USD НБУ {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
-        <div className={styles.inpQa}>
-          <FormInput type="number" placeholder="Власний курс, якщо треба" value={customRate} onChange={(value) => setCustomRate(Number(value))} />
+        <div className={styles.rateWrapper}>
+          <FormInput
+            type="number"
+            placeholder="Власний курс, якщо треба"
+            value={customRate}
+            onChange={(value) => setCustomRate(Number(value))}
+          />
 
           {usdRate && customRate !== usdRate && (
-            <button type="button" className={`${styles.button}`} onClick={() => setCustomRate(usdRate)}>
-              <MdContentPaste size={20} />
-            </button>
+            <Button
+              onClick={() => setCustomRate(usdRate)}
+              variant="icon"
+              icon={MdContentPaste}
+              disabled={!usdRate || customRate === usdRate}
+            />
           )}
 
-          <button className={`${styles.qaBtn} ${styles.button}`} onClick={() => window.open("https://bank.gov.ua/ua/markets/exchangerates", "_blank")}>
-            <MdCurrencyExchange size={20} />
-          </button>
+          <Button
+            onClick={() => window.open("https://bank.gov.ua/ua/markets/exchangerates", "_blank")}
+            variant="icon"
+            icon={MdCurrencyExchange}
+          />
         </div>
       </label>
 
@@ -119,9 +137,9 @@ export default function IncomeCalculator({ onTransfer }) {
         </p>
       </section>
 
-      <button onClick={() => onTransfer(salaryUah)} className={styles.button} disabled={!salaryUah}>
+      <Button onClick={() => onTransfer(salaryUah)} disabled={!salaryUah}>
         Податки за місяць
-      </button>
+      </Button>
     </div>
   );
 }

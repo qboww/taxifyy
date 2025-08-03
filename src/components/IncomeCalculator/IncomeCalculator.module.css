@@ -34,12 +34,6 @@ hr {
   margin-bottom: 16px;
 }
 
-.calendarBtn {
-  margin: 0px !important;
-  padding: 12px 16px !important;
-  font-size: 0 !important;
-}
-
 .hourRate{
   display: flex;
   gap: 16px;
@@ -50,22 +44,6 @@ hr {
   flex-direction: column;
   gap: 4px;
   font-size: 14px;
-}
-
-.input {
-  width: 100%;
-  padding: 12px 16px;
-  font-size: 15px;
-  border-radius: 8px;
-  border: 1px solid var(--vite);
-  background: rgba(255, 255, 255, 0.05);
-  outline: none;
-  transition: box-shadow 0.25s;
-  box-sizing: border-box;
-}
-
-.input:focus {
-  box-shadow: 0 0 0 4px var(--vite);
 }
 
 .net {
@@ -88,37 +66,7 @@ hr {
   margin: 0px;
 }
 
-.button {
-  align-self: center;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 8px;
-  background: var(--vite);
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: opacity 0.25s;
-  transition: 0.3s;
-}
-
-.button:hover {
-  background: var(--vite);
-  color: white;
-  box-shadow: 0 1px 8px var(--vite);
-}
-
-.button:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
-.qaBtn{
-  display: flex;
-  padding: 12px 16px;
-  font-size: unset;
-}
-
-.inpQa{
+.rateWrapper{
   display: flex;
   justify-content: space-between;
   gap: 16px;
