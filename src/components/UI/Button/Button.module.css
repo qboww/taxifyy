@@ -1,0 +1,44 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  background-color: var(--vite);
+  color: white;
+}
+
+.textFontSize {
+  font-size: 16px;
+}
+
+.iconFontSize {
+  font-size: 0px;
+}
+
+.icon {
+  display: flex;
+}
+
+.icon svg {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+
+.button:hover {
+  box-shadow: 0 1px 8px var(--vite);
+  opacity: 0.9;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--vite);
+}
