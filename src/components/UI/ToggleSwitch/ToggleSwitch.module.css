@@ -38,3 +38,13 @@
   justify-content: center;
   margin: 0 auto;
 }
+
+.labelWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  gap: 4px;
+  font-size: 14px;
+  width: 100%;
+}
