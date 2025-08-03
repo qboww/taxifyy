@@ -7,6 +7,7 @@ import { calculateTaxes, calculateNetIncome } from "../../utils/taxCalculator";
 export default function TaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
   const taxData = calculateTaxes({ income, quarterlyIncome, mode });
   const netIncome = calculateNetIncome(taxData);
+  const totalTaxes = taxData.taxes.reduce((sum, tax) => sum + tax.value, 0);
 
   return (
     <div className={styles.container}>
@@ -37,22 +38,18 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
 
       <section className={styles.results}>
         <div className={styles.pretotals}>
-          <p>
-            Єдиний податок (5 %): <span>{taxData.isValid ? taxData.singleTax.toFixed(2) : "-"} грн</span>
-          </p>
-          <p>
-            Військовий збір (1 %): <span>{taxData.isValid ? taxData.warTax.toFixed(2) : "-"} грн</span>
-          </p>
-          <p>
-            ЄСВ (22 % від {MIN_SALARY} грн): <span>{taxData.esv.toFixed(2)} грн</span>
-          </p>
+          {taxData.taxes.map((tax, index) => (
+            <p key={index}>
+              {tax.label} ({tax.rate}): <span>{taxData.isValid ? tax.value.toFixed(2) : "-"} грн</span>
+            </p>
+          ))}
         </div>
         <p>
-          Загальний дохід: <span>{taxData.isValid ? (taxData.singleTax + taxData.warTax + taxData.esv).toFixed(2) : "-"} грн</span>
+          Загальні податки: <span>{taxData.isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
         </p>
         <hr className={styles.hr} />
         <p className={styles.net}>
-          Чистий дохід: <span>{taxData.isValid ? netIncome.toFixed(2) : "-"} грн</span>
+          Чистий дохід: <span>{taxData.isValid ? netIncome.toFixed(2) : "-"} грн</span>
         </p>
       </section>
     </div>

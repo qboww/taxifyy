@@ -2,9 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkDaysWord } from "../../utils/helpers";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { StaticCalendar } from "../../components/StaticCalendar/StaticCalendar";
-import { LuCalendarFold } from "react-icons/lu";
 import { MdCurrencyExchange, MdContentPaste } from "react-icons/md";
-import { IoClose } from "react-icons/io5";
+import CalendarStats from "../UI/CalendarStats/CalendarStats";
 import FormInput from "../UI/FormInput/FormInput";
 import Button from "../UI/Button/Button";
 
@@ -52,38 +51,17 @@ export default function IncomeCalculator({ onTransfer }) {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Калькулятор доходу</h1>
-      <div className={styles.subCalendar}>
-        <span className={styles.subtitle}>
-          <strong>сьогодні: </strong>
-          {today.toLocaleDateString("uk-UA", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}{" "}
-          {"(Q"}
-          {Math.floor(today.getMonth() / 3) + 1}
-          {")"}
-          <br />
-          <strong>{today.toLocaleDateString("uk-UA", { month: "long" })}:</strong> {monthDays}{" "}
-          {formatDaysWord(monthDays)}
-          {" - "}
-          {weekdays} {formatWorkDaysWord(weekdays)}
-          {" - "}
-          {workingHours} {formatHoursWord(workingHours)}
-        </span>
-
-        <Button
-          onClick={() => setIsCalendarOpen((prev) => !prev)}
-          variant="icon"
-          icon={isCalendarOpen ? IoClose : LuCalendarFold}
-          className={styles.calendarBtn}
-        />
-      </div>
-
+      <CalendarStats
+        today={today}
+        monthDays={monthDays}
+        weekdays={weekdays}
+        workingHours={workingHours}
+        isCalendarOpen={isCalendarOpen}
+        onToggleCalendar={() => setIsCalendarOpen((prev) => !prev)}
+      />
       {isCalendarOpen && (
         <StaticCalendar ref={calendarRef} year={year} month={month} today={today} onSyncHours={handleSyncHours} />
       )}
-
       <div className={styles.hourRate}>
         <FormInput
           label="Відпрацьовані години:"
@@ -92,7 +70,6 @@ export default function IncomeCalculator({ onTransfer }) {
           value={hoursWorked}
           onChange={(value) => setHoursWorked(Number(value))}
         />
-
         <FormInput
           label="Рейт (USD/год):"
           type="number"
@@ -111,7 +88,6 @@ export default function IncomeCalculator({ onTransfer }) {
             value={customRate}
             onChange={(value) => setCustomRate(Number(value))}
           />
-
           {usdRate && customRate !== usdRate && (
             <Button
               onClick={() => setCustomRate(usdRate)}
@@ -120,7 +96,6 @@ export default function IncomeCalculator({ onTransfer }) {
               disabled={!usdRate || customRate === usdRate}
             />
           )}
-
           <Button
             onClick={() => window.open("https://bank.gov.ua/ua/markets/exchangerates", "_blank")}
             variant="icon"
