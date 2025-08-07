@@ -30,7 +30,6 @@ export default function App() {
         ]}
         value={tab}
         onChange={setTab}
-        marginBottom={16}
         center
       />
 

@@ -14,14 +14,14 @@
   margin-bottom: 16px;
 }
 
-.inputToggle{
+.inputToggle {
   display: flex;
   justify-content: space-between;
   gap: 16px;
   align-items: center;
 }
 
-.toggleContainer{
+.toggleContainer {
   margin: 0px !important;
 }
 
@@ -32,6 +32,7 @@
   background-clip: text;
   -webkit-text-fill-color: rgba(255, 255, 255, 0.945);
   margin: 0px;
+  margin-top: 24px;
 }
 
 .subtitle {
@@ -80,13 +81,13 @@ hr {
   margin: 16px 0;
 }
 
-.pretotals{
+.pretotals {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 32px;
 
-  p{
+  p {
     margin: 0px;
   }
 }

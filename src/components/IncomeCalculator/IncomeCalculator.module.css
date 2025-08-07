@@ -17,6 +17,8 @@ hr {
   text-align: center;
   margin: 0;
   color: var(--text-dark);
+  margin-top: 24px;
+
 }
 
 .subtitle {
@@ -34,7 +36,7 @@ hr {
   margin-bottom: 16px;
 }
 
-.hourRate{
+.hourRate {
   display: flex;
   gap: 16px;
 }
@@ -66,7 +68,7 @@ hr {
   margin: 0px;
 }
 
-.rateWrapper{
+.rateWrapper {
   display: flex;
   justify-content: space-between;
   gap: 16px;
