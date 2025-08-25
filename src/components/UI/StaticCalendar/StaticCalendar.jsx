@@ -12,7 +12,6 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef(null);
   const dragMode = useRef(null);
-  const touchMoved = useRef(false);
 
   useImperativeHandle(ref, () => ({
     syncHoursToParent: () => {
@@ -46,39 +45,6 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
     dragStart.current = null;
     dragMode.current = null;
   };
-
-  const handleTouchStart = (e, dayNum) => {
-    setIsDragging(true);
-    dragStart.current = dayNum;
-    dragMode.current = !selectedDays.includes(dayNum);
-    touchMoved.current = false;
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-
-    touchMoved.current = true;
-    const touch = e.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (!target) return;
-    const dayNum = target.dataset.daynum;
-    if (!dayNum) return;
-
-    toggleDay(Number(dayNum), dragMode.current);
-    e.preventDefault();
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchMoved.current && dragStart.current != null) {
-      toggleDay(dragStart.current, !selectedDays.includes(dragStart.current));
-    }
-
-    setIsDragging(false);
-    dragStart.current = null;
-    dragMode.current = null;
-    document.body.style.overflow = "auto";
-  };
-
   const changeMonth = (delta) => {
     setViewMonth((prevMonth) => {
       let newMonth = prevMonth + delta;
@@ -139,9 +105,6 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
             onMouseDown={() => handleMouseDown(dayNum)}
             onMouseEnter={() => handleMouseEnter(dayNum)}
             onMouseUp={handleMouseUp}
-            onTouchStart={(e) => handleTouchStart(e, dayNum)}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
             style={{ userSelect: "none" }}
           >
             {dayNum}
