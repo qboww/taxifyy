@@ -7,10 +7,6 @@
   width: 100%;
 }
 
-hr {
-  margin: 0px !important;
-}
-
 .title {
   font-size: 26px;
   font-weight: 600;
@@ -46,26 +42,6 @@ hr {
   flex-direction: column;
   gap: 4px;
   font-size: 14px;
-}
-
-.net {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 700;
-  font-size: 16px;
-  text-align: left;
-  margin: 0px;
-}
-
-.results {
-  text-align: left;
-  font-size: 14px;
-  line-height: 1.6;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 16px 20px;
-  border-radius: 12px;
-  box-sizing: border-box;
-  margin: 0px;
 }
 
 .rateWrapper {

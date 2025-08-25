@@ -1,11 +1,15 @@
 import { useEffect, useState, useRef } from "react";
-import { getWeekdays, fetchUsdRate, formatHoursWord, formatDaysWord, formatWorkDaysWord } from "../../utils/helpers";
+import { getWeekdays, fetchUsdRate } from "../../utils/helpers";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { StaticCalendar } from "../../components/StaticCalendar/StaticCalendar";
 import { MdCurrencyExchange, MdContentPaste } from "react-icons/md";
 import CalendarStats from "../UI/CalendarStats/CalendarStats";
 import FormInput from "../UI/FormInput/FormInput";
 import Button from "../UI/Button/Button";
+import Paycheck from "../UI/Paycheck/Paycheck";
+
+import { REPORT_PERIODS } from "../../utils/constants";
+import { calculateTaxes, calculateNetIncome } from "../../utils/taxCalculator";
 
 import styles from "./IncomeCalculator.module.css";
 
@@ -46,11 +50,16 @@ export default function IncomeCalculator({ onTransfer }) {
   }, []);
 
   const rateToUse = customRate || usdRate || 0;
-  const salaryUah = hoursWorked * hourlyRateUsd * rateToUse;
+  const gross = hoursWorked * hourlyRateUsd * rateToUse;
+
+  const taxData = calculateTaxes({ income: gross, quarterlyIncome: 0, mode: REPORT_PERIODS.MONTH });
+  const netIncome = calculateNetIncome(taxData);
+  const totalTaxes = taxData.taxes.reduce((sum, tax) => sum + tax.value, 0);
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Калькулятор доходу</h1>
+      <h1 className={styles.title}>Розрахунок доходу</h1>
+
       <CalendarStats
         today={today}
         monthDays={monthDays}
@@ -62,9 +71,10 @@ export default function IncomeCalculator({ onTransfer }) {
       {isCalendarOpen && (
         <StaticCalendar ref={calendarRef} year={year} month={month} today={today} onSyncHours={handleSyncHours} />
       )}
+
       <div className={styles.hourRate}>
         <FormInput
-          label="Відпрацьовані години:"
+          label="Години роботи:"
           type="number"
           placeholder="Відпрацьований час"
           value={hoursWorked}
@@ -80,7 +90,7 @@ export default function IncomeCalculator({ onTransfer }) {
       </div>
 
       <label className={styles.label}>
-        Курс USD НБУ {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
+        USD НБУ {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
         <div className={styles.rateWrapper}>
           <FormInput
             type="number"
@@ -104,16 +114,17 @@ export default function IncomeCalculator({ onTransfer }) {
         </div>
       </label>
 
-      <hr />
+      <Paycheck
+        items={[
+          { label: "Дохід брудними", value: gross },
+          { label: "Сума податків", value: totalTaxes },
+        ]}
+        totalLabel="Чистий дохід"
+        totalValue={netIncome}
+      />
 
-      <section className={styles.results}>
-        <p className={styles.net}>
-          Сума: <span>{salaryUah ? salaryUah.toFixed(2) : "-"} грн</span>
-        </p>
-      </section>
-
-      <Button onClick={() => onTransfer(salaryUah)} disabled={!salaryUah}>
-        Податки за місяць
+      <Button onClick={() => onTransfer(netIncome)} disabled={!gross}>
+        Детальний розрахунок
       </Button>
     </div>
   );

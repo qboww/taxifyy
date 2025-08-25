@@ -124,7 +124,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
         </button>
       )}
 
-      <hr />
+      <hr className={styles.hr}/>
     </div>
   );
 });

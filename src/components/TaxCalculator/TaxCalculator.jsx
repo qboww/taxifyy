@@ -1,8 +1,9 @@
 import styles from "./TaxCalculator.module.css";
 import FormInput from "../UI/FormInput/FormInput";
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
-import { REPORT_PERIODS, MIN_SALARY } from "../../utils/constants";
+import { REPORT_PERIODS } from "../../utils/constants";
 import { calculateTaxes, calculateNetIncome } from "../../utils/taxCalculator";
+import Paycheck from "../UI/Paycheck/Paycheck";
 
 export default function TaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
   const taxData = calculateTaxes({ income, quarterlyIncome, mode });
@@ -12,7 +13,7 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
-        <h2 className={styles.title}>Калькулятор податків</h2>
+        <h2 className={styles.title}>Розрахунок податків</h2>
         <p className={styles.subtitle}>ФОП III групи (спрощена система)</p>
       </div>
 
@@ -36,22 +37,13 @@ export default function TaxCalculator({ income, setIncome, mode, setMode, quarte
         />
       </div>
 
-      <section className={styles.results}>
-        <div className={styles.pretotals}>
-          {taxData.taxes.map((tax, index) => (
-            <p key={index}>
-              {tax.label} ({tax.rate}): <span>{taxData.isValid ? tax.value.toFixed(2) : "-"} грн</span>
-            </p>
-          ))}
-        </div>
-        <p>
-          Загальні податки: <span>{taxData.isValid ? totalTaxes.toFixed(2) : "-"} грн</span>
-        </p>
-        <hr className={styles.hr} />
-        <p className={styles.net}>
-          Чистий дохід: <span>{taxData.isValid ? netIncome.toFixed(2) : "-"} грн</span>
-        </p>
-      </section>
+      <Paycheck
+        items={taxData.taxes}
+        subtotalLabel="Загальні податки"
+        subtotalValue={totalTaxes}
+        totalLabel="Чистий дохід"
+        totalValue={netIncome}
+      />
     </div>
   );
 }
