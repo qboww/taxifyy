@@ -1,14 +1,17 @@
-import { useState } from "react";
-import { formatHoursWord } from "../../utils/helpers";
+import { useState, useRef } from "react";
+import { formatHoursWord } from "../../../utils/helpers";
 import { forwardRef, useImperativeHandle } from "react";
 
-import { FaAngleRight, FaAngleLeft  } from "react-icons/fa";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import styles from "./StaticCalendar.module.css";
 
 export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, today, onSyncHours }, ref) {
   const [viewYear, setViewYear] = useState(year);
   const [viewMonth, setViewMonth] = useState(month);
   const [selectedDays, setSelectedDays] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef(null);
+  const dragMode = useRef(null);
 
   useImperativeHandle(ref, () => ({
     syncHoursToParent: () => {
@@ -17,6 +20,34 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
       }
     },
   }));
+
+  const handleMouseDown = (dayNum) => {
+    setIsDragging(true);
+    dragStart.current = dayNum;
+    dragMode.current = !selectedDays.includes(dayNum);
+    toggleDay(dayNum, dragMode.current);
+  };
+
+  const handleMouseEnter = (dayNum) => {
+    if (!isDragging || dragStart.current == null) return;
+    toggleDay(dayNum, dragMode.current);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    dragStart.current = null;
+    dragMode.current = null;
+  };
+
+  const toggleDay = (dayNum, add) => {
+    setSelectedDays((prev) => {
+      if (add) {
+        return prev.includes(dayNum) ? prev : [...prev, dayNum];
+      } else {
+        return prev.filter((d) => d !== dayNum);
+      }
+    });
+  };
 
   const changeMonth = (delta) => {
     setViewMonth((prevMonth) => {
@@ -65,13 +96,21 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
         const dow = new Date(viewYear, viewMonth, dayNum).getDay();
         const isWeekend = dow === 0 || dow === 6;
         const isSelected = selectedDays.includes(dayNum);
-        const isToday = today && today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === dayNum;
+        const isToday =
+          today && today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === dayNum;
 
         cells.push(
           <td
             key={d}
-            className={`${isWeekend ? styles.weekend : ""} ${isSelected ? styles.selected : ""} ${isToday ? styles.today : ""}`}
-            onClick={() => setSelectedDays((prev) => (prev.includes(dayNum) ? prev.filter((d) => d !== dayNum) : [...prev, dayNum]))}
+            className={`${isWeekend ? styles.weekend : ""} ${isSelected ? styles.selected : ""} ${
+              isToday ? styles.today : ""
+            }`}
+            onMouseDown={() => handleMouseDown(dayNum)}
+            onMouseEnter={() => handleMouseEnter(dayNum)}
+            onMouseUp={handleMouseUp}
+            onTouchStart={() => handleMouseDown(dayNum)}
+            onTouchMove={() => handleMouseEnter(dayNum)}
+            onTouchEnd={handleMouseUp}
           >
             {dayNum}
           </td>
@@ -124,7 +163,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
         </button>
       )}
 
-      <hr className={styles.hr}/>
+      <hr className={styles.hr} />
     </div>
   );
 });
