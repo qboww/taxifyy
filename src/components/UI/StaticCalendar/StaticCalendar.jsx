@@ -59,6 +59,8 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   const handleTouchMove = (event) => {
     if (!isDragging) return;
 
+    event.preventDefault();
+
     const touch = event.touches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
 
