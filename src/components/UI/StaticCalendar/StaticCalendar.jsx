@@ -49,6 +49,32 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
     });
   };
 
+  const handleTouchStart = (event, dayNum) => {
+    setIsDragging(true);
+    dragStart.current = dayNum;
+    dragMode.current = !selectedDays.includes(dayNum);
+    toggleDay(dayNum, dragMode.current);
+  };
+
+  const handleTouchMove = (event) => {
+    if (!isDragging) return;
+
+    const touch = event.touches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+
+    if (!target) return;
+    const dayNum = target.dataset.daynum;
+    if (!dayNum) return;
+
+    toggleDay(Number(dayNum), dragMode.current);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    dragStart.current = null;
+    dragMode.current = null;
+  };
+
   const changeMonth = (delta) => {
     setViewMonth((prevMonth) => {
       let newMonth = prevMonth + delta;
@@ -102,15 +128,16 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
         cells.push(
           <td
             key={d}
+            data-daynum={dayNum}
             className={`${isWeekend ? styles.weekend : ""} ${isSelected ? styles.selected : ""} ${
               isToday ? styles.today : ""
             }`}
             onMouseDown={() => handleMouseDown(dayNum)}
             onMouseEnter={() => handleMouseEnter(dayNum)}
             onMouseUp={handleMouseUp}
-            onTouchStart={() => handleMouseDown(dayNum)}
-            onTouchMove={() => handleMouseEnter(dayNum)}
-            onTouchEnd={handleMouseUp}
+            onTouchStart={(e) => handleTouchStart(e, dayNum)}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {dayNum}
           </td>
