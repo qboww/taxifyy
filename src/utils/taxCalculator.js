@@ -5,14 +5,21 @@ export const calculateTaxes = (incomeData) => {
   const { income, quarterlyIncome, mode } = incomeData;
   const gross = parseFloat(income);
   const quarterGross = parseFloat(quarterlyIncome);
-  const isValid = mode === REPORT_PERIODS.MONTH ? !isNaN(gross) && gross >= 0 : !isNaN(quarterGross) && quarterGross >= 0;
 
-  const amount = mode === REPORT_PERIODS.MONTH ? gross : quarterGross;
+  const isValid =
+    mode === REPORT_PERIODS.MONTH ? !isNaN(gross) && gross >= 0 : !isNaN(quarterGross) && quarterGross >= 0;
+
   const multiplier = mode === REPORT_PERIODS.QUARTER ? 3 : 1;
+  const baseAmount = mode === REPORT_PERIODS.MONTH ? gross : quarterGross;
 
-  const taxes = TAX_ITEMS_ORDER.map(key => {
+  const taxes = TAX_ITEMS_ORDER.map((key) => {
     const config = TAX_CONFIG[key];
-    const value = isValid ? config.calculate(amount) * multiplier : 0;
+    let value = 0;
+
+    if (isValid) {
+      value = config.calculate(baseAmount) * multiplier;
+    }
+
     return { ...config, value };
   });
 
@@ -20,7 +27,7 @@ export const calculateTaxes = (incomeData) => {
     taxes,
     multiplier,
     isValid,
-    gross: isValid ? amount * multiplier : 0
+    gross: isValid ? baseAmount * multiplier : 0,
   };
 };
 

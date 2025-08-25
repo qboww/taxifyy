@@ -123,8 +123,8 @@ export default function IncomeCalculator({ onTransfer }) {
         totalValue={netIncome}
       />
 
-      <Button onClick={() => onTransfer(netIncome)} disabled={!gross}>
-        Детальний розрахунок
+      <Button onClick={() => onTransfer(gross)} disabled={!gross}>
+        Детальний звіт
       </Button>
     </div>
   );
