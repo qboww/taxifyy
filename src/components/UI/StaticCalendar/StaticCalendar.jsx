@@ -21,6 +21,13 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
     },
   }));
 
+  const toggleDay = (dayNum, add) => {
+    setSelectedDays((prev) => {
+      if (add) return prev.includes(dayNum) ? prev : [...prev, dayNum];
+      else return prev.filter((d) => d !== dayNum);
+    });
+  };
+
   const handleMouseDown = (dayNum) => {
     setIsDragging(true);
     dragStart.current = dayNum;
@@ -29,7 +36,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   };
 
   const handleMouseEnter = (dayNum) => {
-    if (!isDragging || dragStart.current == null) return;
+    if (!isDragging) return;
     toggleDay(dayNum, dragMode.current);
   };
 
@@ -39,42 +46,32 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
     dragMode.current = null;
   };
 
-  const toggleDay = (dayNum, add) => {
-    setSelectedDays((prev) => {
-      if (add) {
-        return prev.includes(dayNum) ? prev : [...prev, dayNum];
-      } else {
-        return prev.filter((d) => d !== dayNum);
-      }
-    });
-  };
-
-  const handleTouchStart = (event, dayNum) => {
+  const handleTouchStart = (e, dayNum) => {
     setIsDragging(true);
     dragStart.current = dayNum;
     dragMode.current = !selectedDays.includes(dayNum);
     toggleDay(dayNum, dragMode.current);
+    document.body.style.overflow = "hidden";
   };
 
-  const handleTouchMove = (event) => {
+  const handleTouchMove = (e) => {
     if (!isDragging) return;
 
-    event.preventDefault();
-
-    const touch = event.touches[0];
+    const touch = e.touches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
-
     if (!target) return;
     const dayNum = target.dataset.daynum;
     if (!dayNum) return;
 
     toggleDay(Number(dayNum), dragMode.current);
+    e.preventDefault();
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
     dragStart.current = null;
     dragMode.current = null;
+    document.body.style.overflow = "auto";
   };
 
   const changeMonth = (delta) => {
@@ -140,6 +137,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
             onTouchStart={(e) => handleTouchStart(e, dayNum)}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            style={{ userSelect: "none" }}
           >
             {dayNum}
           </td>
