@@ -12,6 +12,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef(null);
   const dragMode = useRef(null);
+  const touchMoved = useRef(false);
 
   useImperativeHandle(ref, () => ({
     syncHoursToParent: () => {
@@ -50,13 +51,13 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
     setIsDragging(true);
     dragStart.current = dayNum;
     dragMode.current = !selectedDays.includes(dayNum);
-    toggleDay(dayNum, dragMode.current);
-    document.body.style.overflow = "hidden";
+    touchMoved.current = false;
   };
 
   const handleTouchMove = (e) => {
     if (!isDragging) return;
 
+    touchMoved.current = true;
     const touch = e.touches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
     if (!target) return;
@@ -68,6 +69,10 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   };
 
   const handleTouchEnd = () => {
+    if (!touchMoved.current && dragStart.current != null) {
+      toggleDay(dragStart.current, !selectedDays.includes(dragStart.current));
+    }
+
     setIsDragging(false);
     dragStart.current = null;
     dragMode.current = null;
@@ -186,7 +191,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
 
       {selectedDays.length > 0 && (
         <button className={`${styles.button} ${styles.buttonText}`} onClick={() => ref?.current?.syncHoursToParent()}>
-          Перенести годинии
+          Перенести час
         </button>
       )}
 
