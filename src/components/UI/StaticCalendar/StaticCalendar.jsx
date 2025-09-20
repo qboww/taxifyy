@@ -1,4 +1,4 @@
-import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import { formatHoursWord } from "../../../utils/helpers";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import styles from "./StaticCalendar.module.css";
@@ -12,6 +12,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
   const [selectedDays, setSelectedDays] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const dragMode = useRef(null);
+  const calendarRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
     syncHoursToParent: () => {
@@ -27,6 +28,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
     );
   };
 
+  // ====== Unified drag handlers ======
   const startDrag = (dayNum) => {
     setIsDragging(true);
     dragMode.current = !selectedDays.includes(dayNum);
@@ -43,8 +45,10 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
     dragMode.current = null;
   };
 
+  // ====== Touch support ======
   const handleTouchMove = (e) => {
     if (!isDragging) return;
+    e.preventDefault(); // запобігає скролу сторінки під час свайпу
     const touch = e.touches[0];
     const el = document.elementFromPoint(touch.clientX, touch.clientY);
     if (el && el.dataset.daynum) {
@@ -52,6 +56,23 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
     }
   };
 
+  // ====== Prevent page scroll during drag ======
+  useEffect(() => {
+    const calendarEl = calendarRef.current;
+    if (!calendarEl) return;
+
+    const handleTouchMovePreventScroll = (e) => {
+      if (isDragging) e.preventDefault();
+    };
+
+    calendarEl.addEventListener("touchmove", handleTouchMovePreventScroll, { passive: false });
+
+    return () => {
+      calendarEl.removeEventListener("touchmove", handleTouchMovePreventScroll);
+    };
+  }, [isDragging]);
+
+  // ====== Month navigation ======
   const changeMonth = (delta) => {
     setViewMonth((prevMonth) => {
       let newMonth = prevMonth + delta;
@@ -83,6 +104,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
   ).length;
   const workingHours = workingDays * 8;
 
+  // ====== Build weeks ======
   const weeks = [];
   let current = 1 - (firstDay === 0 ? 6 : firstDay - 1);
 
@@ -133,7 +155,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
   const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
   return (
-    <div className={styles.calendarContainer}>
+    <div ref={calendarRef} className={styles.calendarContainer}>
       <div>
         <table className={styles.calendar}>
           <thead>

@@ -47,7 +47,7 @@ export default function IncomeCalculator({ onTransfer }) {
     });
 
     return () => controller.abort();
-  }, []);
+  }, [customRate, setCustomRate]);
 
   const rateToUse = customRate || usdRate || 0;
   const gross = hoursWorked * hourlyRateUsd * rateToUse;
