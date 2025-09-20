@@ -22,7 +22,7 @@
   outline: none;
 }
 
-.toggleOption:hover:not(.active) {
+.toggleOption:hover {
   background: var(--vite);
   color: white;
 }
@@ -39,7 +39,7 @@
   margin: 0 auto;
 }
 
-.labelWrapper {
+.wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

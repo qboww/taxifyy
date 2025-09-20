@@ -24,3 +24,8 @@ body {
   margin: 0 auto;
   text-align: center;
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}

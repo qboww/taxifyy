@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { REPORT_PERIODS } from "../../utils/constants";
 import { FaGithub } from "react-icons/fa";
