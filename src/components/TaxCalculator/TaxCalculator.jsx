@@ -5,7 +5,7 @@ import { REPORT_PERIODS } from "../../utils/constants";
 import { calculateTaxes, calculateNetIncome } from "../../utils/taxCalculator";
 import Paycheck from "../UI/Paycheck/Paycheck";
 
-export default function TaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
+export default function StatisticsTaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
   const taxData = calculateTaxes({ income, quarterlyIncome, mode });
   const netIncome = calculateNetIncome(taxData);
   const totalTaxes = taxData.taxes.reduce((sum, tax) => sum + tax.value, 0);

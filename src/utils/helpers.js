@@ -39,29 +39,23 @@ export function formatHoursWord(count) {
   return "годин";
 }
 
-export const fetchUsdRate = async (signal) => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const dd = String(today.getDate()).padStart(2, "0");
+export const fetchUsdRate = async (signal, date = new Date()) => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
   const formattedDate = `${yyyy}${mm}${dd}`;
-
   const url = `https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=USD&date=${formattedDate}&json`;
 
   try {
     const res = await fetch(url, { signal });
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0 && data[0].rate) {
-      return {
-        rate: Number(data[0].rate),
-        exchangedate: data[0].exchangedate,
-      };
+      return { rate: Number(data[0].rate), exchangedate: data[0].exchangedate };
     }
   } catch (err) {
     if (err.name !== "AbortError") {
       console.error("fetchUsdRate error", err);
     }
   }
-
   return null;
 };

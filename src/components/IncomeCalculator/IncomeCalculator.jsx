@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { getWeekdays, fetchUsdRate } from "../../utils/helpers";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
-import { StaticCalendar } from "../../components/UI/StaticCalendar/StaticCalendar";
+import { StaticCalendar } from "../UI/StaticCalendar/StaticCalendar";
 import { MdCurrencyExchange, MdContentPaste } from "react-icons/md";
 import CalendarStats from "../UI/CalendarStats/CalendarStats";
 import FormInput from "../UI/FormInput/FormInput";
