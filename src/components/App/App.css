@@ -22,42 +22,6 @@
   }
 }
 
-.toggle-container {
-  display: flex;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 6px;
-  margin: 0px auto;
-  width: fit-content;
-  border: 1px solid var(--vite);
-  margin-bottom: 16px;
-}
-
-.toggle-option {
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  background: transparent;
-  font-weight: 500;
-  transition: all 0.25s ease;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 15px;
-  outline: none;
-}
-
-.toggle-option.active {
-  background: var(--vite);
-  color: white;
-  box-shadow: 0 1px 8px var(--vite);
-}
-
-.toggle-option:not(.active):hover {
-  background: var(--vite);
-  color: white;
-}
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
