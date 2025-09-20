@@ -10,8 +10,8 @@ export default function ToggleSwitch({
   marginBottom = 0,
 }) {
   return (
-    <label className={styles.labelWrapper}>
-      {label && <span className={styles.labelText}>{label}</span>}
+    <div className={styles.wrapper}>
+      {label && <p className={styles.labelText}>{label}</p>}
       <div
         className={`${styles.toggleContainer} ${className} ${center ? styles.center : ""}`}
         style={{ marginBottom: `${marginBottom}px` }}
@@ -28,6 +28,6 @@ export default function ToggleSwitch({
           </button>
         ))}
       </div>
-    </label>
+    </div>
   );
 }
