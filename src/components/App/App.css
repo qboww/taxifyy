@@ -37,6 +37,7 @@ input[type=number] {
   position: fixed;
   bottom: 24px;
   left: 24px;
+  height: 40px;
   z-index: 999;
   color: white;
   opacity: 0.7;
@@ -51,8 +52,8 @@ input[type=number] {
 .monojar-link {
   position: fixed;
   height: 40px;
-  bottom: 80px;
-  left: 21px;
+  bottom: 24px;
+  right: 24px;
   z-index: 999;
   opacity: 0.7;
   transition: all 0.25s ease;
