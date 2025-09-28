@@ -1,17 +1,18 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import { formatHoursWord } from "../../../utils/helpers";
-import { forwardRef, useImperativeHandle } from "react";
-
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import styles from "./StaticCalendar.module.css";
 
-export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, today, onSyncHours }, ref) {
+export const StaticCalendar = forwardRef(function StaticCalendar(
+  { year, month, today, onSyncHours },
+  ref
+) {
   const [viewYear, setViewYear] = useState(year);
   const [viewMonth, setViewMonth] = useState(month);
   const [selectedDays, setSelectedDays] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
-  const dragStart = useRef(null);
   const dragMode = useRef(null);
+  const calendarRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
     syncHoursToParent: () => {
@@ -22,29 +23,56 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   }));
 
   const toggleDay = (dayNum, add) => {
-    setSelectedDays((prev) => {
-      if (add) return prev.includes(dayNum) ? prev : [...prev, dayNum];
-      else return prev.filter((d) => d !== dayNum);
-    });
+    setSelectedDays((prev) =>
+      add ? (prev.includes(dayNum) ? prev : [...prev, dayNum]) : prev.filter((d) => d !== dayNum)
+    );
   };
 
-  const handleMouseDown = (dayNum) => {
+  // ====== Unified drag handlers ======
+  const startDrag = (dayNum) => {
     setIsDragging(true);
-    dragStart.current = dayNum;
     dragMode.current = !selectedDays.includes(dayNum);
     toggleDay(dayNum, dragMode.current);
   };
 
-  const handleMouseEnter = (dayNum) => {
+  const moveDrag = (dayNum) => {
     if (!isDragging) return;
     toggleDay(dayNum, dragMode.current);
   };
 
-  const handleMouseUp = () => {
+  const endDrag = () => {
     setIsDragging(false);
-    dragStart.current = null;
     dragMode.current = null;
   };
+
+  // ====== Touch support ======
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault(); // запобігає скролу сторінки під час свайпу
+    const touch = e.touches[0];
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (el && el.dataset.daynum) {
+      moveDrag(Number(el.dataset.daynum));
+    }
+  };
+
+  // ====== Prevent page scroll during drag ======
+  useEffect(() => {
+    const calendarEl = calendarRef.current;
+    if (!calendarEl) return;
+
+    const handleTouchMovePreventScroll = (e) => {
+      if (isDragging) e.preventDefault();
+    };
+
+    calendarEl.addEventListener("touchmove", handleTouchMovePreventScroll, { passive: false });
+
+    return () => {
+      calendarEl.removeEventListener("touchmove", handleTouchMovePreventScroll);
+    };
+  }, [isDragging]);
+
+  // ====== Month navigation ======
   const changeMonth = (delta) => {
     setViewMonth((prevMonth) => {
       let newMonth = prevMonth + delta;
@@ -61,12 +89,11 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
       setViewYear(newYear);
       return newMonth;
     });
-
     setSelectedDays([]);
   };
 
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-  const firstDay = new Date(viewYear, viewMonth, 1).getDay(); // 0‑Sun … 6‑Sat
+  const firstDay = new Date(viewYear, viewMonth, 1).getDay();
   const monthName = new Date(viewYear, viewMonth).toLocaleString("uk-UA", {
     month: "long",
   });
@@ -77,6 +104,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   ).length;
   const workingHours = workingDays * 8;
 
+  // ====== Build weeks ======
   const weeks = [];
   let current = 1 - (firstDay === 0 ? 6 : firstDay - 1);
 
@@ -93,18 +121,24 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
         const isWeekend = dow === 0 || dow === 6;
         const isSelected = selectedDays.includes(dayNum);
         const isToday =
-          today && today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === dayNum;
+          today &&
+          today.getFullYear() === viewYear &&
+          today.getMonth() === viewMonth &&
+          today.getDate() === dayNum;
 
         cells.push(
           <td
             key={d}
             data-daynum={dayNum}
-            className={`${isWeekend ? styles.weekend : ""} ${isSelected ? styles.selected : ""} ${
-              isToday ? styles.today : ""
-            }`}
-            onMouseDown={() => handleMouseDown(dayNum)}
-            onMouseEnter={() => handleMouseEnter(dayNum)}
-            onMouseUp={handleMouseUp}
+            className={`${isWeekend ? styles.weekend : ""} ${
+              isSelected ? styles.selected : ""
+            } ${isToday ? styles.today : ""}`}
+            onMouseDown={() => startDrag(dayNum)}
+            onMouseEnter={() => moveDrag(dayNum)}
+            onMouseUp={endDrag}
+            onTouchStart={() => startDrag(dayNum)}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={endDrag}
             style={{ userSelect: "none" }}
           >
             {dayNum}
@@ -121,7 +155,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
   const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
   return (
-    <div className={styles.calendarContainer}>
+    <div ref={calendarRef} className={styles.calendarContainer}>
       <div>
         <table className={styles.calendar}>
           <thead>
@@ -135,7 +169,8 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
         </table>
         {selectedDays.length > 0 && (
           <div className={styles.summary}>
-            Вибрано днів: {selectedDays.length} ‑ Годин: {selectedDays.length * 8}
+            Вибрано днів: {selectedDays.length} - Годин:{" "}
+            {selectedDays.length * 8}
           </div>
         )}
       </div>
@@ -145,7 +180,8 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
           <FaAngleLeft size={20} />
         </button>
         <span>
-          {monthName} {viewYear} ({quarter}) {workingHours} {formatHoursWord(workingHours)}
+          {monthName} {viewYear} ({quarter}) {workingHours}{" "}
+          {formatHoursWord(workingHours)}
         </span>
         <button className={styles.button} onClick={() => changeMonth(1)}>
           <FaAngleRight size={20} />
@@ -153,7 +189,10 @@ export const StaticCalendar = forwardRef(function StaticCalendar({ year, month, 
       </div>
 
       {selectedDays.length > 0 && (
-        <button className={`${styles.button} ${styles.buttonText}`} onClick={() => ref?.current?.syncHoursToParent()}>
+        <button
+          className={`${styles.button} ${styles.buttonText}`}
+          onClick={() => ref?.current?.syncHoursToParent()}
+        >
           Перенести час
         </button>
       )}
