@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { REPORT_PERIODS } from "../../utils/constants";
 import { FaGithub } from "react-icons/fa";
@@ -33,7 +32,7 @@ export default function App() {
     switch (activeTab) {
       case "income":
         return <IncomeCalculator onTransfer={handleTransfer} />;
-      
+
       case "taxes":
         return (
           <TaxCalculator
@@ -45,10 +44,10 @@ export default function App() {
             setQuarterlyIncome={setQuarterlyIncome}
           />
         );
-      
+
       case "exchange":
         return <Statistics />;
-      
+
       default:
         return <IncomeCalculator onTransfer={handleTransfer} />;
     }
@@ -56,12 +55,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <ToggleSwitch
-        options={TAB_OPTIONS}
-        value={activeTab}
-        onChange={setActiveTab}
-        center
-      />
+      <ToggleSwitch options={TAB_OPTIONS} value={activeTab} onChange={setActiveTab} center />
 
       {renderActiveTab()}
 
@@ -73,6 +67,16 @@ export default function App() {
         title="Відкрити репозиторій на GitHub"
       >
         <FaGithub size={34} />
+      </a>
+
+      <a
+        href="https://send.monobank.ua/jar/LHAfJ6J5c"
+        className="monojar-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Відкрити моно-банку"
+      >
+        <img src="/src/assets/jar.png" alt="MonoJar" width="40" height="40" />
       </a>
     </div>
   );
