@@ -76,7 +76,7 @@ export default function App() {
         rel="noopener noreferrer"
         title="Відкрити моно-банку"
       >
-        <img src="/src/assets/jar.png" alt="MonoJar" width="40" height="40" />
+        <img src="/jar.png" alt="MonoJar" width="40" height="40" />
       </a>
     </div>
   );
