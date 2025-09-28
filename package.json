@@ -13,6 +13,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
+    "@vercel/speed-insights": "^1.2.0",
     "date-fns": "^4.1.0",
     "firebase": "^12.3.0",
     "heroicons": "^2.2.0",
