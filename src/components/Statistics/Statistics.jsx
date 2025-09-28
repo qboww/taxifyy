@@ -118,7 +118,7 @@ export default function Statistics() {
   // Форматування дати для міток графіка
   const formatChartLabel = (dateString) => {
     const date = new Date(dateString.split(".").reverse().join("-"));
-    
+
     switch (chartPeriod) {
       case "week":
         return format(date, "dd.MM");
@@ -133,7 +133,7 @@ export default function Statistics() {
 
   // Дані для Chart.js
   const chartJsData = {
-    labels: chartData.map(d => formatChartLabel(d.date)),
+    labels: chartData.map((d) => formatChartLabel(d.date)),
     datasets: [
       {
         label: "Курс USD",
@@ -156,20 +156,33 @@ export default function Statistics() {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (context) => `Курс: ${context.formattedValue} грн`,
+          label: (context) => {
+            const value = context.parsed.y;
+            // Convert to string and ensure 4 decimal places
+            const strValue = value.toString();
+            const decimalIndex = strValue.indexOf(".");
+
+            if (decimalIndex === -1) {
+              return `Курс: ${strValue}.0000 грн`;
+            } else {
+              const decimalPart = strValue.substring(decimalIndex + 1);
+              const paddedDecimal = decimalPart.padEnd(4, "0").substring(0, 4);
+              return `Курс: ${strValue.substring(0, decimalIndex)}.${paddedDecimal} грн`;
+            }
+          },
           title: (context) => {
             const date = new Date(chartData[context[0].dataIndex].date.split(".").reverse().join("-"));
             return format(date, "dd.MM.yyyy");
-          }
+          },
         },
       },
     },
     scales: {
-      x: { 
-        ticks: { 
+      x: {
+        ticks: {
           font: { size: chartPeriod === "year" ? 10 : 12 },
-          maxRotation: chartPeriod === "month" ? 45 : 0
-        } 
+          maxRotation: chartPeriod === "month" ? 45 : 0,
+        },
       },
       y: { beginAtZero: false },
     },
@@ -180,9 +193,7 @@ export default function Statistics() {
       <div className={styles.headerContainer}>
         <h2>Конвертація валют</h2>
         {loadingError ? (
-          <p className={styles.errorMessage}>
-            Не вдалося завантажити курс НБУ. Спробуйте пізніше.
-          </p>
+          <p className={styles.errorMessage}>Не вдалося завантажити курс НБУ. Спробуйте пізніше.</p>
         ) : todayRate ? (
           <p className={styles.todayRate}>
             Курс НБУ: {todayRate.rate} грн за $1 ({todayRate.exchangedate})
@@ -231,9 +242,7 @@ export default function Statistics() {
 
       <div className={styles.chartContainer}>
         {loadingError ? (
-          <p className={styles.errorMessage}>
-            Не вдалося завантажити дані для графіка. Спробуйте пізніше.
-          </p>
+          <p className={styles.errorMessage}>Не вдалося завантажити дані для графіка. Спробуйте пізніше.</p>
         ) : (
           <>
             {periodText && <p className={styles.period}>{periodText}</p>}
