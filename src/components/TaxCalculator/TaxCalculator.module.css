@@ -25,16 +25,6 @@
   margin: 0px !important;
 }
 
-.title {
-  font-size: 26px;
-  font-weight: 600;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.945);
-  margin: 0px;
-  margin-top: 24px;
-}
-
 .subtitle {
   color: #888;
   font-size: 14px;

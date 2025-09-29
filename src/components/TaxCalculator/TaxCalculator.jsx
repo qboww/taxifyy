@@ -13,7 +13,7 @@ export default function StatisticsTaxCalculator({ income, setIncome, mode, setMo
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
-        <h2 className={styles.title}>Розрахунок податків</h2>
+        <h1 className="title">Розрахунок податків</h1>
         <p className={styles.subtitle}>ФОП III групи (спрощена система)</p>
       </div>
 

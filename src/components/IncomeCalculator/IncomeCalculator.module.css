@@ -7,16 +7,6 @@
   width: 100%;
 }
 
-.title {
-  font-size: 26px;
-  font-weight: 600;
-  text-align: center;
-  margin: 0;
-  color: var(--text-dark);
-  margin-top: 24px;
-
-}
-
 .subtitle {
   font-size: 14px;
   color: #888;

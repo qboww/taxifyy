@@ -58,7 +58,7 @@ export default function IncomeCalculator({ onTransfer }) {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Розрахунок доходу</h1>
+      <h1 className="title">Розрахунок доходу</h1>
 
       <CalendarStats
         today={today}

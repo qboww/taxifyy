@@ -191,7 +191,7 @@ export default function Statistics() {
   return (
     <div className={styles.statsContainer}>
       <div className={styles.headerContainer}>
-        <h2>Конвертація валют</h2>
+        <h1 className="title">Конвертація валют</h1>
         {loadingError ? (
           <p className={styles.errorMessage}>Не вдалося завантажити курс НБУ. Спробуйте пізніше.</p>
         ) : todayRate ? (
