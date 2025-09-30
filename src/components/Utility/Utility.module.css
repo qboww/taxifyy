@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    width: 100%;
+    text-align: center;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.inputToggle {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+}
+
+.toggleContainer {
+    margin: 0px !important;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 14px;
+    margin: 0px;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 4px;
+    font-size: 14px;
+    width: 100%;
+}

@@ -8,11 +8,13 @@ import TaxCalculator from "../TaxCalculator/TaxCalculator";
 import Statistics from "../Statistics/Statistics";
 
 import "./App.css";
+import Utility from "../Utility/Utility";
 
 const TAB_OPTIONS = [
   { label: "Дохід", value: "income" },
   { label: "Податки", value: "taxes" },
   { label: "Обмін", value: "exchange" },
+  { label: "Ком. Послуги", value: "utility" },
 ];
 
 export default function App() {
@@ -47,6 +49,9 @@ export default function App() {
 
       case "exchange":
         return <Statistics />;
+      
+      case "utility":
+        return <Utility/>;
 
       default:
         return <IncomeCalculator onTransfer={handleTransfer} />;

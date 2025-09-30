@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 
-import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
+import { format, subMonths, startOfMonth } from "date-fns";
 
 import { fetchUsdRate } from "../../utils/helpers";
 import FormInput from "../UI/FormInput/FormInput";
