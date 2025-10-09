@@ -1,6 +1,7 @@
 import styles from "./Utility.module.css";
 import UtilityInput from "../UI/UtilityInput/UtilityInput";
 import Paycheck from "../UI/Paycheck/Paycheck";
+import Modal from "../UI/Modal/Modal";
 import { useState, useMemo } from "react";
 
 const DEFAULT_SERVICES = [
@@ -14,23 +15,21 @@ const DEFAULT_SERVICES = [
 
 export default function Utility() {
   const [rows, setRows] = useState(DEFAULT_SERVICES);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleAddService = (data) => {
+    const service =
+      data.typeOption === "fixed"
+        ? { type: data.name, fixedAmount: parseFloat(data.amount), isFixed: true }
+        : { type: data.name, coefficient: parseFloat(data.coefficient), quantity: 0 };
+
+    setRows([...rows, service]);
+  };
 
   const updateRow = (index, field, value) => {
     const newRows = [...rows];
     newRows[index][field] = value;
     setRows(newRows);
-  };
-
-  const addRow = () => {
-    const hasCoefficient = window.confirm(
-      "Ця послуга має коефіцієнт? (OK = так, Cancel = ні)"
-    );
-    setRows([
-      ...rows,
-      hasCoefficient
-        ? { type: "", coefficient: "", quantity: "" }
-        : { type: "", fixedAmount: 0, isFixed: true },
-    ]);
   };
 
   const removeRow = (index) => {
@@ -42,29 +41,15 @@ export default function Utility() {
     let totalCost = 0;
 
     rows.forEach(({ type, coefficient, quantity, fixedAmount, isFixed }) => {
-      let cost = 0;
-      if (isFixed) {
-        cost = parseFloat(fixedAmount) || 0;
-      } else {
-        const coef = parseFloat(coefficient) || 0;
-        const qty = parseFloat(quantity) || 0;
-        cost = coef * qty;
-      }
+      let cost = isFixed
+        ? parseFloat(fixedAmount) || 0
+        : (parseFloat(coefficient) || 0) * (parseFloat(quantity) || 0);
 
-      if (type) {
-        if (!perType[type]) perType[type] = 0;
-        perType[type] += cost;
-      }
-
+      if (type) perType[type] = (perType[type] || 0) + cost;
       totalCost += cost;
     });
 
-    const items = Object.entries(perType).map(([label, value]) => ({
-      label,
-      value,
-    }));
-
-    return { items, subtotal: totalCost, total: totalCost };
+    return { items: Object.entries(perType).map(([label, value]) => ({ label, value })), subtotal: totalCost, total: totalCost };
   }, [rows]);
 
   return (
@@ -82,7 +67,8 @@ export default function Utility() {
         />
       ))}
 
-      <button className={styles.addButton} onClick={addRow}>
+      {/* Кнопка відкриття модалки */}
+      <button className={styles.addButton} onClick={() => setShowModal(true)}>
         + Додати послугу
       </button>
 
@@ -94,6 +80,29 @@ export default function Utility() {
         subtotalValue={subtotal}
         totalLabel="До сплати"
         totalValue={total}
+      />
+
+      {/* Модалка */}
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleAddService}
+        title="Додати нову послугу"
+        fields={[
+          { name: "name", label: "Назва послуги", type: "text" },
+          { 
+            name: "typeOption", 
+            label: "Тип послуги", 
+            type: "radio",
+            options: [
+              { value: "coefficient", label: "З коефіцієнтом" },
+              { value: "fixed", label: "Фіксована сума" }
+            ],
+            value: "coefficient"
+          },
+          { name: "coefficient", label: "Коефіцієнт", type: "number", placeholder: "0.0" },
+          { name: "amount", label: "Сума", type: "number", placeholder: "0" }
+        ]}
       />
     </div>
   );

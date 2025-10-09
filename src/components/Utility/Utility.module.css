@@ -39,3 +39,30 @@
     font-size: 14px;
     width: 100%;
 }
+
+.addButton {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    background: var(--vite);
+    /* можна замінити на будь-який колір */
+    color: white;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.addButton:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.addButton:active {
+    transform: translateY(0);
+    filter: brightness(1);
+}

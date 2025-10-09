@@ -1,12 +1,13 @@
 .container {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
     padding: 12px;
+    gap: 8px;
     border: 1px solid rgba(200, 200, 200, 0.4);
     border-radius: 10px;
     position: relative;
     background-color: transparent;
+    justify-content: center;
+
 }
 
 .topRow {
@@ -36,6 +37,9 @@
     font-size: 16px;
     font-weight: bold;
     transition: all 0.2s;
+    position: absolute;
+    right: -10px;
+    top: -15px;
 }
 
 .removeButton:hover {
@@ -46,6 +50,7 @@
 .label {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 4px;
     font-size: 14px;
     width: 100%;
@@ -61,6 +66,9 @@
     outline: none;
     transition: box-shadow 0.25s;
     box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
 }
 
 .input:focus {

@@ -5,11 +5,9 @@ export default function UtilityInput({ data, onChange, onRemove }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.topRow}>
         <button className={styles.removeButton} onClick={onRemove}>
           ✕
         </button>
-      </div>
 
       <label className={styles.label}>
         Тип послуги
@@ -35,10 +33,11 @@ export default function UtilityInput({ data, onChange, onRemove }) {
         </label>
       ) : (
         <>
-          <label className={styles.label}>
-            Коефіцієнт
+          <label className={styles.label}style={{width:"50px"}}>
+            Коеф
             <input
-              className={styles.input}
+                className={styles.input}
+                style={{paddingLeft: "5px" ,paddingRight:"5px" }}
               type="number"
               placeholder="0.0"
               value={data.coefficient}
@@ -47,11 +46,11 @@ export default function UtilityInput({ data, onChange, onRemove }) {
           </label>
 
           <label className={styles.label}>
-            Показання лічильника
+            Показник
             <input
               className={styles.input}
               type="number"
-              placeholder="0"
+                placeholder="0"
               value={data.quantity}
               onChange={(e) => onChange("quantity", e.target.value)}
             />
