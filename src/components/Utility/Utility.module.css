@@ -50,7 +50,6 @@
     border: none;
     border-radius: 12px;
     background: var(--vite);
-    /* можна замінити на будь-який колір */
     color: white;
     cursor: pointer;
     transition: all 0.25s ease;

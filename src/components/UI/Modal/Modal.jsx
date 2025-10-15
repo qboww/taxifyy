@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./Modal.module.css";
 
-export default function Modal({ isOpen, onClose, onSubmit, title = "Вибір типу послуги" }) {
+export default function Modal({ isOpen, onClose, title, children, onSubmit }) {
   if (!isOpen) return null;
 
-  const handleSelect = (typeOption) => {
-    onSubmit({ typeOption }); // передаємо лише вибір
+  const handleSubmit = () => {
+    if (onSubmit) onSubmit();
     onClose();
   };
 
@@ -14,18 +14,14 @@ export default function Modal({ isOpen, onClose, onSubmit, title = "Вибір �
       <div className={styles.modal}>
         <h2>{title}</h2>
 
-        <div className={styles.buttonGroup}>
-          <button className={styles.optionButton} onClick={() => handleSelect("coefficient")}>
-            З коефіцієнтом
-          </button>
-          <button className={styles.optionButton} onClick={() => handleSelect("fixed")}>
-            Фіксована сума
-          </button>
+        <div className={styles.bodyContainer}>
+          {children}
         </div>
 
-        <button className={styles.cancelButton} onClick={onClose}>
-          Відмінити
-        </button>
+        <div className={styles.buttons}>
+          <button className={styles.submitButton} onClick={handleSubmit}>Підтвердити</button>
+          <button className={styles.cancelButton} onClick={onClose}>Відмінити</button>
+        </div>
       </div>
     </div>
   );

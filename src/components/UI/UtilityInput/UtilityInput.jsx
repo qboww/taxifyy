@@ -5,17 +5,15 @@ export default function UtilityInput({ data, onChange, onRemove }) {
 
   return (
     <div className={styles.container}>
-        <button className={styles.removeButton} onClick={onRemove}>
-          ✕
-        </button>
+      <button className={styles.removeButton} onClick={onRemove}>✕</button>
 
       <label className={styles.label}>
         Тип послуги
         <input
-          className={styles.input}
+          className={styles.input} 
           type="text"
           placeholder="Вода, Газ, Електро..."
-          value={data.type}
+          value={data.type || ""}
           onChange={(e) => onChange("type", e.target.value)}
         />
       </label>
@@ -27,32 +25,30 @@ export default function UtilityInput({ data, onChange, onRemove }) {
             className={styles.input}
             type="number"
             placeholder="0"
-            value={data.fixedAmount || ""}
-            onChange={(e) => onChange("fixedAmount", e.target.value)}
+            value={data.fixedAmount ?? ""}
+            onChange={(e) => onChange("fixedAmount", parseFloat(e.target.value))}
           />
         </label>
       ) : (
         <>
-          <label className={styles.label}style={{width:"50px"}}>
-            Коеф
-            <input
-                className={styles.input}
-                style={{paddingLeft: "5px" ,paddingRight:"5px" }}
-              type="number"
-              placeholder="0.0"
-              value={data.coefficient}
-              onChange={(e) => onChange("coefficient", e.target.value)}
-            />
-          </label>
-
           <label className={styles.label}>
-            Показник
+            Кількість ({data.unit ?? ""})
             <input
               className={styles.input}
               type="number"
-                placeholder="0"
-              value={data.quantity}
-              onChange={(e) => onChange("quantity", e.target.value)}
+              placeholder="0"
+              value={data.quantity ?? ""}
+              onChange={(e) => onChange("quantity", parseFloat(e.target.value))}
+            />
+          </label>
+          <label className={styles.label}>
+            Коефіцієнт
+            <input
+              className={styles.input}
+              type="number"
+              placeholder="0.0"
+              value={data.coefficient ?? ""}
+              onChange={(e) => onChange("coefficient", parseFloat(e.target.value))}
             />
           </label>
         </>
