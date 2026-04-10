@@ -9,7 +9,6 @@ export const calculateTaxes = (incomeData) => {
   const isValid =
     mode === REPORT_PERIODS.MONTH ? !isNaN(gross) && gross >= 0 : !isNaN(quarterGross) && quarterGross >= 0;
 
-  const multiplier = mode === REPORT_PERIODS.QUARTER ? 3 : 1;
   const baseAmount = mode === REPORT_PERIODS.MONTH ? gross : quarterGross;
 
   const taxes = TAX_ITEMS_ORDER.map((key) => {
@@ -17,7 +16,7 @@ export const calculateTaxes = (incomeData) => {
     let value = 0;
 
     if (isValid) {
-      value = config.calculate(baseAmount) * multiplier;
+      value = config.calculate(baseAmount);
     }
 
     return { ...config, value };
@@ -25,9 +24,8 @@ export const calculateTaxes = (incomeData) => {
 
   return {
     taxes,
-    multiplier,
     isValid,
-    gross: isValid ? baseAmount * multiplier : 0,
+    gross: isValid ? baseAmount : 0,
   };
 };
 
