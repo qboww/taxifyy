@@ -10,6 +10,7 @@ export default function FormInput({
   className = "",
   labelClass = "",
   inputClass = "",
+  error,
   ...props
 }) {
   const handleChange = (e) => {
@@ -30,9 +31,10 @@ export default function FormInput({
         onChange={handleChange}
         placeholder={placeholder}
         step={step}
-        className={`${styles.input} ${inputClass} ${className}`}
+        className={`${styles.input} ${inputClass} ${className} ${error ? styles.error : ""}`}
         {...props}
       />
+      {error && <span className={styles.errorText}>{error}</span>}
     </label>
   );
 }

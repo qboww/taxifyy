@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 
-import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
+import { format, subMonths, startOfMonth } from "date-fns";
 
 import { fetchUsdRate } from "../../utils/helpers";
 import FormInput from "../UI/FormInput/FormInput";
@@ -148,7 +148,9 @@ export default function Statistics() {
   };
 
   // Показати діапазон дат зверху графіка
-  const periodText = chartData.length ? `Період: ${chartData[0].date} – ${chartData[chartData.length - 1].date}` : "";
+  const periodText = chartData.length
+    ? `Період: ${chartData[0].date} – ${chartData[chartData.length - 1].date}`
+    : "";
 
   const chartOptions = {
     responsive: true,
@@ -171,7 +173,9 @@ export default function Statistics() {
             }
           },
           title: (context) => {
-            const date = new Date(chartData[context[0].dataIndex].date.split(".").reverse().join("-"));
+            const date = new Date(
+              chartData[context[0].dataIndex].date.split(".").reverse().join("-")
+            );
             return format(date, "dd.MM.yyyy");
           },
         },
@@ -242,7 +246,9 @@ export default function Statistics() {
 
       <div className={styles.chartContainer}>
         {loadingError ? (
-          <p className={styles.errorMessage}>Не вдалося завантажити дані для графіка. Спробуйте пізніше.</p>
+          <p className={styles.errorMessage}>
+            Не вдалося завантажити дані для графіка. Спробуйте пізніше.
+          </p>
         ) : (
           <>
             {periodText && <p className={styles.period}>{periodText}</p>}

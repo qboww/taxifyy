@@ -15,6 +15,8 @@ export default function ToggleSwitch({
       <div
         className={`${styles.toggleContainer} ${className} ${center ? styles.center : ""}`}
         style={{ marginBottom: `${marginBottom}px` }}
+        role="group"
+        aria-label={label || "Toggle options"}
       >
         {options.map((option) => (
           <button

@@ -18,7 +18,10 @@ const TAB_OPTIONS = [
 export default function App() {
   const [income, setIncome] = useLocalStorageWithExpiry("taxCalc_income", "");
   const [mode, setMode] = useLocalStorageWithExpiry("taxCalc_mode", REPORT_PERIODS.MONTH);
-  const [quarterlyIncome, setQuarterlyIncome] = useLocalStorageWithExpiry("taxCalc_quarterlyIncome", "");
+  const [quarterlyIncome, setQuarterlyIncome] = useLocalStorageWithExpiry(
+    "taxCalc_quarterlyIncome",
+    ""
+  );
   const [activeTab, setActiveTab] = useLocalStorageWithExpiry("taxCalc_activeTab", "income");
 
   const handleTransfer = (uah) => {

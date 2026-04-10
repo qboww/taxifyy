@@ -99,9 +99,10 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
   });
   const quarter = `Q${Math.floor(viewMonth / 3) + 1}`;
 
-  const workingDays = Array.from({ length: daysInMonth }, (_, i) => new Date(viewYear, viewMonth, i + 1)).filter(
-    (date) => date.getDay() !== 0 && date.getDay() !== 6
-  ).length;
+  const workingDays = Array.from(
+    { length: daysInMonth },
+    (_, i) => new Date(viewYear, viewMonth, i + 1)
+  ).filter((date) => date.getDay() !== 0 && date.getDay() !== 6).length;
   const workingHours = workingDays * 8;
 
   // ====== Build weeks ======
@@ -169,8 +170,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
         </table>
         {selectedDays.length > 0 && (
           <div className={styles.summary}>
-            Вибрано днів: {selectedDays.length} - Годин:{" "}
-            {selectedDays.length * 8}
+            Вибрано днів: {selectedDays.length} - Годин: {selectedDays.length * 8}
           </div>
         )}
       </div>
@@ -180,8 +180,7 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
           <FaAngleLeft size={20} />
         </button>
         <span>
-          {monthName} {viewYear} ({quarter}) {workingHours}{" "}
-          {formatHoursWord(workingHours)}
+          {monthName} {viewYear} ({quarter}) {workingHours} {formatHoursWord(workingHours)}
         </span>
         <button className={styles.button} onClick={() => changeMonth(1)}>
           <FaAngleRight size={20} />

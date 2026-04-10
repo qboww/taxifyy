@@ -5,13 +5,13 @@ import { formatHoursWord, formatDaysWord, formatWorkDaysWord } from "../../../ut
 import Button from "../Button/Button";
 import styles from "./CalendarStats.module.css";
 
-export default function CalendarStats({ 
+export default function CalendarStats({
   today,
   monthDays,
   weekdays,
   workingHours,
   isCalendarOpen,
-  onToggleCalendar
+  onToggleCalendar,
 }) {
   return (
     <div className={styles.container}>

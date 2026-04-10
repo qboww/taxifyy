@@ -32,7 +32,8 @@ export default function Paycheck({
       {subtotalLabel && (
         <div className={styles.subtotal}>
           <p>
-            {subtotalLabel}: <span>{subtotalValue?.toFixed ? subtotalValue.toFixed(2) : subtotalValue} грн</span>
+            {subtotalLabel}:{" "}
+            <span>{subtotalValue?.toFixed ? subtotalValue.toFixed(2) : subtotalValue} грн</span>
           </p>
         </div>
       )}
@@ -42,7 +43,8 @@ export default function Paycheck({
       {totalLabel && (
         <div className={styles.total}>
           <p className={styles.net}>
-            {totalLabel}: <span>{totalValue?.toFixed ? totalValue.toFixed(2) : totalValue} грн</span>
+            {totalLabel}:{" "}
+            <span>{totalValue?.toFixed ? totalValue.toFixed(2) : totalValue} грн</span>
           </p>
         </div>
       )}

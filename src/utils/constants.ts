@@ -4,12 +4,12 @@ export const SINGLE_TAX_RATE = 0.05; // 5% єдиний податок
 export const WAR_TAX_RATE = 0.01; // 1% військовий збір
 
 export const TAX_TYPES = {
-  SINGLE: 'single',
-  WAR: 'war',
-  ESV: 'esv'
-};
+  SINGLE: "single",
+  WAR: "war",
+  ESV: "esv",
+} as const;
 
 export const REPORT_PERIODS = {
-  MONTH: 'month',
-  QUARTER: 'quarter'
-};
+  MONTH: "month",
+  QUARTER: "quarter",
+} as const;

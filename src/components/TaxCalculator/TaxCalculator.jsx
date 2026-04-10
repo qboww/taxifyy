@@ -2,13 +2,28 @@ import styles from "./TaxCalculator.module.css";
 import FormInput from "../UI/FormInput/FormInput";
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
 import { REPORT_PERIODS } from "../../utils/constants";
-import { calculateTaxes, calculateNetIncome } from "../../utils/taxCalculator";
+import { useTaxCalculations } from "../../hooks/useTaxCalculations";
 import Paycheck from "../UI/Paycheck/Paycheck";
 
-export default function StatisticsTaxCalculator({ income, setIncome, mode, setMode, quarterlyIncome, setQuarterlyIncome }) {
-  const taxData = calculateTaxes({ income, quarterlyIncome, mode });
-  const netIncome = calculateNetIncome(taxData);
-  const totalTaxes = taxData.taxes.reduce((sum, tax) => sum + tax.value, 0);
+export default function StatisticsTaxCalculator({
+  income,
+  setIncome,
+  mode,
+  setMode,
+  quarterlyIncome,
+  setQuarterlyIncome,
+}) {
+  const currentValue = mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome;
+  const isValidInput =
+    currentValue === "" || (!isNaN(parseFloat(currentValue)) && parseFloat(currentValue) >= 0);
+
+  const { taxData, netIncome, totalTaxes } = useTaxCalculations({ income, quarterlyIncome, mode });
+
+  const handleInputChange = (value) => {
+    if (value === "" || (!isNaN(parseFloat(value)) && parseFloat(value) >= 0)) {
+      mode === REPORT_PERIODS.MONTH ? setIncome(value) : setQuarterlyIncome(value);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -22,8 +37,9 @@ export default function StatisticsTaxCalculator({ income, setIncome, mode, setMo
           label="Дохід (UAH):"
           type="number"
           placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць" : "Дохід за квартал"}
-          value={mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome}
-          onChange={(value) => (mode === REPORT_PERIODS.MONTH ? setIncome(value) : setQuarterlyIncome(value))}
+          value={currentValue}
+          onChange={handleInputChange}
+          error={!isValidInput ? "Введіть додатне число" : null}
         />
 
         <ToggleSwitch
@@ -37,13 +53,15 @@ export default function StatisticsTaxCalculator({ income, setIncome, mode, setMo
         />
       </div>
 
-      <Paycheck
-        items={taxData.taxes}
-        subtotalLabel="Загальні податки"
-        subtotalValue={totalTaxes}
-        totalLabel="Чистий дохід"
-        totalValue={netIncome}
-      />
+      {isValidInput && (
+        <Paycheck
+          items={taxData.taxes}
+          subtotalLabel="Загальні податки"
+          subtotalValue={totalTaxes}
+          totalLabel="Чистий дохід"
+          totalValue={netIncome}
+        />
+      )}
     </div>
   );
 }

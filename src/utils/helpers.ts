@@ -1,5 +1,5 @@
-// utils/helpers.js
-export const getWeekdays = (year, month) => {
+// utils/helpers.ts
+export const getWeekdays = (year: number, month: number): number => {
   let count = 0;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   for (let day = 1; day <= daysInMonth; day++) {
@@ -9,7 +9,7 @@ export const getWeekdays = (year, month) => {
   return count;
 };
 
-export function formatWorkDaysWord(count) {
+export function formatWorkDaysWord(count: number): string {
   const lastDigit = count % 10;
   const lastTwoDigits = count % 100;
 
@@ -19,7 +19,7 @@ export function formatWorkDaysWord(count) {
   return "буд. днів";
 }
 
-export function formatDaysWord(count) {
+export function formatDaysWord(count: number): string {
   const lastDigit = count % 10;
   const lastTwoDigits = count % 100;
 
@@ -29,7 +29,7 @@ export function formatDaysWord(count) {
   return "днів";
 }
 
-export function formatHoursWord(count) {
+export function formatHoursWord(count: number): string {
   const lastDigit = count % 10;
   const lastTwoDigits = count % 100;
 
@@ -39,7 +39,10 @@ export function formatHoursWord(count) {
   return "годин";
 }
 
-export const fetchUsdRate = async (signal, date = new Date()) => {
+export const fetchUsdRate = async (
+  signal: AbortSignal,
+  date: Date = new Date()
+): Promise<{ rate: number; exchangedate: string } | null> => {
   const yyyy = date.getFullYear();
   const mm = String(date.getMonth() + 1).padStart(2, "0");
   const dd = String(date.getDate()).padStart(2, "0");
@@ -53,7 +56,7 @@ export const fetchUsdRate = async (signal, date = new Date()) => {
       return { rate: Number(data[0].rate), exchangedate: data[0].exchangedate };
     }
   } catch (err) {
-    if (err.name !== "AbortError") {
+    if ((err as Error).name !== "AbortError") {
       console.error("fetchUsdRate error", err);
     }
   }
