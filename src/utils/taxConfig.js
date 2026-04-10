@@ -1,4 +1,4 @@
-import { MIN_SALARY } from "./constants";
+import { MIN_SALARY, ESV_COEFFICIENT, REPORT_PERIODS } from "./constants.js";
 
 export const TAX_CONFIG = {
   single: {
@@ -17,7 +17,7 @@ export const TAX_CONFIG = {
     label: "ЄСВ",
     rate: `22% від ${MIN_SALARY} грн`,
     description: `від ${MIN_SALARY} грн (МЗП)`,
-    calculate: () => MIN_SALARY * 0.22,
+    calculate: (_, mode) => MIN_SALARY * ESV_COEFFICIENT * (mode === REPORT_PERIODS.QUARTER ? 3 : 1),
   },
 };
 

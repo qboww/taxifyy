@@ -1,5 +1,5 @@
-import { REPORT_PERIODS } from "./constants";
-import { TAX_CONFIG, TAX_ITEMS_ORDER } from "./taxConfig";
+import { REPORT_PERIODS } from "./constants.js";
+import { TAX_CONFIG, TAX_ITEMS_ORDER } from "./taxConfig.js";
 
 export const calculateTaxes = (incomeData) => {
   const { income, quarterlyIncome, mode } = incomeData;
@@ -16,7 +16,7 @@ export const calculateTaxes = (incomeData) => {
     let value = 0;
 
     if (isValid) {
-      value = config.calculate(baseAmount);
+      value = config.calculate(baseAmount, mode);
     }
 
     return { ...config, value };
