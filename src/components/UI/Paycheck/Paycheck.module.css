@@ -40,7 +40,12 @@
   justify-content: space-between;
   margin: 0;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
+}
+
+.sectionDivider {
+  height: 1px;
+  margin: 4px 0;
 }
 
 .subtotal {

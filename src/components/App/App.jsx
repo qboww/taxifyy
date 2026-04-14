@@ -5,6 +5,7 @@ import { FaGithub } from "react-icons/fa";
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
 import IncomeCalculator from "../IncomeCalculator/IncomeCalculator";
 import TaxCalculator from "../TaxCalculator/TaxCalculator";
+import UtilitiesCalculator from "../UtilitiesCalculator/UtilitiesCalculator";
 import Statistics from "../Statistics/Statistics";
 
 import "./App.css";
@@ -13,6 +14,7 @@ const TAB_OPTIONS = [
   { label: "Дохід", value: "income" },
   { label: "Податки", value: "taxes" },
   { label: "Обмін", value: "exchange" },
+  { label: "Житло", value: "utilities" },
 ];
 
 export default function App() {
@@ -47,6 +49,9 @@ export default function App() {
             setQuarterlyIncome={setQuarterlyIncome}
           />
         );
+
+      case "utilities":
+        return <UtilitiesCalculator />;
 
       case "exchange":
         return <Statistics />;

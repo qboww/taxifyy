@@ -1,9 +1,12 @@
+import { Fragment } from "react";
+import { formatCurrency } from "../../../utils/helpers";
 import styles from "./Paycheck.module.css";
 
 export default function Paycheck({
   title,
   subtitle,
   items,
+  splitIndex,
   subtotalLabel,
   subtotalValue,
   totalLabel,
@@ -21,19 +24,20 @@ export default function Paycheck({
 
       <div className={styles.items}>
         {items.map((item, index) => (
-          <p key={index}>
-            {item.label}
-            {item.rate ? ` (${item.rate})` : ""}:
-            <span>{item.value?.toFixed ? item.value.toFixed(2) : item.value} грн</span>
-          </p>
+          <Fragment key={index}>
+            <p>
+              {item.label}
+              {item.rate ? ` (${item.rate})` : ""}:<span>{formatCurrency(item.value)} грн</span>
+            </p>
+            {splitIndex === index + 1 && <div className={styles.sectionDivider} />}
+          </Fragment>
         ))}
       </div>
 
       {subtotalLabel && (
         <div className={styles.subtotal}>
           <p>
-            {subtotalLabel}:{" "}
-            <span>{subtotalValue?.toFixed ? subtotalValue.toFixed(2) : subtotalValue} грн</span>
+            {subtotalLabel}: <span>{formatCurrency(subtotalValue)} грн</span>
           </p>
         </div>
       )}
@@ -43,8 +47,7 @@ export default function Paycheck({
       {totalLabel && (
         <div className={styles.total}>
           <p className={styles.net}>
-            {totalLabel}:{" "}
-            <span>{totalValue?.toFixed ? totalValue.toFixed(2) : totalValue} грн</span>
+            {totalLabel}: <span>{formatCurrency(totalValue)} грн</span>
           </p>
         </div>
       )}

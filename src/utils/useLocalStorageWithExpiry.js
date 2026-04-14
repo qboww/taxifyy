@@ -8,7 +8,7 @@ export const useLocalStorageWithExpiry = (key, initialValue, expiryDays = 30) =>
     if (!item) return initialValue;
     try {
       const parsed = JSON.parse(item);
-      if (parsed.expiry && new Date().getTime() > parsed.expiry) {
+      if (expiryDays !== null && parsed.expiry && new Date().getTime() > parsed.expiry) {
         localStorage.removeItem(key);
         return initialValue;
       }
@@ -20,12 +20,11 @@ export const useLocalStorageWithExpiry = (key, initialValue, expiryDays = 30) =>
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const now = new Date();
-    const expiryDate = now.getTime() + expiryDays * 24 * 60 * 60 * 1000;
-    const item = {
-      value: value,
-      expiry: expiryDate,
-    };
+    const item = { value: value };
+    if (expiryDays !== null) {
+      const now = new Date();
+      item.expiry = now.getTime() + expiryDays * 24 * 60 * 60 * 1000;
+    }
     localStorage.setItem(key, JSON.stringify(item));
   }, [key, value, expiryDays]);
 

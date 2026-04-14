@@ -1,4 +1,5 @@
 // utils/helpers.ts
+
 export const getWeekdays = (year: number, month: number): number => {
   let count = 0;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -9,34 +10,26 @@ export const getWeekdays = (year: number, month: number): number => {
   return count;
 };
 
-export function formatWorkDaysWord(count: number): string {
+const pluralize = (count: number, words: [string, string, string]): string => {
   const lastDigit = count % 10;
   const lastTwoDigits = count % 100;
 
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return "буд. днів";
-  if (lastDigit === 1) return "буд. день";
-  if (lastDigit >= 2 && lastDigit <= 4) return "буд. дні";
-  return "буд. днів";
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return words[2];
+  if (lastDigit === 1) return words[0];
+  if (lastDigit >= 2 && lastDigit <= 4) return words[1];
+  return words[2];
+};
+
+export function formatWorkDaysWord(count: number): string {
+  return pluralize(count, ["буд. день", "буд. дні", "буд. днів"]);
 }
 
 export function formatDaysWord(count: number): string {
-  const lastDigit = count % 10;
-  const lastTwoDigits = count % 100;
-
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return "днів";
-  if (lastDigit === 1) return "день";
-  if (lastDigit >= 2 && lastDigit <= 4) return "дні";
-  return "днів";
+  return pluralize(count, ["день", "дні", "днів"]);
 }
 
 export function formatHoursWord(count: number): string {
-  const lastDigit = count % 10;
-  const lastTwoDigits = count % 100;
-
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return "годин";
-  if (lastDigit === 1) return "година";
-  if (lastDigit >= 2 && lastDigit <= 4) return "години";
-  return "годин";
+  return pluralize(count, ["година", "години", "годин"]);
 }
 
 export const fetchUsdRate = async (
@@ -61,4 +54,11 @@ export const fetchUsdRate = async (
     }
   }
   return null;
+};
+
+export const formatCurrency = (val: number | string | any): string | any => {
+  if (val == null || typeof val.toFixed !== "function") return val;
+
+  const fixedStr = val.toFixed(2);
+  return fixedStr.endsWith(".00") ? fixedStr.slice(0, -3) : fixedStr;
 };
