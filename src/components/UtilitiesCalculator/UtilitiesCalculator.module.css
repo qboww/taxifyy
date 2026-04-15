@@ -58,11 +58,11 @@
 
 .utilityCard {
   background: rgba(255, 255, 255, 0.05);
-  padding: 14px;
+  padding: 16px 20px;
   border-radius: 12px;
-  min-width: min(340px, 86vw);
-  max-width: 340px;
-  flex: 0 0 min(340px, 86vw);  
+  min-width: 100%;
+  flex: 0 0 100%;
+  box-sizing: border-box;
   scroll-snap-align: center; 
   scroll-snap-stop: always;
 }

@@ -226,7 +226,7 @@ export default function UtilitiesCalculator() {
               </div>
               <div className={styles.cardFieldRow}>
                 <FormInput
-                  label="Попередній показник"
+                  label="Минулий показник"
                   type="number"
                   value={utilities[item.key].prev}
                   placeholder="0"
