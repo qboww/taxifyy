@@ -14,8 +14,8 @@ import {
 import { format, subMonths, startOfMonth } from "date-fns";
 
 import { fetchUsdRate } from "../../../utils/helpers";
-import FormInput from "../FormInput/FormInput";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
+import FormInput from "../../UI/FormInput/FormInput";
+import ToggleSwitch from "../../UI/ToggleSwitch/ToggleSwitch";
 import styles from "./Statistics.module.css";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
