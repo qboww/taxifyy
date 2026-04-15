@@ -1,21 +1,21 @@
 import { useEffect, useState, useRef } from "react";
-import { getWeekdays, fetchUsdRate } from "../../utils/helpers";
+import { getWeekdays, fetchUsdRate } from "../../../utils/helpers";
 // @ts-ignore
-import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
+import { useLocalStorageWithExpiry } from "../../../utils/useLocalStorageWithExpiry";
 // @ts-ignore
-import { StaticCalendar } from "../UI/StaticCalendar/StaticCalendar";
+import { StaticCalendar } from "../../UI/StaticCalendar/StaticCalendar";
 import { MdCurrencyExchange, MdContentPaste } from "react-icons/md";
 // @ts-ignore
-import CalendarStats from "../UI/CalendarStats/CalendarStats";
+import CalendarStats from "../../UI/CalendarStats/CalendarStats";
 // @ts-ignore
-import FormInput from "../UI/FormInput/FormInput";
+import FormInput from "../../UI/FormInput/FormInput";
 // @ts-ignore
-import Button from "../UI/Button/Button";
+import Button from "../../UI/Button/Button";
 // @ts-ignore
-import Paycheck from "../UI/Paycheck/Paycheck";
+import Paycheck from "../../UI/Paycheck/Paycheck";
 
-import { REPORT_PERIODS } from "../../utils/constants";
-import { calculateTaxes, calculateNetIncome } from "../../utils/taxCalculator";
+import { REPORT_PERIODS } from "../../../utils/constants";
+import { calculateTaxes, calculateNetIncome } from "../../../utils/taxCalculator";
 
 import styles from "./IncomeCalculator.module.css";
 

@@ -4,10 +4,10 @@ import { FaGithub, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
 
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
-import IncomeCalculator from "../IncomeCalculator/IncomeCalculator";
-import TaxCalculator from "../TaxCalculator/TaxCalculator";
-import UtilitiesCalculator from "../UtilitiesCalculator/UtilitiesCalculator";
-import Statistics from "../Statistics/Statistics";
+import IncomeCalculator from "../Forms/IncomeCalculator/IncomeCalculator";
+import TaxCalculator from "../Forms/TaxCalculator/TaxCalculator";
+import UtilitiesCalculator from "../Forms/UtilitiesCalculator/UtilitiesCalculator";
+import Statistics from "../Forms/Statistics/Statistics";
 
 import "./App.css";
 

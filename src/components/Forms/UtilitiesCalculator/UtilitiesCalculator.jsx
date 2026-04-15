@@ -1,10 +1,10 @@
 import { useMemo, useRef, useState, useEffect } from "react";
-import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
-import FormInput from "../UI/FormInput/FormInput";
-import Button from "../UI/Button/Button";
-import Paycheck from "../UI/Paycheck/Paycheck";
+import { useLocalStorageWithExpiry } from "../../../utils/useLocalStorageWithExpiry";
+import FormInput from "../../UI/FormInput/FormInput";
+import Button from "../../UI/Button/Button";
+import Paycheck from "../../UI/Paycheck/Paycheck";
 import { FaPlus, FaTrash } from "react-icons/fa";
-import { formatCurrency } from "../../utils/helpers";
+import { formatCurrency } from "../../../utils/helpers";
 
 import styles from "./UtilitiesCalculator.module.css";
 

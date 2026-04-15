@@ -1,9 +1,9 @@
 import styles from "./TaxCalculator.module.css";
-import FormInput from "../UI/FormInput/FormInput";
-import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
-import { REPORT_PERIODS } from "../../utils/constants";
-import { useTaxCalculations } from "../../hooks/useTaxCalculations";
-import Paycheck from "../UI/Paycheck/Paycheck";
+import FormInput from "../../UI/FormInput/FormInput";
+import ToggleSwitch from "../../UI/ToggleSwitch/ToggleSwitch";
+import { REPORT_PERIODS } from "../../../utils/constants";
+import { useTaxCalculations } from "../../../hooks/useTaxCalculations";
+import Paycheck from "../../UI/Paycheck/Paycheck";
 
 export default function StatisticsTaxCalculator({
   income,
