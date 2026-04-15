@@ -1,6 +1,7 @@
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { REPORT_PERIODS } from "../../utils/constants";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useState } from "react";
 
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
 import IncomeCalculator from "../IncomeCalculator/IncomeCalculator";
@@ -25,6 +26,7 @@ export default function App() {
     ""
   );
   const [activeTab, setActiveTab] = useLocalStorageWithExpiry("taxCalc_activeTab", "income");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleTransfer = (uah) => {
     if (!uah) return;
@@ -67,25 +69,37 @@ export default function App() {
 
       {renderActiveTab()}
 
-      <a
-        href="https://github.com/qboww/taxifyy"
-        className="github-link"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Відкрити репозиторій на GitHub"
-      >
-        <FaGithub size={34} />
-      </a>
+      <div className={`side-drawer-container ${isMenuOpen ? "open" : ""}`}>
+        <button
+          className="drawer-toggle"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle links"
+        >
+          {isMenuOpen ? <FaChevronRight size={16} /> : <FaChevronLeft size={16} />}
+        </button>
 
-      <a
-        href="https://send.monobank.ua/jar/LHAfJ6J5c"
-        className="monojar-link"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Відкрити моно-банку"
-      >
-        <img src="/jar.png" alt="MonoJar" width="40" height="40" />
-      </a>
+        <div className="drawer-menu">
+          <a
+            href="https://github.com/qboww/taxifyy"
+            className="drawer-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Відкрити репозиторій на GitHub"
+          >
+            <FaGithub size={24} />
+          </a>
+
+          <a
+            href="https://send.monobank.ua/jar/LHAfJ6J5c"
+            className="drawer-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Відкрити моно-банку"
+          >
+            <img src="/jar.png" alt="MonoJar" width="24" height="24" />
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

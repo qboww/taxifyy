@@ -78,3 +78,66 @@ input[type="number"] {
   color: var(--text-dark);
   margin-top: 24px;
 }
+
+.side-drawer-container {
+  position: fixed;
+  bottom: 30px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  z-index: 999;
+  transform: translateX(calc(100% - 20px));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.side-drawer-container.open {
+  transform: translateX(0);
+}
+
+.drawer-toggle {
+  width: 20px;
+  height: 48px;
+  background: rgba(40, 40, 40, 0.80);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.drawer-toggle:hover {
+  background: rgba(60, 60, 60, 1);
+}
+
+.drawer-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  height: 48px;
+  background: rgba(40, 40, 40, 0.95);
+  padding: 0 12px 0 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+}
+
+.drawer-link {
+  color: white;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.drawer-link:hover {
+  opacity: 1;
+  color: var(--vite);
+  transform: scale(1.1);
+}
