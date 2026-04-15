@@ -246,7 +246,7 @@ export default function UtilitiesCalculator() {
                 label={item.tariffLabel}
                 type="number"
                 value={utilities[item.key].tariff}
-                placeholder="0"
+                placeholder="Введіть тариф"
                 className={styles.tariffInput}
                 onChange={(value) => updateUtility(item.key, "tariff", value)}
               />
@@ -284,7 +284,7 @@ export default function UtilitiesCalculator() {
             <div key={payment.id} className={styles.paymentRow}>
               <FormInput
                 value={payment.name}
-                placeholder="Сміття, газ або інше"
+                placeholder="Сміття, інше"
                 onChange={(value) => updatePayment(payment.id, "name", value)}
               />
               <FormInput
