@@ -96,7 +96,7 @@ input[type="number"] {
 
 .drawer-toggle {
   width: 20px;
-  height: 48px;
+  height: 60px;
   background: rgba(40, 40, 40, 0.80);
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-right: none;
