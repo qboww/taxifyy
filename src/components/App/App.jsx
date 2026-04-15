@@ -7,7 +7,7 @@ import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
 import IncomeCalculator from "../Forms/IncomeCalculator/IncomeCalculator";
 import TaxCalculator from "../Forms/TaxCalculator/TaxCalculator";
 import UtilitiesCalculator from "../Forms/UtilitiesCalculator/UtilitiesCalculator";
-import Statistics from "../Forms/Statistics/Statistics";
+import Statistics from "../UI/Statistics/Statistics";
 
 import "./App.css";
 
