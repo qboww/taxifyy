@@ -2,6 +2,7 @@ import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry
 import { REPORT_PERIODS } from "../../utils/constants";
 import { FaGithub, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useState } from "react";
+import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
 import IncomeCalculator from "../Forms/IncomeCalculator/IncomeCalculator";
@@ -18,6 +19,13 @@ const TAB_OPTIONS = [
   { label: "Житло", value: "utilities" },
 ];
 
+const ROUTE_MAP = {
+  income: "/income",
+  taxes: "/taxes",
+  exchange: "/exchange",
+  utilities: "/utilities",
+};
+
 export default function App() {
   const [income, setIncome] = useLocalStorageWithExpiry("taxCalc_income", "");
   const [mode, setMode] = useLocalStorageWithExpiry("taxCalc_mode", REPORT_PERIODS.MONTH);
@@ -25,49 +33,56 @@ export default function App() {
     "taxCalc_quarterlyIncome",
     ""
   );
-  const [activeTab, setActiveTab] = useLocalStorageWithExpiry("taxCalc_activeTab", "income");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Get current tab from URL path
+  const getCurrentTab = () => {
+    const path = location.pathname.slice(1); // Remove leading slash
+    return path || "income";
+  };
 
   const handleTransfer = (uah) => {
     if (!uah) return;
     setIncome(uah.toFixed(2));
     setMode(REPORT_PERIODS.MONTH);
-    setActiveTab("taxes");
+    navigate("/taxes");
   };
 
-  const renderActiveTab = () => {
-    switch (activeTab) {
-      case "income":
-        return <IncomeCalculator onTransfer={handleTransfer} />;
-
-      case "taxes":
-        return (
-          <TaxCalculator
-            income={income}
-            setIncome={setIncome}
-            mode={mode}
-            setMode={setMode}
-            quarterlyIncome={quarterlyIncome}
-            setQuarterlyIncome={setQuarterlyIncome}
-          />
-        );
-
-      case "utilities":
-        return <UtilitiesCalculator />;
-
-      case "exchange":
-        return <Statistics />;
-
-      default:
-        return <IncomeCalculator onTransfer={handleTransfer} />;
-    }
+  const handleTabChange = (tabValue) => {
+    navigate(ROUTE_MAP[tabValue]);
   };
 
   return (
     <div className="app">
-      <ToggleSwitch options={TAB_OPTIONS} value={activeTab} onChange={setActiveTab} center />
+      <ToggleSwitch
+        options={TAB_OPTIONS}
+        value={getCurrentTab()}
+        onChange={handleTabChange}
+        center
+      />
 
-      {renderActiveTab()}
+      <Routes>
+        <Route path="/income" element={<IncomeCalculator onTransfer={handleTransfer} />} />
+        <Route
+          path="/taxes"
+          element={
+            <TaxCalculator
+              income={income}
+              setIncome={setIncome}
+              mode={mode}
+              setMode={setMode}
+              quarterlyIncome={quarterlyIncome}
+              setQuarterlyIncome={setQuarterlyIncome}
+            />
+          }
+        />
+        <Route path="/utilities" element={<UtilitiesCalculator />} />
+        <Route path="/exchange" element={<Statistics />} />
+        {/* Redirect root to income */}
+        <Route path="/" element={<Navigate to="/income" replace />} />
+      </Routes>
 
       <div className={`side-drawer-container ${isMenuOpen ? "open" : ""}`}>
         <button
