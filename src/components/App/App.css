@@ -18,7 +18,7 @@
 }
 
 .settings-btn {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--vite);
   border: 1px solid var(--vite);
   color: var(--vite);
   width: 48px;
@@ -33,7 +33,6 @@
 }
 
 .settings-btn:hover {
-  background: rgba(112, 138, 88, 0.1);
   color: var(--vite-dark);
   border-color: var(--vite-dark);
 }
