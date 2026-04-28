@@ -56,6 +56,31 @@ export const fetchUsdRate = async (
   return null;
 };
 
+export const fetchExchangeRate = async (
+  currency: string,
+  signal: AbortSignal,
+  date: Date = new Date()
+): Promise<{ rate: number; exchangedate: string } | null> => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  const formattedDate = `${yyyy}${mm}${dd}`;
+  const url = `https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=${currency}&date=${formattedDate}&json`;
+
+  try {
+    const res = await fetch(url, { signal });
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0 && data[0].rate) {
+      return { rate: Number(data[0].rate), exchangedate: data[0].exchangedate };
+    }
+  } catch (err) {
+    if ((err as Error).name !== "AbortError") {
+      console.error(`fetch${currency}Rate error`, err);
+    }
+  }
+  return null;
+};
+
 export const formatCurrency = (val: number | string | any): string | any => {
   if (val == null || typeof val.toFixed !== "function") return val;
 

@@ -13,16 +13,16 @@ import {
 
 import { format, subMonths, startOfMonth } from "date-fns";
 
-import { fetchUsdRate } from "../../../utils/helpers";
+import { fetchExchangeRate } from "../../../utils/helpers";
 import FormInput from "../../UI/FormInput/FormInput";
 import ToggleSwitch from "../../UI/ToggleSwitch/ToggleSwitch";
 import styles from "./Statistics.module.css";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export default function Statistics() {
+export default function Statistics({ currency = "USD" }) {
   const [uah, setUah] = useState("");
-  const [usd, setUsd] = useState("");
+  const [foreign, setForeign] = useState("");
   const [todayRate, setTodayRate] = useState(null);
   const [chartPeriod, setChartPeriod] = useState("week");
   const [chartData, setChartData] = useState([]);
@@ -32,7 +32,7 @@ export default function Statistics() {
   // Отримати курс на сьогодні
   useEffect(() => {
     const controller = new AbortController();
-    fetchUsdRate(controller.signal)
+    fetchExchangeRate(currency, controller.signal)
       .then((rate) => {
         setTodayRate(rate);
         setLoadingError(false);
@@ -43,7 +43,7 @@ export default function Statistics() {
         setTodayRate(null);
       });
     return () => controller.abort();
-  }, []);
+  }, [currency]);
 
   // Завантаження даних для графіку
   useEffect(() => {
@@ -57,20 +57,20 @@ export default function Statistics() {
         for (let i = 6; i >= 0; i--) {
           const d = new Date();
           d.setDate(today.getDate() - i);
-          promises.push(fetchUsdRate(controller.signal, d));
+          promises.push(fetchExchangeRate(currency, controller.signal, d));
         }
       } else if (chartPeriod === "month") {
         // Отримуємо дані за останні 30 днів
         for (let i = 29; i >= 0; i--) {
           const d = new Date();
           d.setDate(today.getDate() - i);
-          promises.push(fetchUsdRate(controller.signal, d));
+          promises.push(fetchExchangeRate(currency, controller.signal, d));
         }
       } else if (chartPeriod === "year") {
         // Отримуємо дані за останні 12 місяців (перший день кожного місяця)
         for (let i = 11; i >= 0; i--) {
           const d = startOfMonth(subMonths(today, i));
-          promises.push(fetchUsdRate(controller.signal, d));
+          promises.push(fetchExchangeRate(currency, controller.signal, d));
         }
       }
 
@@ -91,29 +91,29 @@ export default function Statistics() {
 
     loadRates();
     return () => controller.abort();
-  }, [chartPeriod]);
+  }, [chartPeriod, currency]);
 
-  // Синхронізація UAH → USD
+  // Синхронізація UAH → Currency
   useEffect(() => {
     if (todayRate && lastChanged === "uah") {
       if (uah === "" || isNaN(uah)) {
-        setUsd("");
+        setForeign("");
       } else {
-        setUsd((uah / todayRate.rate).toFixed(2));
+        setForeign((uah / todayRate.rate).toFixed(2));
       }
     }
   }, [uah, todayRate, lastChanged]);
 
-  // Синхронізація USD → UAH
+  // Синхронізація Currency → UAH
   useEffect(() => {
-    if (todayRate && lastChanged === "usd") {
-      if (usd === "" || isNaN(usd)) {
+    if (todayRate && lastChanged === "foreign") {
+      if (foreign === "" || isNaN(foreign)) {
         setUah("");
       } else {
-        setUah((usd * todayRate.rate).toFixed(2));
+        setUah((foreign * todayRate.rate).toFixed(2));
       }
     }
-  }, [usd, todayRate, lastChanged]);
+  }, [foreign, todayRate, lastChanged]);
 
   // Форматування дати для міток графіка
   const formatChartLabel = (dateString) => {
@@ -136,7 +136,7 @@ export default function Statistics() {
     labels: chartData.map((d) => formatChartLabel(d.date)),
     datasets: [
       {
-        label: "Курс USD",
+        label: `Курс ${currency}`,
         data: chartData.map((d) => d.rate),
         borderColor: "#708A58",
         backgroundColor: "#2D4F2B",
@@ -200,7 +200,7 @@ export default function Statistics() {
           <p className={styles.errorMessage}>Не вдалося завантажити курс НБУ. Спробуйте пізніше.</p>
         ) : todayRate ? (
           <p className={styles.todayRate}>
-            Курс НБУ: {todayRate.rate} грн за $1 ({todayRate.exchangedate})
+            Курс НБУ: {todayRate.rate} грн за 1 {currency} ({todayRate.exchangedate})
           </p>
         ) : (
           <p className={styles.loadingMessage}>Завантаження курсу...</p>
@@ -221,13 +221,13 @@ export default function Statistics() {
         />
         <FormInput
           type="number"
-          value={usd}
+          value={foreign}
           onChange={(val) => {
-            setUsd(val);
-            setLastChanged("usd");
+            setForeign(val);
+            setLastChanged("foreign");
           }}
-          placeholder="Сума в доларах"
-          label="Сума (USD):"
+          placeholder={`Сума в ${currency.toLowerCase()}`}
+          label={`Сума (${currency}):`}
           disabled={!todayRate || loadingError}
         />
       </div>

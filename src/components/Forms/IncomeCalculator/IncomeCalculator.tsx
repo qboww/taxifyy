@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { getWeekdays, fetchUsdRate } from "../../../utils/helpers";
+import { getWeekdays, fetchUsdRate, fetchExchangeRate } from "../../../utils/helpers";
 // @ts-ignore
 import { useLocalStorageWithExpiry } from "../../../utils/useLocalStorageWithExpiry";
 // @ts-ignore
@@ -21,9 +21,10 @@ import styles from "./IncomeCalculator.module.css";
 
 interface IncomeCalculatorProps {
   onTransfer: (income: number) => void;
+  currency?: string;
 }
 
-export default function IncomeCalculator({ onTransfer }: IncomeCalculatorProps) {
+export default function IncomeCalculator({ onTransfer, currency = "USD" }: IncomeCalculatorProps) {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
@@ -43,8 +44,8 @@ export default function IncomeCalculator({ onTransfer }: IncomeCalculatorProps) 
   const [customRate, setCustomRate] = useLocalStorageWithExpiry("incomeCalc_customRate", 0);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
-  const [usdRate, setUsdRate] = useState<number | null>(null);
-  const [usdDate, setUsdDate] = useState<string | null>(null);
+  const [exchangeRate, setExchangeRate] = useState<number | null>(null);
+  const [exchangeDate, setExchangeDate] = useState<string | null>(null);
 
   const handleSyncHours = (hours: number) => {
     setHoursWorked(hours);
@@ -52,10 +53,10 @@ export default function IncomeCalculator({ onTransfer }: IncomeCalculatorProps) 
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchUsdRate(controller.signal).then((res: any) => {
+    fetchExchangeRate(currency, controller.signal).then((res: any) => {
       if (res?.rate) {
-        setUsdRate(res.rate);
-        setUsdDate(res.exchangedate);
+        setExchangeRate(res.rate);
+        setExchangeDate(res.exchangedate);
         if (!customRate) {
           setCustomRate(res.rate);
         }
@@ -63,9 +64,9 @@ export default function IncomeCalculator({ onTransfer }: IncomeCalculatorProps) 
     });
 
     return () => controller.abort();
-  }, [customRate, setCustomRate]);
+  }, [customRate, setCustomRate, currency]);
 
-  const rateToUse = customRate || usdRate || 0;
+  const rateToUse = customRate || exchangeRate || 0;
   const gross = hoursWorked * hourlyRateUsd * rateToUse;
 
   const taxData = calculateTaxes({ income: gross, quarterlyIncome: 0, mode: REPORT_PERIODS.MONTH });
@@ -103,7 +104,7 @@ export default function IncomeCalculator({ onTransfer }: IncomeCalculatorProps) 
           onChange={(value: string) => setHoursWorked(Number(value))}
         />
         <FormInput
-          label="Рейт (USD/год):"
+          label={`Рейт (${currency}/год):`}
           type="number"
           placeholder="Власний рейт"
           value={hourlyRateUsd}
@@ -112,7 +113,8 @@ export default function IncomeCalculator({ onTransfer }: IncomeCalculatorProps) 
       </div>
 
       <label className={styles.label}>
-        USD НБУ {usdDate || "..."}: {usdRate ? `${usdRate} грн` : "(завантаження...)"}
+        Курс {currency} НБУ {exchangeDate || "..."}:{" "}
+        {exchangeRate ? `${exchangeRate} грн` : "(завантаження...)"}
         <div className={styles.rateWrapper}>
           <FormInput
             type="number"
@@ -120,12 +122,12 @@ export default function IncomeCalculator({ onTransfer }: IncomeCalculatorProps) 
             value={customRate}
             onChange={(value: string) => setCustomRate(Number(value))}
           />
-          {usdRate && customRate !== usdRate && (
+          {exchangeRate && customRate !== exchangeRate && (
             <Button
-              onClick={() => setCustomRate(usdRate)}
+              onClick={() => setCustomRate(exchangeRate)}
               variant="icon"
               icon={MdContentPaste}
-              disabled={!usdRate || customRate === usdRate}
+              disabled={!exchangeRate || customRate === exchangeRate}
             />
           )}
           <Button

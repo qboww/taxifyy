@@ -1,10 +1,12 @@
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { REPORT_PERIODS } from "../../utils/constants";
-import { FaGithub, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaGithub, FaChevronLeft, FaChevronRight, FaCog } from "react-icons/fa";
 import { useState } from "react";
 import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
+import SettingsModal from "../UI/Settings/SettingsModal";
+import Button from "../UI/Button/Button";
 import IncomeCalculator from "../Forms/IncomeCalculator/IncomeCalculator";
 import TaxCalculator from "../Forms/TaxCalculator/TaxCalculator";
 import UtilitiesCalculator from "../Forms/UtilitiesCalculator/UtilitiesCalculator";
@@ -33,7 +35,9 @@ export default function App() {
     "taxCalc_quarterlyIncome",
     ""
   );
+  const [currency, setCurrency] = useLocalStorageWithExpiry("taxCalc_currency", "USD");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -56,15 +60,34 @@ export default function App() {
 
   return (
     <div className="app">
-      <ToggleSwitch
-        options={TAB_OPTIONS}
-        value={getCurrentTab()}
-        onChange={handleTabChange}
-        center
+      <div className="app-header">
+        <ToggleSwitch
+          options={TAB_OPTIONS}
+          value={getCurrentTab()}
+          onChange={handleTabChange}
+          center
+        />
+        <Button
+          icon={FaCog}
+          onClick={() => setIsSettingsOpen(true)}
+          aria-label="Settings"
+          title="Налаштування"
+          className="settings-btn"
+        />
+      </div>
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        currency={currency}
+        onCurrencyChange={setCurrency}
       />
 
       <Routes>
-        <Route path="/income" element={<IncomeCalculator onTransfer={handleTransfer} />} />
+        <Route
+          path="/income"
+          element={<IncomeCalculator onTransfer={handleTransfer} currency={currency} />}
+        />
         <Route
           path="/taxes"
           element={
@@ -79,7 +102,7 @@ export default function App() {
           }
         />
         <Route path="/utilities" element={<UtilitiesCalculator />} />
-        <Route path="/exchange" element={<Statistics />} />
+        <Route path="/exchange" element={<Statistics currency={currency} />} />
         {/* Redirect root to income */}
         <Route path="/" element={<Navigate to="/income" replace />} />
       </Routes>
