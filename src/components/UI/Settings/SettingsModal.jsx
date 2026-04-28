@@ -1,13 +1,27 @@
 import { FaTimes } from "react-icons/fa";
 import styles from "./SettingsModal.module.css";
 
-const CURRENCY_OPTIONS = [
+const INCOME_CURRENCY_OPTIONS = [
+  { label: "USD", value: "USD" },
+  { label: "EUR", value: "EUR" },
+  { label: "PLN", value: "PLN" },
+  { label: "UAH", value: "UAH" },
+];
+
+const EXCHANGE_CURRENCY_OPTIONS = [
   { label: "USD", value: "USD" },
   { label: "EUR", value: "EUR" },
   { label: "PLN", value: "PLN" },
 ];
 
-export default function SettingsModal({ isOpen, onClose, currency, onCurrencyChange }) {
+export default function SettingsModal({
+  isOpen,
+  onClose,
+  incomeCurrency,
+  onIncomeCurrencyChange,
+  exchangeCurrency,
+  onExchangeCurrencyChange,
+}) {
   if (!isOpen) return null;
 
   return (
@@ -22,15 +36,32 @@ export default function SettingsModal({ isOpen, onClose, currency, onCurrencyCha
 
         <div className={styles.content}>
           <div className={styles.setting}>
-            <label>Валюта:</label>
+            <label>Валюта розрахунку доходу:</label>
             <div className={styles.currencyOptions}>
-              {CURRENCY_OPTIONS.map((option) => (
+              {INCOME_CURRENCY_OPTIONS.map((option) => (
                 <button
                   key={option.value}
                   className={`${styles.currencyBtn} ${
-                    currency === option.value ? styles.active : ""
+                    incomeCurrency === option.value ? styles.active : ""
                   }`}
-                  onClick={() => onCurrencyChange(option.value)}
+                  onClick={() => onIncomeCurrencyChange(option.value)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.setting}>
+            <label>Валюта для обміну:</label>
+            <div className={styles.currencyOptions}>
+              {EXCHANGE_CURRENCY_OPTIONS.map((option) => (
+                <button
+                  key={option.value}
+                  className={`${styles.currencyBtn} ${
+                    exchangeCurrency === option.value ? styles.active : ""
+                  }`}
+                  onClick={() => onExchangeCurrencyChange(option.value)}
                 >
                   {option.label}
                 </button>

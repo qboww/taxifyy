@@ -35,7 +35,14 @@ export default function App() {
     "taxCalc_quarterlyIncome",
     ""
   );
-  const [currency, setCurrency] = useLocalStorageWithExpiry("taxCalc_currency", "USD");
+  const [incomeCurrency, setIncomeCurrency] = useLocalStorageWithExpiry(
+    "taxCalc_incomeCurrency",
+    "USD"
+  );
+  const [exchangeCurrency, setExchangeCurrency] = useLocalStorageWithExpiry(
+    "taxCalc_exchangeCurrency",
+    "USD"
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const location = useLocation();
@@ -79,14 +86,16 @@ export default function App() {
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
-        currency={currency}
-        onCurrencyChange={setCurrency}
+        incomeCurrency={incomeCurrency}
+        onIncomeCurrencyChange={setIncomeCurrency}
+        exchangeCurrency={exchangeCurrency}
+        onExchangeCurrencyChange={setExchangeCurrency}
       />
 
       <Routes>
         <Route
           path="/income"
-          element={<IncomeCalculator onTransfer={handleTransfer} currency={currency} />}
+          element={<IncomeCalculator onTransfer={handleTransfer} currency={incomeCurrency} />}
         />
         <Route
           path="/taxes"
@@ -102,7 +111,7 @@ export default function App() {
           }
         />
         <Route path="/utilities" element={<UtilitiesCalculator />} />
-        <Route path="/exchange" element={<Statistics currency={currency} />} />
+        <Route path="/exchange" element={<Statistics currency={exchangeCurrency} />} />
         {/* Redirect root to income */}
         <Route path="/" element={<Navigate to="/income" replace />} />
       </Routes>

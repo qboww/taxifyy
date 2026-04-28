@@ -226,7 +226,7 @@ export default function Statistics({ currency = "USD" }) {
             setForeign(val);
             setLastChanged("foreign");
           }}
-          placeholder={`Сума в ${currency.toLowerCase()}`}
+          placeholder={`Сума в ${currency}`}
           label={`Сума (${currency}):`}
           disabled={!todayRate || loadingError}
         />
