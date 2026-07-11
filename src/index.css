@@ -4,6 +4,12 @@
   --bg-dark: #242424;
   --text-dark: rgba(255, 255, 255, 0.87);
   --border-dark: rgba(255, 255, 255, 0.2);
+  --bg-panel: #1d2124;
+  --bg-input: #23272f;
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --holiday-olive: #7a8b5b;
+  --holiday-olive-contrast: #f5f6eb;
+  --tooltip-bg: #181c1f;
 
   font-family: "Poppins", sans-serif;
   color-scheme: light dark;
@@ -11,6 +17,17 @@
   line-height: 1.5;
   background-color: var(--bg-dark);
   color: rgba(255, 255, 255, 0.87);
+
+  --calendar-holiday: #6d7f5e; /* muted moss green */
+  --calendar-holiday-text: #eaf3e2;
+  --calendar-holiday-transfer: #bfa96a; /* desaturated amber */
+  --calendar-holiday-transfer-text: #f7f3e7;
+  --calendar-weekend: #3a4635; /* soft olive */
+  --calendar-weekend-text: #bfcab3;
+  --calendar-selected: #7e9e6c; /* olive accent */
+  --calendar-selected-text: #fff;
+  --calendar-today-outline: #bfa96a;
+  --calendar-hover: #23272f;
 }
 
 body {

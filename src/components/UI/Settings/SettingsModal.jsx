@@ -1,5 +1,7 @@
 import { FaTimes } from "react-icons/fa";
 import styles from "./SettingsModal.module.css";
+import { HOLIDAY_COUNTRIES } from "../../../utils/holidayCountries";
+import DropdownSelect from "../DropdownSelect/DropdownSelect";
 
 const INCOME_CURRENCY_OPTIONS = [
   { label: "USD", value: "USD" },
@@ -21,6 +23,9 @@ export default function SettingsModal({
   onIncomeCurrencyChange,
   exchangeCurrency,
   onExchangeCurrencyChange,
+  holidayCountry,
+  onHolidayCountryChange,
+  detectedHolidayCountry,
 }) {
   if (!isOpen) return null;
 
@@ -35,6 +40,24 @@ export default function SettingsModal({
         </div>
 
         <div className={styles.content}>
+          <div className={styles.setting}>
+            <label>Країна для свят (державні вихідні):</label>
+            <DropdownSelect
+              value={holidayCountry}
+              onChange={onHolidayCountryChange}
+              options={HOLIDAY_COUNTRIES.map((c) => ({
+                value: c.code,
+                label: `${c.name}${detectedHolidayCountry === c.code ? " (авто)" : ""}`,
+              }))}
+              placeholder="Оберіть країну"
+            />
+            {detectedHolidayCountry && detectedHolidayCountry !== holidayCountry && (
+              <div className={styles.hint}>
+                Автоматично визначено:{" "}
+                {HOLIDAY_COUNTRIES.find((c) => c.code === detectedHolidayCountry)?.name}
+              </div>
+            )}
+          </div>
           <div className={styles.setting}>
             <label>Валюта розрахунку доходу:</label>
             <div className={styles.currencyOptions}>

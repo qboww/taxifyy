@@ -2,6 +2,7 @@ import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry
 import { REPORT_PERIODS } from "../../utils/constants";
 import { FaGithub, FaChevronLeft, FaChevronRight, FaCog } from "react-icons/fa";
 import { useState } from "react";
+import { useHolidaySettings } from "../../utils/useHolidaySettings";
 import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 
 import ToggleSwitch from "../UI/ToggleSwitch/ToggleSwitch";
@@ -48,6 +49,13 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Holiday country/region settings
+  const {
+    country: holidayCountry,
+    setCountry: setHolidayCountry,
+    detected: detectedHolidayCountry,
+  } = useHolidaySettings();
+
   // Get current tab from URL path
   const getCurrentTab = () => {
     const path = location.pathname.slice(1); // Remove leading slash
@@ -90,6 +98,9 @@ export default function App() {
         onIncomeCurrencyChange={setIncomeCurrency}
         exchangeCurrency={exchangeCurrency}
         onExchangeCurrencyChange={setExchangeCurrency}
+        holidayCountry={holidayCountry}
+        onHolidayCountryChange={setHolidayCountry}
+        detectedHolidayCountry={detectedHolidayCountry}
       />
 
       <Routes>
