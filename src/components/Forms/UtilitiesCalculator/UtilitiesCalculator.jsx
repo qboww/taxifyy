@@ -26,9 +26,9 @@ const formatRate = (prev, current, tariff, unit) => {
 };
 
 const utilityItems = [
-  { key: "heating", title: "Опалення", unit: "м³", tariffLabel: "Тариф (грн/м³)" },
-  { key: "electricity", title: "Електрика", unit: "kWh", tariffLabel: "Тариф (грн/kWh)" },
-  { key: "water", title: "Вода", unit: "м³", tariffLabel: "Тариф (грн/м³)" },
+  { key: "heating", title: "Опалення", unit: "м³", tariffLabel: "Тариф (грн/м³):" },
+  { key: "electricity", title: "Електрика", unit: "kWh", tariffLabel: "Тариф (грн/kWh):" },
+  { key: "water", title: "Вода", unit: "м³", tariffLabel: "Тариф (грн/м³):" },
 ];
 
 const getConsumption = (prev, current) => Math.max(0, (Number(current) || 0) - (Number(prev) || 0));
@@ -239,10 +239,10 @@ export default function UtilitiesCalculator() {
               </div>
               <div className={styles.cardFieldRow}>
                 <FormInput
-                  label="Минулий показник"
+                  label="Було:"
                   type="number"
                   value={utilities[item.key].prev}
-                  placeholder="0"
+                  placeholder="Показник"
                   className={styles.halfInput}
                   onChange={(value) => updateUtility(item.key, "prev", value)}
                 />
@@ -256,10 +256,10 @@ export default function UtilitiesCalculator() {
                   />
                 </div>
                 <FormInput
-                  label="Поточний показник"
+                  label="Стало:"
                   type="number"
                   value={utilities[item.key].current}
-                  placeholder="0"
+                  placeholder="Показник"
                   className={styles.halfInput}
                   onChange={(value) => updateUtility(item.key, "current", value)}
                 />
