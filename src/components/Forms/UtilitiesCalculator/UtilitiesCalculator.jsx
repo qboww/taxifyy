@@ -8,6 +8,11 @@ import { formatCurrency } from "../../../utils/helpers";
 
 import styles from "./UtilitiesCalculator.module.css";
 
+// System icons that display as native platform icons
+const FireIcon = () => <span style={{ fontSize: "inherit" }}>🔥</span>;
+const ElectricityIcon = () => <span style={{ fontSize: "inherit" }}>⚡</span>;
+const WaterIcon = () => <span style={{ fontSize: "inherit" }}>💧</span>;
+
 const defaultUtilities = {
   water: { prev: 0, current: 0, tariff: 0 },
   heating: { prev: 0, current: 0, tariff: 0 },
@@ -26,9 +31,15 @@ const formatRate = (prev, current, tariff, unit) => {
 };
 
 const utilityItems = [
-  { key: "heating", title: "Опалення", unit: "м³", tariffLabel: "Тариф (грн/м³):" },
-  { key: "electricity", title: "Електрика", unit: "kWh", tariffLabel: "Тариф (грн/kWh):" },
-  { key: "water", title: "Вода", unit: "м³", tariffLabel: "Тариф (грн/м³):" },
+  { key: "heating", title: "Опалення", unit: "м³", tariffLabel: "Тариф (грн/м³):", Icon: FireIcon },
+  {
+    key: "electricity",
+    title: "Електрика",
+    unit: "kWh",
+    tariffLabel: "Тариф (грн/kWh):",
+    Icon: ElectricityIcon,
+  },
+  { key: "water", title: "Вода", unit: "м³", tariffLabel: "Тариф (грн/м³):", Icon: WaterIcon },
 ];
 
 const getConsumption = (prev, current) => Math.max(0, (Number(current) || 0) - (Number(prev) || 0));
@@ -227,6 +238,9 @@ export default function UtilitiesCalculator() {
               <div className={styles.cardHeader}>
                 <div className={styles.cardTitleRow}>
                   <h3>{item.title}</h3>
+                  <div className={styles.cardIcon}>
+                    <item.Icon />
+                  </div>
                 </div>
                 <p className={styles.cardMeta}>
                   {formatSummary(
