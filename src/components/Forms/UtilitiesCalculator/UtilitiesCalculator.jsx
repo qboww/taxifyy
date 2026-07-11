@@ -3,7 +3,7 @@ import { useLocalStorageWithExpiry } from "../../../utils/useLocalStorageWithExp
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
 import Paycheck from "../../UI/Paycheck/Paycheck";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrash, FaExchangeAlt } from "react-icons/fa";
 import { formatCurrency } from "../../../utils/helpers";
 
 import styles from "./UtilitiesCalculator.module.css";
@@ -69,6 +69,17 @@ export default function UtilitiesCalculator() {
             }
           : payment
       ),
+    }));
+  };
+
+  const advanceUtility = (section) => {
+    setUtilities((prev) => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        prev: Number(prev[section].current) || 0,
+        current: Number(prev[section].prev) || 0,
+      },
     }));
   };
 
@@ -214,7 +225,9 @@ export default function UtilitiesCalculator() {
               ref={(el) => (cardRefs.current[index] = el)}
             >
               <div className={styles.cardHeader}>
-                <h3>{item.title}</h3>
+                <div className={styles.cardTitleRow}>
+                  <h3>{item.title}</h3>
+                </div>
                 <p className={styles.cardMeta}>
                   {formatSummary(
                     utilities[item.key].prev,
@@ -233,6 +246,15 @@ export default function UtilitiesCalculator() {
                   className={styles.halfInput}
                   onChange={(value) => updateUtility(item.key, "prev", value)}
                 />
+                <div className={styles.buttonWrapper}>
+                  <label className={styles.invisibleLabel}>&nbsp;</label>
+                  <Button
+                    onClick={() => advanceUtility(item.key)}
+                    icon={FaExchangeAlt}
+                    aria-label={`Перенести показники для ${item.title}`}
+                    className={styles.swapButton}
+                  />
+                </div>
                 <FormInput
                   label="Поточний показник"
                   type="number"
