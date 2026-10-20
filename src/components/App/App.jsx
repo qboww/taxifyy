@@ -1,5 +1,6 @@
 import { useLocalStorageWithExpiry } from "../../utils/useLocalStorageWithExpiry";
 import { REPORT_PERIODS } from "../../utils/constants";
+import { HOLIDAY_COUNTRIES } from "../../utils/holidays";
 import { FaGithub, FaChevronLeft, FaChevronRight, FaCog } from "react-icons/fa";
 import { useState } from "react";
 import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
@@ -42,6 +43,11 @@ export default function App() {
   const [utilitiesCurrency, setUtilitiesCurrency] = useLocalStorageWithExpiry(
     "taxCalc_utilitiesCurrency",
     "UAH"
+  );
+  const [holidayCountry, setHolidayCountry] = useLocalStorageWithExpiry(
+    "calendar_holidayCountry",
+    "UA",
+    null
   );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -90,12 +96,20 @@ export default function App() {
         onIncomeCurrencyChange={setIncomeCurrency}
         utilitiesCurrency={utilitiesCurrency}
         onUtilitiesCurrencyChange={setUtilitiesCurrency}
+        holidayCountry={holidayCountry}
+        onHolidayCountryChange={setHolidayCountry}
       />
 
       <Routes>
         <Route
           path="/income"
-          element={<IncomeCalculator onTransfer={handleTransfer} currency={incomeCurrency} />}
+          element={
+            <IncomeCalculator
+              onTransfer={handleTransfer}
+              currency={incomeCurrency}
+              holidayCountry={holidayCountry}
+            />
+          }
         />
         <Route
           path="/taxes"

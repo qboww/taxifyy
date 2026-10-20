@@ -1,5 +1,6 @@
 import { FaTimes } from "react-icons/fa";
 import CurrencySelect from "../CurrencySelect/CurrencySelect";
+import { HOLIDAY_COUNTRIES } from "../../../utils/holidays";
 import styles from "./SettingsModal.module.css";
 
 const FOREIGN_CURRENCY_OPTIONS = [
@@ -20,6 +21,8 @@ export default function SettingsModal({
   onIncomeCurrencyChange,
   utilitiesCurrency,
   onUtilitiesCurrencyChange,
+  holidayCountry,
+  onHolidayCountryChange,
 }) {
   if (!isOpen) return null;
 
@@ -53,6 +56,15 @@ export default function SettingsModal({
             <small className={styles.settingHint}>
               Зміна валюти не конвертує вже збережені суми.
             </small>
+          </div>
+
+          <div className={styles.setting}>
+            <CurrencySelect
+              label="Країна свят у календарі:"
+              value={holidayCountry}
+              onChange={onHolidayCountryChange}
+              options={HOLIDAY_COUNTRIES}
+            />
           </div>
         </div>
       </div>

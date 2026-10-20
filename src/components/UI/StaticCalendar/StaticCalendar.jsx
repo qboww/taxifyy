@@ -1,18 +1,26 @@
 import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import { formatHoursWord } from "../../../utils/helpers";
+import { usePublicHolidays } from "../../../utils/holidays";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import styles from "./StaticCalendar.module.css";
 
 export const StaticCalendar = forwardRef(function StaticCalendar(
-  { year, month, today, onSyncHours },
+  { year, month, today, countryCode, currentYearHolidays, onSyncHours },
   ref
 ) {
   const [viewYear, setViewYear] = useState(year);
   const [viewMonth, setViewMonth] = useState(month);
   const [selectedDays, setSelectedDays] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
+  const { holidays: fetchedHolidays, loading, error } = usePublicHolidays(countryCode, viewYear);
   const dragMode = useRef(null);
   const calendarRef = useRef(null);
+  const holidays =
+    viewYear === year && currentYearHolidays?.length ? currentYearHolidays : fetchedHolidays;
+  const holidayMap = new Map(holidays.map((holiday) => [holiday.date, holiday]));
+  const monthHolidays = holidays.filter((holiday) =>
+    holiday.date.startsWith(`${viewYear}-${String(viewMonth + 1).padStart(2, "0")}-`)
+  );
 
   useImperativeHandle(ref, () => ({
     syncHoursToParent: () => {
@@ -126,14 +134,27 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
           today.getFullYear() === viewYear &&
           today.getMonth() === viewMonth &&
           today.getDate() === dayNum;
+        const dateKey = [
+          viewYear,
+          String(viewMonth + 1).padStart(2, "0"),
+          String(dayNum).padStart(2, "0"),
+        ].join("-");
+        const holiday = holidayMap.get(dateKey);
 
         cells.push(
           <td
             key={d}
             data-daynum={dayNum}
-            className={`${isWeekend ? styles.weekend : ""} ${
-              isSelected ? styles.selected : ""
-            } ${isToday ? styles.today : ""}`}
+            className={[
+              isWeekend ? styles.weekend : "",
+              holiday ? styles.holiday : "",
+              isSelected ? styles.selected : "",
+              isToday ? styles.today : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            title={holiday?.localName}
+            aria-label={holiday ? `${dayNum}, ${holiday.localName}` : String(dayNum)}
             onMouseDown={() => startDrag(dayNum)}
             onMouseEnter={() => moveDrag(dayNum)}
             onMouseUp={endDrag}
@@ -168,6 +189,23 @@ export const StaticCalendar = forwardRef(function StaticCalendar(
           </thead>
           <tbody>{weeks}</tbody>
         </table>
+        {monthHolidays.length > 0 && (
+          <ul className={styles.holidayList} aria-label="Свята цього місяця">
+            {monthHolidays.map((holiday) => (
+              <li className={styles.holidayItem} key={holiday.date}>
+                <span className={styles.holidayDate}>{Number(holiday.date.slice(-2))}</span>
+                <span aria-hidden="true">-</span>
+                <span className={styles.holidayName}>{holiday.localName}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {loading && <p className={styles.holidayMessage}>Завантаження свят...</p>}
+        {error && (
+          <p className={styles.holidayMessage}>
+            Не вдалося завантажити свята. Перевірте підключення до інтернету.
+          </p>
+        )}
         {selectedDays.length > 0 && (
           <div className={styles.summary}>
             Вибрано днів: {selectedDays.length} - Годин: {selectedDays.length * 8}

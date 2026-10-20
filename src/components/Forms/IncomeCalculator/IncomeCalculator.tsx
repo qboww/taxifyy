@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { getWeekdays, fetchUsdRate, fetchExchangeRate } from "../../../utils/helpers";
+import { fetchUsdRate, fetchExchangeRate } from "../../../utils/helpers";
+// @ts-ignore
+import { getMonthCalendarStats, usePublicHolidays } from "../../../utils/holidays";
 // @ts-ignore
 import { useLocalStorageWithExpiry } from "../../../utils/useLocalStorageWithExpiry";
 // @ts-ignore
@@ -22,14 +24,23 @@ import styles from "./IncomeCalculator.module.css";
 interface IncomeCalculatorProps {
   onTransfer: (income: number) => void;
   currency?: string;
+  holidayCountry: string;
 }
 
-export default function IncomeCalculator({ onTransfer, currency = "USD" }: IncomeCalculatorProps) {
+export default function IncomeCalculator({
+  onTransfer,
+  currency = "USD",
+  holidayCountry,
+}: IncomeCalculatorProps) {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
-  const monthDays = new Date(year, month + 1, 0).getDate();
-  const weekdays = getWeekdays(year, month);
+  const { holidays } = usePublicHolidays(holidayCountry, year);
+  const {
+    workingDays: weekdays,
+    weekendDays,
+    holidayDays,
+  } = getMonthCalendarStats(year, month, holidays);
   const workingHours = weekdays * 8;
   const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -79,9 +90,9 @@ export default function IncomeCalculator({ onTransfer, currency = "USD" }: Incom
 
       <CalendarStats
         today={today}
-        monthDays={monthDays}
         weekdays={weekdays}
-        workingHours={workingHours}
+        weekendDays={weekendDays}
+        holidayDays={holidayDays}
         isCalendarOpen={isCalendarOpen}
         onToggleCalendar={() => setIsCalendarOpen((prev: boolean) => !prev)}
       />
@@ -91,6 +102,8 @@ export default function IncomeCalculator({ onTransfer, currency = "USD" }: Incom
           year={year}
           month={month}
           today={today}
+          countryCode={holidayCountry}
+          currentYearHolidays={holidays}
           onSyncHours={handleSyncHours}
         />
       )}

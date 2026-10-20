@@ -41,15 +41,64 @@
   background: rgba(255, 102, 102, 0.08);
 }
 
+.holiday {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffd45c;
+  font-weight: 600;
+}
+
 .selected {
   background-color: rgba(102, 255, 102, 0.2);
   border: 1px solid #66ff66;
   cursor: pointer;
 }
 
+.selected.holiday {
+  box-shadow: inset 0 -3px #ffd45c;
+}
+
 .calendar td {
   cursor: pointer;
   transition: background-color 0.2s;
+}
+
+.holidayList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-dark);
+  font-size: 12px;
+}
+
+.holidayItem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.holidayDate {
+  flex: 0 0 auto;
+  min-width: 22px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffd45c;
+  font-weight: 600;
+  text-align: center;
+}
+
+.holidayName {
+  min-width: 0;
+}
+
+.holidayMessage {
+  margin: 8px 0 0;
+  color: #aaa;
+  font-size: 12px;
 }
 
 .summary {

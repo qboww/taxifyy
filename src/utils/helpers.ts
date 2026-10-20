@@ -24,6 +24,14 @@ export function formatWorkDaysWord(count: number): string {
   return pluralize(count, ["буд. день", "буд. дні", "буд. днів"]);
 }
 
+export function formatWeekendDaysWord(count: number): string {
+  return pluralize(count, ["вих. день", "вих. дні", "вих. днів"]);
+}
+
+export function formatHolidayWord(count: number): string {
+  return pluralize(count, ["свято", "свята", "свят"]);
+}
+
 export function formatDaysWord(count: number): string {
   return pluralize(count, ["день", "дні", "днів"]);
 }
