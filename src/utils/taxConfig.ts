@@ -29,7 +29,9 @@ export const TAX_CONFIG: TaxConfig = {
     rate: `22% від ${MIN_SALARY} грн`,
     description: `від ${MIN_SALARY} грн (МЗП)`,
     calculate: (_, mode) =>
-      MIN_SALARY * ESV_COEFFICIENT * (mode === REPORT_PERIODS.QUARTER ? 3 : 1),
+      MIN_SALARY *
+      ESV_COEFFICIENT *
+      (mode === REPORT_PERIODS.QUARTER ? 3 : mode === REPORT_PERIODS.YEAR ? 12 : 1),
   },
 };
 

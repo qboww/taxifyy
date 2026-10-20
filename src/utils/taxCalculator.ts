@@ -4,6 +4,7 @@ import { TAX_CONFIG, TAX_ITEMS_ORDER, TaxItem } from "./taxConfig";
 export interface IncomeData {
   income: string | number;
   quarterlyIncome: string | number;
+  annualIncome?: string | number;
   mode: string;
 }
 
@@ -19,16 +20,15 @@ export interface TaxData {
  * @returns TaxData object with calculated taxes, validity, and gross income
  */
 export const calculateTaxes = (incomeData: IncomeData): TaxData => {
-  const { income, quarterlyIncome, mode } = incomeData;
-  const gross = parseFloat(String(income));
-  const quarterGross = parseFloat(String(quarterlyIncome));
-
-  const isValid =
-    mode === REPORT_PERIODS.MONTH
-      ? !isNaN(gross) && gross >= 0
-      : !isNaN(quarterGross) && quarterGross >= 0;
-
-  const baseAmount = mode === REPORT_PERIODS.MONTH ? gross : quarterGross;
+  const { income, quarterlyIncome, annualIncome = "", mode } = incomeData;
+  const incomeByPeriod = {
+    [REPORT_PERIODS.MONTH]: income,
+    [REPORT_PERIODS.QUARTER]: quarterlyIncome,
+    [REPORT_PERIODS.YEAR]: annualIncome,
+  };
+  const selectedIncome = incomeByPeriod[mode as keyof typeof incomeByPeriod];
+  const baseAmount = parseFloat(String(selectedIncome));
+  const isValid = selectedIncome !== undefined && !isNaN(baseAmount) && baseAmount >= 0;
 
   const taxes = TAX_ITEMS_ORDER.map((key) => {
     const config = TAX_CONFIG[key];

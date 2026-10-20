@@ -12,16 +12,30 @@ export default function StatisticsTaxCalculator({
   setMode,
   quarterlyIncome,
   setQuarterlyIncome,
+  annualIncome,
+  setAnnualIncome,
 }) {
-  const currentValue = mode === REPORT_PERIODS.MONTH ? income : quarterlyIncome;
+  const currentValue =
+    mode === REPORT_PERIODS.MONTH
+      ? income
+      : mode === REPORT_PERIODS.QUARTER
+        ? quarterlyIncome
+        : annualIncome;
   const isValidInput =
     currentValue === "" || (!isNaN(parseFloat(currentValue)) && parseFloat(currentValue) >= 0);
 
-  const { taxData, netIncome, totalTaxes } = useTaxCalculations({ income, quarterlyIncome, mode });
+  const { taxData, netIncome, totalTaxes } = useTaxCalculations({
+    income,
+    quarterlyIncome,
+    annualIncome,
+    mode,
+  });
 
   const handleInputChange = (value) => {
     if (value === "" || (!isNaN(parseFloat(value)) && parseFloat(value) >= 0)) {
-      mode === REPORT_PERIODS.MONTH ? setIncome(value) : setQuarterlyIncome(value);
+      if (mode === REPORT_PERIODS.MONTH) setIncome(value);
+      else if (mode === REPORT_PERIODS.QUARTER) setQuarterlyIncome(value);
+      else setAnnualIncome(value);
     }
   };
 
@@ -36,17 +50,24 @@ export default function StatisticsTaxCalculator({
         <FormInput
           label="Дохід (UAH):"
           type="number"
-          placeholder={mode === REPORT_PERIODS.MONTH ? "Дохід за місяць" : "Дохід за квартал"}
+          placeholder={
+            mode === REPORT_PERIODS.MONTH
+              ? "Дохід за місяць"
+              : mode === REPORT_PERIODS.QUARTER
+                ? "Дохід за квартал"
+                : "Дохід за рік"
+          }
           value={currentValue}
           onChange={handleInputChange}
           error={!isValidInput ? "Введіть додатне число" : null}
         />
 
         <ToggleSwitch
-          label="Форма сплати:"
+          label="Період розрахунку:"
           options={[
             { label: "Місяць", value: REPORT_PERIODS.MONTH },
             { label: "Квартал", value: REPORT_PERIODS.QUARTER },
+            { label: "Рік", value: REPORT_PERIODS.YEAR },
           ]}
           value={mode}
           onChange={setMode}

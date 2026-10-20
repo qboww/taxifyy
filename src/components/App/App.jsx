@@ -36,6 +36,7 @@ export default function App() {
     "taxCalc_quarterlyIncome",
     ""
   );
+  const [annualIncome, setAnnualIncome] = useLocalStorageWithExpiry("taxCalc_annualIncome", "");
   const [incomeCurrency, setIncomeCurrency] = useLocalStorageWithExpiry(
     "taxCalc_incomeCurrency",
     "USD"
@@ -121,6 +122,8 @@ export default function App() {
               setMode={setMode}
               quarterlyIncome={quarterlyIncome}
               setQuarterlyIncome={setQuarterlyIncome}
+              annualIncome={annualIncome}
+              setAnnualIncome={setAnnualIncome}
             />
           }
         />

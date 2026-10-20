@@ -12,4 +12,5 @@ export const TAX_TYPES = {
 export const REPORT_PERIODS = {
   MONTH: "month",
   QUARTER: "quarter",
+  YEAR: "year",
 } as const;

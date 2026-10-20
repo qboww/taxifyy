@@ -34,6 +34,22 @@ describe("tax calculation logic", () => {
     expect(calculateNetIncome(taxData)).toBeCloseTo(135292.98, 2);
   });
 
+  it("calculates annual taxes correctly", () => {
+    const taxData = calculateTaxes({
+      income: "",
+      quarterlyIncome: "",
+      annualIncome: "600000",
+      mode: "year",
+    });
+
+    expect(taxData.isValid).toBe(true);
+    expect(taxData.gross).toBe(600000);
+    expect(taxData.taxes[0].value).toBe(30000);
+    expect(taxData.taxes[1].value).toBe(6000);
+    expect(taxData.taxes[2].value).toBeCloseTo(22828.08, 2);
+    expect(calculateNetIncome(taxData)).toBeCloseTo(541171.92, 2);
+  });
+
   it("handles invalid inputs gracefully", () => {
     const taxData = calculateTaxes({ income: "invalid", quarterlyIncome: "", mode: "month" });
 
