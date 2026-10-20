@@ -12,6 +12,7 @@ export default function Paycheck({
   totalLabel,
   totalValue,
   footer,
+  currency = "грн",
 }) {
   return (
     <section className={styles.paycheck}>
@@ -27,7 +28,10 @@ export default function Paycheck({
           <Fragment key={index}>
             <p>
               {item.label}
-              {item.rate ? ` (${item.rate})` : ""}:<span>{formatCurrency(item.value)} грн</span>
+              {item.rate ? ` (${item.rate})` : ""}:
+              <span>
+                {formatCurrency(item.value)} {currency}
+              </span>
             </p>
             {splitIndex === index + 1 && <div className={styles.sectionDivider} />}
           </Fragment>
@@ -37,7 +41,10 @@ export default function Paycheck({
       {subtotalLabel && (
         <div className={styles.subtotal}>
           <p>
-            {subtotalLabel}: <span>{formatCurrency(subtotalValue)} грн</span>
+            {subtotalLabel}:{" "}
+            <span>
+              {formatCurrency(subtotalValue)} {currency}
+            </span>
           </p>
         </div>
       )}
@@ -47,7 +54,10 @@ export default function Paycheck({
       {totalLabel && (
         <div className={styles.total}>
           <p className={styles.net}>
-            {totalLabel}: <span>{formatCurrency(totalValue)} грн</span>
+            {totalLabel}:{" "}
+            <span>
+              {formatCurrency(totalValue)} {currency}
+            </span>
           </p>
         </div>
       )}

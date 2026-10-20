@@ -25,34 +25,48 @@ const calculateAmount = (prev, current, tariff) => {
   return consumption * (Number(tariff) || 0);
 };
 
-const formatRate = (prev, current, tariff, unit) => {
+const formatRate = (prev, current, tariff, unit, currency) => {
   const consumption = Math.max(0, (Number(current) || 0) - (Number(prev) || 0));
-  return `${formatCurrency(consumption)} ${unit} x ${Number(tariff) || 0} грн`;
+  return `${formatCurrency(consumption)} ${unit} x ${Number(tariff) || 0} ${currency}`;
 };
 
-const utilityItems = [
-  { key: "heating", title: "Опалення", unit: "м³", tariffLabel: "Тариф (грн/м³):", Icon: FireIcon },
+const getUtilityItems = (currency) => [
+  {
+    key: "heating",
+    title: "Опалення",
+    unit: "м³",
+    tariffLabel: `Тариф (${currency}/м³):`,
+    Icon: FireIcon,
+  },
   {
     key: "electricity",
     title: "Електрика",
     unit: "kWh",
-    tariffLabel: "Тариф (грн/kWh):",
+    tariffLabel: `Тариф (${currency}/kWh):`,
     Icon: ElectricityIcon,
   },
-  { key: "water", title: "Вода", unit: "м³", tariffLabel: "Тариф (грн/м³):", Icon: WaterIcon },
+  {
+    key: "water",
+    title: "Вода",
+    unit: "м³",
+    tariffLabel: `Тариф (${currency}/м³):`,
+    Icon: WaterIcon,
+  },
 ];
 
 const getConsumption = (prev, current) => Math.max(0, (Number(current) || 0) - (Number(prev) || 0));
 
-const formatSummary = (prev, current, tariff, unit) => {
+const formatSummary = (prev, current, tariff, unit, currency) => {
   const consumption = getConsumption(prev, current);
   const amount = consumption * (Number(tariff) || 0);
-  return `${formatCurrency(consumption)} ${unit} → ${formatCurrency(amount)} грн`;
+  return `${formatCurrency(consumption)} ${unit} → ${formatCurrency(amount)} ${currency}`;
 };
 
 const createEmptyPayment = () => ({ id: Date.now(), name: "", amount: 0 });
 
-export default function UtilitiesCalculator() {
+export default function UtilitiesCalculator({ currency = "UAH" }) {
+  const currencyLabel = currency === "UAH" ? "грн" : currency;
+  const utilityItems = getUtilityItems(currencyLabel);
   const [utilities, setUtilities] = useLocalStorageWithExpiry(
     "utilities_data",
     defaultUtilities,
@@ -182,7 +196,8 @@ export default function UtilitiesCalculator() {
           utilities.heating.prev,
           utilities.heating.current,
           utilities.heating.tariff,
-          "м³"
+          "м³",
+          currencyLabel
         ),
         value: heatingAmount,
       },
@@ -192,7 +207,8 @@ export default function UtilitiesCalculator() {
           utilities.electricity.prev,
           utilities.electricity.current,
           utilities.electricity.tariff,
-          "kWh"
+          "kWh",
+          currencyLabel
         ),
         value: electricityAmount,
       },
@@ -202,7 +218,8 @@ export default function UtilitiesCalculator() {
           utilities.water.prev,
           utilities.water.current,
           utilities.water.tariff,
-          "м³"
+          "м³",
+          currencyLabel
         ),
         value: waterAmount,
       },
@@ -218,7 +235,7 @@ export default function UtilitiesCalculator() {
     });
 
     return items;
-  }, [utilities, waterAmount, heatingAmount, electricityAmount]);
+  }, [utilities, waterAmount, heatingAmount, electricityAmount, currencyLabel]);
 
   return (
     <div className={styles.container}>
@@ -247,7 +264,8 @@ export default function UtilitiesCalculator() {
                     utilities[item.key].prev,
                     utilities[item.key].current,
                     utilities[item.key].tariff,
-                    item.unit
+                    item.unit,
+                    currencyLabel
                   )}
                 </p>
               </div>
@@ -326,7 +344,7 @@ export default function UtilitiesCalculator() {
               <FormInput
                 type="number"
                 value={payment.amount}
-                placeholder="грн"
+                placeholder={currencyLabel}
                 onChange={(value) => updatePayment(payment.id, "amount", value)}
               />
               <Button
@@ -346,6 +364,7 @@ export default function UtilitiesCalculator() {
         splitIndex={utilities.customPayments.length > 0 ? 3 : undefined}
         totalLabel="Усього до сплати"
         totalValue={totalAmount}
+        currency={currencyLabel}
       />
     </div>
   );

@@ -3,6 +3,11 @@
   gap: 16px;
 }
 
+.currencyPair {
+  display: flex;
+  gap: 16px;
+}
+
 .todayRate {
   margin: 0px;
   font-size: 14px;
@@ -30,5 +35,12 @@
 
   h2 {
     margin-bottom: 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inputsContainer,
+  .currencyPair {
+    gap: 10px;
   }
 }

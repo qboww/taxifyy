@@ -1,0 +1,115 @@
+.currencySelect {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  text-align: left;
+}
+
+.currencyLabel {
+  font-size: 14px;
+}
+
+.currencyTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid var(--vite);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-dark);
+  font-size: 15px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.currencyTrigger:hover,
+.currencyTrigger[aria-expanded="true"],
+.currencyTrigger:focus-visible {
+  border-color: var(--vite);
+  box-shadow: 0 0 0 3px rgba(112, 138, 88, 0.35);
+  outline: none;
+}
+
+.currencyChevron {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s;
+}
+
+.currencyChevronOpen {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.currencyMenu {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  overflow-y: auto;
+  max-height: 220px;
+  padding: 4px;
+  border: 1px solid var(--border-dark);
+  border-radius: 8px;
+  background: #303030;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transform-origin: top;
+  animation: menuEnter 0.16s ease-out both;
+}
+
+@keyframes menuEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scaleY(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.currencyOption {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text-dark);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.currencyOption:hover,
+.currencyOption:focus-visible {
+  outline: none;
+  background: rgba(112, 138, 88, 0.2);
+}
+
+.selectedCurrency {
+  background: var(--vite);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .currencyMenu {
+    animation: none;
+  }
+}

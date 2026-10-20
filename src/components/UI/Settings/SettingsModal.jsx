@@ -1,26 +1,25 @@
 import { FaTimes } from "react-icons/fa";
+import CurrencySelect from "../CurrencySelect/CurrencySelect";
 import styles from "./SettingsModal.module.css";
 
-const INCOME_CURRENCY_OPTIONS = [
+const FOREIGN_CURRENCY_OPTIONS = [
   { label: "USD", value: "USD" },
   { label: "EUR", value: "EUR" },
+  { label: "RON", value: "RON" },
   { label: "PLN", value: "PLN" },
-  { label: "UAH", value: "UAH" },
 ];
 
-const EXCHANGE_CURRENCY_OPTIONS = [
-  { label: "USD", value: "USD" },
-  { label: "EUR", value: "EUR" },
-  { label: "PLN", value: "PLN" },
-];
+const INCOME_CURRENCY_OPTIONS = [...FOREIGN_CURRENCY_OPTIONS, { label: "UAH", value: "UAH" }];
+
+const UTILITIES_CURRENCY_OPTIONS = [...FOREIGN_CURRENCY_OPTIONS, { label: "UAH", value: "UAH" }];
 
 export default function SettingsModal({
   isOpen,
   onClose,
   incomeCurrency,
   onIncomeCurrencyChange,
-  exchangeCurrency,
-  onExchangeCurrencyChange,
+  utilitiesCurrency,
+  onUtilitiesCurrencyChange,
 }) {
   if (!isOpen) return null;
 
@@ -36,37 +35,24 @@ export default function SettingsModal({
 
         <div className={styles.content}>
           <div className={styles.setting}>
-            <label>Валюта розрахунку доходу:</label>
-            <div className={styles.currencyOptions}>
-              {INCOME_CURRENCY_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  className={`${styles.currencyBtn} ${
-                    incomeCurrency === option.value ? styles.active : ""
-                  }`}
-                  onClick={() => onIncomeCurrencyChange(option.value)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
+            <CurrencySelect
+              label="Валюта розрахунку доходу:"
+              value={incomeCurrency}
+              onChange={onIncomeCurrencyChange}
+              options={INCOME_CURRENCY_OPTIONS}
+            />
           </div>
 
           <div className={styles.setting}>
-            <label>Валюта для обміну:</label>
-            <div className={styles.currencyOptions}>
-              {EXCHANGE_CURRENCY_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  className={`${styles.currencyBtn} ${
-                    exchangeCurrency === option.value ? styles.active : ""
-                  }`}
-                  onClick={() => onExchangeCurrencyChange(option.value)}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
+            <CurrencySelect
+              label="Валюта комунальних платежів:"
+              value={utilitiesCurrency}
+              onChange={onUtilitiesCurrencyChange}
+              options={UTILITIES_CURRENCY_OPTIONS}
+            />
+            <small className={styles.settingHint}>
+              Зміна валюти не конвертує вже збережені суми.
+            </small>
           </div>
         </div>
       </div>
